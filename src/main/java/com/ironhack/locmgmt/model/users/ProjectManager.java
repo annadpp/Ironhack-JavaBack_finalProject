@@ -14,10 +14,12 @@ import java.util.Set;
 @Entity
 @Table(name = "project_managers")
 public class ProjectManager extends User {
-    @OneToMany(mappedBy = "projectManager")
-    private Set<Languages> languages;
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    private List<Languages> languages;
 
-    @OneToMany(mappedBy = "projectManager")
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
 }
 

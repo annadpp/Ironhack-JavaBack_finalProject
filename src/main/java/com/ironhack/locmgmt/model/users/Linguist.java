@@ -17,16 +17,20 @@ import java.util.List;
 @Entity
 @Table(name = "linguists")
 public class Linguist extends User {
-    @OneToMany(mappedBy = "linguist")
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<Languages> languages;
 
-    @OneToMany(mappedBy = "linguist")
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
 
-    @OneToMany(mappedBy = "linguist")
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<DTPTechnology> dtpTechnologies;
 
-    @OneToMany(mappedBy = "linguist")
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<LinguisticTechnology> linguisticTechnologies;
 
     @OneToMany(mappedBy = "linguist")
