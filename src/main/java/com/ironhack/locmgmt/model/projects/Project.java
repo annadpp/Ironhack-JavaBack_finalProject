@@ -6,7 +6,6 @@ import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
 import com.ironhack.locmgmt.model.users.User;
 
-
 import lombok.*;
 import jakarta.persistence.*;
 
