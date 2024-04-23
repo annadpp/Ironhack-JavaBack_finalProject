@@ -11,7 +11,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Data
+/*
 @AllArgsConstructor
+*/
 @NoArgsConstructor
 @Entity
 @Table(name = "rates")
@@ -32,5 +34,11 @@ public class Rate {
     @ManyToOne
     @JoinColumn(name = "linguist_id")
     private Linguist linguist;
+
+    public Rate(BigDecimal price, Languages language, ProjectType projectType) {
+        this.price = price;
+        this.language = language;
+        this.projectType = projectType;
+    }
 }
 

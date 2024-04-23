@@ -1,9 +1,6 @@
 package com.ironhack.locmgmt.model;
 
-import com.ironhack.locmgmt.model.enums.BillingStatus;
-import com.ironhack.locmgmt.model.enums.Languages;
-import com.ironhack.locmgmt.model.enums.Role;
-import com.ironhack.locmgmt.model.enums.TaskStatus;
+import com.ironhack.locmgmt.model.enums.*;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
@@ -14,7 +11,9 @@ import java.time.Duration;
 import java.util.Date;
 
 @Data
+/*
 @AllArgsConstructor
+*/
 @NoArgsConstructor
 @Entity
 @Table(name = "tasks")
@@ -54,7 +53,7 @@ public class Task {
     private Languages targetLanguage;
 
     @Enumerated(EnumType.STRING)
-    private String linguisticTechnology;
+    private LinguisticTechnology linguisticTechnology;
 
     @Enumerated(EnumType.STRING)
     private String dtpTechnology;
@@ -70,5 +69,23 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "linguist_id")
     private Linguist linguist;
+
+    //Constructor for testing
+
+    public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.deadline = deadline;
+        this.timeRemaining = timeRemaining;
+        this.taskStatus = taskStatus;
+        this.role = role;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.billingStatus = billingStatus;
+        this.sourceLanguage = sourceLanguage;
+        this.targetLanguage = targetLanguage;
+        this.linguisticTechnology = linguisticTechnology;
+    }
 }
 
