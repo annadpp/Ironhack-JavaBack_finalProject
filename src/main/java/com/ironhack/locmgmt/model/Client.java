@@ -8,12 +8,14 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "clients")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     private String name;
@@ -26,12 +28,4 @@ public class Client {
 
     @OneToMany(mappedBy = "client")
     private List<Project> projects;
-
-    public Client(String name, String email, String VATNumber, String address, List<Project> projects) {
-        this.name = name;
-        this.email = email;
-        this.VATNumber = VATNumber;
-        this.address = address;
-        this.projects = projects;
-    }
 }

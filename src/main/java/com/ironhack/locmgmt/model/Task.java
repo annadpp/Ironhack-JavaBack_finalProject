@@ -14,12 +14,14 @@ import java.time.Duration;
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "tasks")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     private String name;
@@ -68,24 +70,5 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "linguist_id")
     private Linguist linguist;
-
-    public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, String linguisticTechnology, String dtpTechnology, ProjectManager projectManager, Project project, Linguist linguist) {
-        this.name = name;
-        this.description = description;
-        this.deadline = deadline;
-        this.timeRemaining = timeRemaining;
-        this.taskStatus = taskStatus;
-        this.role = role;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.billingStatus = billingStatus;
-        this.sourceLanguage = sourceLanguage;
-        this.targetLanguage = targetLanguage;
-        this.linguisticTechnology = linguisticTechnology;
-        this.dtpTechnology = dtpTechnology;
-        this.projectManager = projectManager;
-        this.project = project;
-        this.linguist = linguist;
-    }
 }
 
