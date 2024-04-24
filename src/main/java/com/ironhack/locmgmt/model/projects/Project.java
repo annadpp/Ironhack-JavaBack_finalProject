@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-/*@Data
-@AllArgsConstructor*/
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "projects")
@@ -55,6 +55,7 @@ public class Project {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    /*//Constructor/getters/setters for testing
     public Project(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, TaskStatus projectStatus, ProjectType projectType) {
         this.name = name;
         this.description = description;
@@ -119,6 +120,6 @@ public class Project {
 
     public void setProjectType(ProjectType projectType) {
         this.projectType = projectType;
-    }
+    }*/
 }
 

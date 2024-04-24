@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Data
-/*@AllArgsConstructor*/
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "clients")
@@ -29,11 +29,11 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private List<Project> projects;
 
-    //Constructor for testing
+    /*//Constructor for testing
     public Client(String name, String email, String VATNumber, String address) {
     this.name = name;
     this.email = email;
     this.VATNumber = VATNumber;
     this.address = address;
-}
+}*/
 }

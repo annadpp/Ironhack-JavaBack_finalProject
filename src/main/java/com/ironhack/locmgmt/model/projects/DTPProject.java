@@ -12,9 +12,7 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-/*
 @AllArgsConstructor
-*/
 @EqualsAndHashCode(callSuper=false)
 @Entity
 @Table(name = "dtp_projects")
@@ -24,11 +22,11 @@ public class DTPProject extends Project {
 
     private Integer pages;
 
-    //Constructor for testing
+    /*//Constructor for testing
     public DTPProject(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, TaskStatus projectStatus, ProjectType projectType, DTPTechnology dtpTechnology, Integer pages) {
         super(name, description, startDate, endDate, totalBudget, projectStatus, projectType);
         this.dtpTechnology = dtpTechnology;
         this.pages = pages;
-    }
+    }*/
 }
 

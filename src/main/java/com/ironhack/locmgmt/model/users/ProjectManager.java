@@ -23,11 +23,11 @@ public class ProjectManager extends User {
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
 
-    //Constructor for testing
+    /*//Constructor for testing
     public ProjectManager(String username, String password, String name, String email, UserType userType, List<Languages> languages, List<ProjectType> projectTypes) {
         super(username, password, name, email, userType);
         this.languages = languages;
         this.projectTypes = projectTypes;
-    }
+    }*/
 }
 

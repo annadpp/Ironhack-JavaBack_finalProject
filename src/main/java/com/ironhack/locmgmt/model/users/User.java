@@ -9,8 +9,8 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-/*@Data
-@AllArgsConstructor*/
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
@@ -37,7 +37,7 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private List<Project> projects;
 
-    //Constructors/getters/setters for testing
+    /*//Constructors/getters/setters for testing
     public User(String username, String password, String name, String email, UserType userType) {
         this.username = username;
         this.password = password;
@@ -100,5 +100,5 @@ public class User {
 
     public void setProjects(List<Project> projects) {
         this.projects = projects;
-    }
+    }*/
 }

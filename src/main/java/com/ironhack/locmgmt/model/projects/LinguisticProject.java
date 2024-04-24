@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-/*@Data
-@AllArgsConstructor*/
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "linguistic_projects")
@@ -35,7 +35,7 @@ public class LinguisticProject extends Project {
     @OneToMany(mappedBy = "project")
     private List<Languages> targetLanguages;
 
-    //Constructor for testing
+    /*//Constructor for testing
     public LinguisticProject(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, TaskStatus projectStatus, ProjectType projectType, Integer newWords, Integer fuzzyWords, LinguisticTechnology linguisticTechnology, Languages sourceLanguage, List<Languages> targetLanguages) {
         super(name, description, startDate, endDate, totalBudget, projectStatus, projectType);
         this.newWords = newWords;
@@ -43,5 +43,5 @@ public class LinguisticProject extends Project {
         this.linguisticTechnology = linguisticTechnology;
         this.sourceLanguage = sourceLanguage;
         this.targetLanguages = targetLanguages;
-    }
+    }*/
 }

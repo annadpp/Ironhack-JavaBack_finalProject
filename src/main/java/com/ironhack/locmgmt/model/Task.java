@@ -11,9 +11,7 @@ import java.time.Duration;
 import java.util.Date;
 
 @Data
-/*
 @AllArgsConstructor
-*/
 @NoArgsConstructor
 @Entity
 @Table(name = "tasks")
@@ -70,8 +68,7 @@ public class Task {
     @JoinColumn(name = "linguist_id")
     private Linguist linguist;
 
-    //Constructor for testing
-
+    /*//Constructor for testing
     public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology) {
         this.id = id;
         this.name = name;
@@ -86,6 +83,6 @@ public class Task {
         this.sourceLanguage = sourceLanguage;
         this.targetLanguage = targetLanguage;
         this.linguisticTechnology = linguisticTechnology;
-    }
+    }*/
 }
 

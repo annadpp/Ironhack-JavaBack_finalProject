@@ -33,12 +33,12 @@ public class Linguist extends User {
     @OneToMany(mappedBy = "linguist")
     private List<Rate> rates;
 
-    //Constructor for testing
+    /*//Constructor for testing
     public Linguist(String username, String password, String name, String email, UserType userType, List<Languages> languages, List<ProjectType> projectTypes, List<DTPTechnology> dtpTechnologies, List<LinguisticTechnology> linguisticTechnologies) {
         super(username, password, name, email, userType);
         this.languages = languages;
         this.projectTypes = projectTypes;
         this.dtpTechnologies = dtpTechnologies;
         this.linguisticTechnologies = linguisticTechnologies;
-    }
+    }*/
 }
