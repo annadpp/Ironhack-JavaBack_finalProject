@@ -3,16 +3,21 @@ package com.ironhack.locmgmt.model.projects;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 
+import com.ironhack.locmgmt.model.enums.ProjectType;
+import com.ironhack.locmgmt.model.enums.TaskStatus;
 import lombok.*;
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
+/*@Data
+@AllArgsConstructor*/
 @NoArgsConstructor
 @Entity
 @Table(name = "linguistic_projects")
-public class LinguisticProject {
+public class LinguisticProject extends Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,4 +34,14 @@ public class LinguisticProject {
 
     @OneToMany(mappedBy = "project")
     private List<Languages> targetLanguages;
+
+    //Constructor for testing
+    public LinguisticProject(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, TaskStatus projectStatus, ProjectType projectType, Integer newWords, Integer fuzzyWords, LinguisticTechnology linguisticTechnology, Languages sourceLanguage, List<Languages> targetLanguages) {
+        super(name, description, startDate, endDate, totalBudget, projectStatus, projectType);
+        this.newWords = newWords;
+        this.fuzzyWords = fuzzyWords;
+        this.linguisticTechnology = linguisticTechnology;
+        this.sourceLanguage = sourceLanguage;
+        this.targetLanguages = targetLanguages;
+    }
 }
