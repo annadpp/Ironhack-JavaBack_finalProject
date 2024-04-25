@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "linguists")
 public class Linguist extends User {
     @ElementCollection
     @Enumerated(EnumType.STRING)

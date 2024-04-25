@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "linguistic_projects")
 public class LinguisticProject extends Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +31,12 @@ public class LinguisticProject extends Project {
     @Enumerated(EnumType.STRING)
     private Languages sourceLanguage;
 
-    @OneToMany(mappedBy = "project")
+    @ElementCollection(targetClass = Languages.class)
+    @CollectionTable(
+            name = "project_languages",
+            joinColumns = @JoinColumn(name = "project_id")
+    )
+    @Column(name = "language")
     private List<Languages> targetLanguages;
 
     /*//Constructor for testing

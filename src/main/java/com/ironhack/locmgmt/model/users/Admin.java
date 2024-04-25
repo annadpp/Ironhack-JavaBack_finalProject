@@ -10,7 +10,6 @@ import jakarta.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "admins")
 public class Admin extends User {
     @Enumerated(EnumType.STRING)
     private Department department;
