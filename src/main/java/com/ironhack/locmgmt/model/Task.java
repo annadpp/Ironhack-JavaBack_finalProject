@@ -4,7 +4,7 @@ import com.ironhack.locmgmt.model.enums.*;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
-
+import com.ironhack.locmgmt.model.users.User;
 import lombok.*;
 import jakarta.persistence.*;
 import java.time.Duration;
@@ -54,7 +54,7 @@ public class Task {
     private LinguisticTechnology linguisticTechnology;
 
     @Enumerated(EnumType.STRING)
-    private String dtpTechnology;
+    private DTPTechnology dtpTechnology;
 
     @ManyToOne
     @JoinColumn(name = "project_manager_id")
@@ -67,6 +67,10 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "linguist_id")
     private Linguist linguist;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     /*//Constructor for testing
     public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology) {
@@ -85,4 +89,3 @@ public class Task {
         this.linguisticTechnology = linguisticTechnology;
     }*/
 }
-

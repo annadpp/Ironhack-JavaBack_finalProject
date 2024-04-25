@@ -13,7 +13,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "project_managers")
 public class ProjectManager extends User {
     @ElementCollection
     @Enumerated(EnumType.STRING)

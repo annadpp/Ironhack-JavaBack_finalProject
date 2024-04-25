@@ -15,7 +15,6 @@ import java.util.Date;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Entity
-@Table(name = "dtp_projects")
 public class DTPProject extends Project {
     @Enumerated(EnumType.STRING)
     private DTPTechnology dtpTechnology;
