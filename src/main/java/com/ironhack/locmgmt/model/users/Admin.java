@@ -7,10 +7,15 @@ import lombok.*;
 import jakarta.persistence.*;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Admin extends User {
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private UserType userType = UserType.ADMIN;
+
     @Enumerated(EnumType.STRING)
     private Department department;
 

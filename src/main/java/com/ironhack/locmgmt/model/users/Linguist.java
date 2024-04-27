@@ -9,10 +9,15 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Linguist extends User {
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private UserType userType = UserType.LINGUIST;
+
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Languages> languages;

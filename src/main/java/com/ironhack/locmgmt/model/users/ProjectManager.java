@@ -10,10 +10,15 @@ import java.util.List;
 import java.util.Set;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class ProjectManager extends User {
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private UserType userType = UserType.PROJECT_MANAGER;
+
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Languages> languages;
