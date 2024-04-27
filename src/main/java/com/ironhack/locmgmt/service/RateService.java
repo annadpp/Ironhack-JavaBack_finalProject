@@ -1,7 +1,10 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.model.Rate;
+import com.ironhack.locmgmt.model.enums.Languages;
+import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.repository.RateRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +41,21 @@ public class RateService {
 
     public void deleteRate(Long RateId) {
         rateRepository.deleteById(RateId);
+    }
+
+    public List<Rate> getRateBySourceLanguage(Languages sourceLanguage) {
+        return rateRepository.getRateBySourceLanguage(sourceLanguage);
+    }
+
+    public List<Rate> getRateByTargetLanguage(Languages targetLanguage) {
+        return rateRepository.getRateByTargetLanguage(targetLanguage);
+    }
+
+    public List<Rate> findRateBySourceLanguageAndTargetLanguage(Languages sourceLanguage, Languages targetLanguage) {
+        return rateRepository.findBySourceLanguageAndTargetLanguage(sourceLanguage, targetLanguage);
+    }
+
+    public List<Rate> findRateBySourceLanguageAndTargetLanguageAndProjectType(Languages sourceLanguage, Languages targetLanguage, ProjectType projectType) {
+        return rateRepository.findBySourceLanguageAndTargetLanguageAndProjectType(sourceLanguage, targetLanguage, projectType);
     }
 }

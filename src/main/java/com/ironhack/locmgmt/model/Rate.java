@@ -7,6 +7,8 @@ import com.ironhack.locmgmt.model.users.Linguist;
 
 import lombok.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
+
 
 import java.math.BigDecimal;
 
@@ -21,6 +23,7 @@ public class Rate {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Positive(message = "Price must be positive.")
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
@@ -36,9 +39,8 @@ public class Rate {
     @JoinColumn(name = "linguist_id")
     private Linguist linguist;
 
-
     /*//Constructor for testing
-    public Rate(BigDecimal price, Languages language, ProjectType projectType) {
+    public Rate(BigDecimal price, Languages sourceLanguage, Languages targetLanguage, ProjectType projectType) {
         this.price = price;
         this.language = language;
         this.projectType = projectType;
