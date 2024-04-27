@@ -7,8 +7,8 @@ import com.ironhack.locmgmt.service.RateService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,65 +19,65 @@ public class RateController {
     private RateService rateService;
 
     @GetMapping("/get")
-    public ResponseEntity<List<Rate>> getAllRates() {
-        List<Rate> Rates = rateService.getAllRates();
-        return new ResponseEntity<>(Rates, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public List<Rate> getAllRates() {
+        return rateService.getAllRates();
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<Rate> getRateById(@PathVariable Long id) {
-        Rate Rate = rateService.getRateById(id);
-        if (Rate != null) {
-            return new ResponseEntity<>(Rate, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @ResponseStatus(HttpStatus.OK)
+    public Rate getRateById(@PathVariable Long id) {
+        Rate rate = rateService.getRateById(id);
+        if (rate == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Rate not found");
         }
+        return rate;
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Rate> createRate(@RequestBody Rate Rate) {
-        Rate createdRate = rateService.createRate(Rate);
-        return new ResponseEntity<>(createdRate, HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Rate createRate(@RequestBody Rate rate) {
+        return rateService.createRate(rate);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Rate> updateRate(@PathVariable Long id, @RequestBody Rate Rate) {
-        Rate updatedRate = rateService.updateRate(id, Rate);
-        return new ResponseEntity<>(updatedRate, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public Rate updateRate(@PathVariable Long id, @RequestBody Rate rate) {
+        return rateService.updateRate(id, rate);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteRate(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteRate(@PathVariable Long id) {
         rateService.deleteRate(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/get/sourceLanguage/{sourceLanguage}")
-    public ResponseEntity<List<Rate>> getRateBySourceLanguage(@PathVariable Languages sourceLanguage) {
-        List<Rate> rates = rateService.getRateBySourceLanguage(sourceLanguage);
-        return new ResponseEntity<>(rates, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public List<Rate> getRateBySourceLanguage(@PathVariable Languages sourceLanguage) {
+        return rateService.getRateBySourceLanguage(sourceLanguage);
     }
 
     @GetMapping("/get/targetLanguage/{targetLanguage}")
-    public ResponseEntity<List<Rate>> getRateByTargetLanguage(@PathVariable Languages targetLanguage) {
-        List<Rate> rates = rateService.getRateByTargetLanguage(targetLanguage);
-        return new ResponseEntity<>(rates, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public List<Rate> getRateByTargetLanguage(@PathVariable Languages targetLanguage) {
+        return rateService.getRateByTargetLanguage(targetLanguage);
     }
 
     @GetMapping("/get/sl-tl")
-    public ResponseEntity<List<Rate>> getRateBySourceAndTargetLanguage(
+    @ResponseStatus(HttpStatus.OK)
+    public List<Rate> getRateBySourceAndTargetLanguage(
             @RequestParam Languages sourceLanguage,
             @RequestParam Languages targetLanguage) {
-        List<Rate> rates = rateService.findRateBySourceLanguageAndTargetLanguage(sourceLanguage, targetLanguage);
-        return new ResponseEntity<>(rates, HttpStatus.OK);
+        return rateService.findRateBySourceLanguageAndTargetLanguage(sourceLanguage, targetLanguage);
     }
 
     @GetMapping("/get/sl-tl-pt")
-    public ResponseEntity<List<Rate>> getRateBySourceLanguageAndTargetLanguageAndProjectType(
+    @ResponseStatus(HttpStatus.OK)
+    public List<Rate> getRateBySourceLanguageAndTargetLanguageAndProjectType(
             @RequestParam Languages sourceLanguage,
             @RequestParam Languages targetLanguage,
             @RequestParam ProjectType projectType) {
-        List<Rate> rates = rateService.findRateBySourceLanguageAndTargetLanguageAndProjectType(sourceLanguage, targetLanguage, projectType);
-        return new ResponseEntity<>(rates, HttpStatus.OK);
+        return rateService.findRateBySourceLanguageAndTargetLanguageAndProjectType(sourceLanguage, targetLanguage, projectType);
     }
 }

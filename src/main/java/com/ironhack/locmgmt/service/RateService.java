@@ -31,13 +31,23 @@ public class RateService {
         Rate existingRate = rateRepository.findById(rateId)
                 .orElseThrow(() -> new RuntimeException("Rate not found with id: " + rateId));
 
-        existingRate.setPrice(rateDetails.getPrice());
-        existingRate.setSourceLanguage(rateDetails.getSourceLanguage());
-        existingRate.setTargetLanguage(rateDetails.getTargetLanguage());
-        existingRate.setProjectType(rateDetails.getProjectType());
+        //Update only fields provided in rateDetails
+        if (rateDetails.getPrice() != null) {
+            existingRate.setPrice(rateDetails.getPrice());
+        }
+        if (rateDetails.getSourceLanguage() != null) {
+            existingRate.setSourceLanguage(rateDetails.getSourceLanguage());
+        }
+        if (rateDetails.getTargetLanguage() != null) {
+            existingRate.setTargetLanguage(rateDetails.getTargetLanguage());
+        }
+        if (rateDetails.getProjectType() != null) {
+            existingRate.setProjectType(rateDetails.getProjectType());
+        }
 
         return rateRepository.save(existingRate);
     }
+
 
     public void deleteRate(Long RateId) {
         rateRepository.deleteById(RateId);
