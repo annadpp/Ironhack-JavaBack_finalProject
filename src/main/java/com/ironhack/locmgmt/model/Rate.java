@@ -24,7 +24,10 @@ public class Rate {
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
-    private Languages language;
+    private Languages sourceLanguage;
+
+    @Enumerated(EnumType.STRING)
+    private Languages targetLanguage;
 
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
