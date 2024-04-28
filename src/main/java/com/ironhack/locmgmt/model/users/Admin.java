@@ -3,6 +3,7 @@ package com.ironhack.locmgmt.model.users;
 import com.ironhack.locmgmt.model.enums.Department;
 
 import com.ironhack.locmgmt.model.enums.UserType;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import jakarta.persistence.*;
 
@@ -16,6 +17,7 @@ public class Admin extends User {
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.ADMIN;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Department department;
 
