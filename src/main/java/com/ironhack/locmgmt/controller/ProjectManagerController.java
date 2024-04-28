@@ -27,7 +27,7 @@ public class ProjectManagerController {
     @ResponseStatus(HttpStatus.OK)
     public ProjectManager getProjectManagerById(@PathVariable Long id) {
         ProjectManager projectManager = projectManagerService.getProjectManagerById(id);
-        if (projectManager != null) {
+        if (projectManager == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Project manager not found");
         }
         return projectManager;
@@ -45,6 +45,7 @@ public class ProjectManagerController {
         return projectManagerService.updateProjectManager(id, projectManager);
     }
 
+    /*Fix error*/
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProjectManager(@PathVariable Long id) {
