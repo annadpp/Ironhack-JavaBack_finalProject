@@ -4,6 +4,7 @@ import com.ironhack.locmgmt.model.projects.Project;
 
 import lombok.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.List;
 
@@ -18,8 +19,10 @@ public class Client {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @NotEmpty(message = "Name cannot be empty")
     private String name;
 
+    @Email(message = "Invalid email address")
     private String email;
 
     private String VATNumber;
