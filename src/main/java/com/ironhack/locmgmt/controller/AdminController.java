@@ -6,46 +6,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/admins")
 public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @GetMapping("/admins")
-    public ResponseEntity<List<Admin>> getAllClients() {
-        List<Admin> admins = adminService.getAllAdmins();
-        return new ResponseEntity<>(admins, HttpStatus.OK);
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Admin> getAllClients() {
+        return adminService.getAllAdmins();
     }
 
-    @GetMapping("/admin/{id}")
-    public ResponseEntity<Admin> getAdminById(@PathVariable Long id) {
+    @GetMapping("/get/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Admin getAdminById(@PathVariable Long id) {
         Admin admin = adminService.getAdminById(id);
-        if (admin != null) {
-            return new ResponseEntity<>(admin, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (admin == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Rate not found");
         }
+        return admin;
     }
 
-    @PostMapping("/saveAdmin")
-    public ResponseEntity<Admin> createAdmin(@RequestBody Admin admin) {
-        Admin createdAdmin = adminService.createAdmin(admin);
-        return new ResponseEntity<>(createdAdmin, HttpStatus.CREATED);
+    @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Admin createAdmin(@RequestBody Admin admin) {
+        return adminService.createAdmin(admin);
     }
 
-    @PutMapping("/updateAdmin/{id}")
-    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id, @RequestBody Admin admin) {
-        Admin updatedAdmin = adminService.updateAdmin(id, admin);
-        return new ResponseEntity<>(updatedAdmin, HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Admin updateAdmin(@PathVariable Long id, @RequestBody Admin admin) {
+        return adminService.updateAdmin(id, admin);
     }
 
-    @DeleteMapping("/deleteAdmin/{id}")
-    public ResponseEntity<?> deleteAdmin(@PathVariable Long id) {
+    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAdmin(@PathVariable Long id) {
         adminService.deleteAdmin(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
