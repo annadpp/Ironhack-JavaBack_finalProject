@@ -1,11 +1,12 @@
 package com.ironhack.locmgmt.controller;
 
+import com.ironhack.locmgmt.model.enums.Languages;
+import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.users.ProjectManager;
 import com.ironhack.locmgmt.service.ProjectManagerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -50,5 +51,15 @@ public class ProjectManagerController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProjectManager(@PathVariable Long id) {
          projectManagerService.deleteProjectManager(id);
+    }
+
+    @GetMapping("/get/bySpokenLanguage")
+    public List<ProjectManager> getProjectManagersBySpokenLanguage(@RequestParam Languages language) {
+        return projectManagerService.findProjectManagersBySpokenLanguage(language);
+    }
+
+    @GetMapping("/get/byProjectType")
+    public List<ProjectManager> getProjectManagersByProjectType(@RequestParam ProjectType projectType) {
+        return projectManagerService.findProjectManagersByProjectType(projectType);
     }
 }

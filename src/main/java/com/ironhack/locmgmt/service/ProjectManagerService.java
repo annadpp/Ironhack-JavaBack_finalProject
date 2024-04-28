@@ -1,14 +1,14 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
+import com.ironhack.locmgmt.model.enums.Languages;
+import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.users.ProjectManager;
 import com.ironhack.locmgmt.repository.ProjectManagerRepository;
+
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DataRetrievalFailureException;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -77,6 +77,30 @@ public class ProjectManagerService {
             throw new EntityNotFoundException("Rate not found with id: " + id);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error deleting rate with id: " + id);
+        }
+    }
+
+    public List<ProjectManager> findProjectManagersBySpokenLanguage(Languages language) {
+        try {
+            List<ProjectManager> projectManagers = projectManagerRepository.findBySpokenLanguages(language);
+            if (projectManagers.isEmpty()) {
+                throw new EmptyListException("No project managers found for the specified language");
+            }
+            return projectManagers;
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Failed to retrieve project managers by spoken languages", e);
+        }
+    }
+
+    public List<ProjectManager> findProjectManagersByProjectType(ProjectType projectType) {
+        try {
+            List<ProjectManager> projectManagers = projectManagerRepository.findByProjectTypes(projectType);
+            if (projectManagers.isEmpty()) {
+                throw new EmptyListException("No project managers found for the specified project type");
+            }
+            return projectManagers;
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Failed to retrieve project managers by project types", e);
         }
     }
 }
