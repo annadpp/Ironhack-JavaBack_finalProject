@@ -45,4 +45,13 @@ public class UserController {
     public List<User> getUsersByUserType(@PathVariable UserType userType) {
         return userService.getUsersByUserType(userType);
     }
+
+    //User only
+    /*@PutMapping("/update/password/{username}")
+    public ResponseEntity<String> updatePassword(@PathVariable String username,
+                                                 @RequestParam String oldPassword,
+                                                 @RequestParam String newPassword) {
+        userService.updatePassword(username, oldPassword, newPassword);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }*/
 }
