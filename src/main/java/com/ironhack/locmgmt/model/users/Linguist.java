@@ -2,6 +2,7 @@ package com.ironhack.locmgmt.model.users;
 
 import com.ironhack.locmgmt.model.enums.*;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import jakarta.persistence.*;
 
@@ -17,18 +18,22 @@ public class Linguist extends User {
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.LINGUIST;
 
+    @NotNull
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Languages> languages;
 
+    @NotNull
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
 
+    @NotNull
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<DTPTechnology> dtpTechnologies;
 
+    @NotNull
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<LinguisticTechnology> linguisticTechnologies;

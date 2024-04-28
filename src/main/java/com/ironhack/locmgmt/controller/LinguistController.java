@@ -6,46 +6,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/linguists")
 public class LinguistController {
     @Autowired
     private LinguistService linguistService;
 
-    @GetMapping("/linguists")
-    public ResponseEntity<List<Linguist>> getAllClients() {
-        List<Linguist> linguists = linguistService.getAllLinguists();
-        return new ResponseEntity<>(linguists, HttpStatus.OK);
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Linguist> getAllClients() {
+        return linguistService.getAllLinguists();
     }
 
-    @GetMapping("/linguist/{id}")
-    public ResponseEntity<Linguist> getLinguistById(@PathVariable Long id) {
+    @GetMapping("/get/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Linguist getLinguistById(@PathVariable Long id) {
         Linguist linguist = linguistService.getLinguistById(id);
-        if (linguist != null) {
-            return new ResponseEntity<>(linguist, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (linguist == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Linguist not found");
         }
+        return linguist;
     }
 
-    @PostMapping("/saveLinguist")
-    public ResponseEntity<Linguist> createLinguist(@RequestBody Linguist linguist) {
-        Linguist createdLinguist = linguistService.createLinguist(linguist);
-        return new ResponseEntity<>(createdLinguist, HttpStatus.CREATED);
+    @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Linguist createLinguist(@RequestBody Linguist linguist) {
+        return linguistService.createLinguist(linguist);
     }
 
-    @PutMapping("/updateLinguist/{id}")
-    public ResponseEntity<Linguist> updateLinguist(@PathVariable Long id, @RequestBody Linguist linguist) {
-        Linguist updatedLinguist = linguistService.updateLinguist(id, linguist);
-        return new ResponseEntity<>(updatedLinguist, HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Linguist updateLinguist(@PathVariable Long id, @RequestBody Linguist linguist) {
+        return linguistService.updateLinguist(id, linguist);
     }
 
-    @DeleteMapping("/deleteLinguist/{id}")
-    public ResponseEntity<?> deleteLinguist(@PathVariable Long id) {
+    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteLinguist(@PathVariable Long id) {
         linguistService.deleteLinguist(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
