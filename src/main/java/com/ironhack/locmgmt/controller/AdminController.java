@@ -1,5 +1,6 @@
 package com.ironhack.locmgmt.controller;
 
+import com.ironhack.locmgmt.model.enums.Department;
 import com.ironhack.locmgmt.model.users.Admin;
 import com.ironhack.locmgmt.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,10 @@ public class AdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAdmin(@PathVariable Long id) {
         adminService.deleteAdmin(id);
+    }
+
+    @GetMapping("/get/byDepartment")
+    public List<Admin> getAdminsByDepartment(@RequestParam Department department) {
+        return adminService.findAdminsByDepartment(department);
     }
 }

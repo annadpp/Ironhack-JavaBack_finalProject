@@ -1,6 +1,7 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
+import com.ironhack.locmgmt.model.enums.Department;
 import com.ironhack.locmgmt.model.users.Admin;
 import com.ironhack.locmgmt.repository.AdminRepository;
 
@@ -70,5 +71,13 @@ public class AdminService {
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error deleting rate with id: " + id);
         }
+    }
+
+    public List<Admin> findAdminsByDepartment(Department department) {
+        List<Admin> admins = adminRepository.findByDepartment(department);
+        if (admins.isEmpty()) {
+            throw new EmptyListException("No admins were found");
+        }
+        return admins;
     }
 }
