@@ -1,7 +1,6 @@
 package com.ironhack.locmgmt;
 
 
-import com.ironhack.locmgmt.model.Rate;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import org.junit.jupiter.api.BeforeEach;

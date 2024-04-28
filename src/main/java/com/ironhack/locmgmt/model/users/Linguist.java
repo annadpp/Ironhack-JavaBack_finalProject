@@ -1,6 +1,5 @@
 package com.ironhack.locmgmt.model.users;
 
-import com.ironhack.locmgmt.model.Rate;
 import com.ironhack.locmgmt.model.enums.*;
 
 import lombok.*;
@@ -34,8 +33,8 @@ public class Linguist extends User {
     @Enumerated(EnumType.STRING)
     private List<LinguisticTechnology> linguisticTechnologies;
 
-    @OneToMany(mappedBy = "linguist")
-    private List<Rate> rates;
+    /*@OneToMany(mappedBy = "linguist")
+    private List<Rate> rates;*/
 
     /*//Constructor for testing
     public Linguist(String username, String password, String name, String email, UserType userType, List<Languages> languages, List<ProjectType> projectTypes, List<DTPTechnology> dtpTechnologies, List<LinguisticTechnology> linguisticTechnologies) {

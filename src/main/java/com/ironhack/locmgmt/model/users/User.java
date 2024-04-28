@@ -1,11 +1,12 @@
 package com.ironhack.locmgmt.model.users;
 
-import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.UserType;
-import com.ironhack.locmgmt.model.projects.Project;
+/*import com.ironhack.locmgmt.model.Task;
+import com.ironhack.locmgmt.model.projects.Project;*/
 
 import lombok.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.List;
 
@@ -20,22 +21,27 @@ public class User {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @NotEmpty(message = "Username cannot be empty")
     private String username;
 
+    @NotEmpty(message = "Password cannot be empty")
     private String password;
 
+    @NotEmpty(message = "Name cannot be empty")
     private String name;
 
+    @NotEmpty(message = "Email cannot be empty")
+    @Email(message = "Invalid email address")
     private String email;
 
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    @OneToMany(mappedBy = "user")
+    /*@OneToMany(mappedBy = "user")
     private List<Task> tasks;
 
     @ManyToMany(mappedBy = "users")
-    private List<Project> projects;
+    private List<Project> projects;*/
 
     /*//Constructors/getters/setters for testing
     public User(String username, String password, String name, String email, UserType userType) {

@@ -8,30 +8,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.OK)
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
-    @DeleteMapping("/deleteUser/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    @GetMapping("/get/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public User getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+        return user;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/usersByUserType/{userType}")
-    public ResponseEntity<List<User>> getUsersByUserType(@PathVariable UserType userType) {
-        List<User> users = userService.getUsersByUserType(userType);
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    @GetMapping("/get/byUserType/{userType}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<User> getUsersByUserType(@PathVariable UserType userType) {
+        return userService.getUsersByUserType(userType);
     }
 }

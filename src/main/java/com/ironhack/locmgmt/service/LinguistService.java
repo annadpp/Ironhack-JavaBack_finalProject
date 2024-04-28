@@ -32,7 +32,9 @@ public class LinguistService {
         existingLinguist.setProjectTypes(linguistDetails.getProjectTypes());
         existingLinguist.setDtpTechnologies(linguistDetails.getDtpTechnologies());
         existingLinguist.setLinguisticTechnologies(linguistDetails.getLinguisticTechnologies());
+/*
         existingLinguist.setRates(linguistDetails.getRates());
+*/
 
         return linguistRepository.save(existingLinguist);
     }
