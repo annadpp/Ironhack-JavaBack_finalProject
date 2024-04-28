@@ -28,7 +28,7 @@ public class ProjectManagerService {
         ProjectManager existingProjectManager = projectManagerRepository.findById(projectManagerId)
                 .orElseThrow(() -> new RuntimeException("ProjectManager not found with id: " + projectManagerId));
 
-        existingProjectManager.setLanguages(projectManagerDetails.getLanguages());
+        existingProjectManager.setSpokenLanguages(projectManagerDetails.getSpokenLanguages());
         existingProjectManager.setProjectTypes(projectManagerDetails.getProjectTypes());
 
         return projectManagerRepository.save(existingProjectManager);

@@ -3,6 +3,7 @@ package com.ironhack.locmgmt.model.users;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.UserType;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import jakarta.persistence.*;
 
@@ -19,10 +20,14 @@ public class ProjectManager extends User {
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.PROJECT_MANAGER;
 
+    @NotNull
+    @Size(min = 1)
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    private List<Languages> languages;
+    private List<Languages> spokenLanguages;
 
+    @NotNull
+    @Size(min = 1)
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
