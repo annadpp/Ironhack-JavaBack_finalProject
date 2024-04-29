@@ -18,7 +18,7 @@ public class ProjectController {
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)
     public List<Project> getAllProjects() {
-        projectService.getAllProjects();
+       return projectService.getAllProjects();
     }
 
     @DeleteMapping("/delete/{id}")
