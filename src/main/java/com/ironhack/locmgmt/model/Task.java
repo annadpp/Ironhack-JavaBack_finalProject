@@ -5,8 +5,13 @@ import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
 import com.ironhack.locmgmt.model.users.User;
+import com.ironhack.locmgmt.util.TaskUtil;
+import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
+import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import jakarta.persistence.*;
+
 import java.time.Duration;
 import java.util.Date;
 
@@ -15,44 +20,55 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "tasks")
+@ValidLinguisticTechnology
+@ValidDTPTechnology
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @NotBlank
     private String name;
 
     private String description;
 
+    @Future
     private Date deadline;
 
+    //Set with difference between startDate and deadline
     private Duration timeRemaining;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private ProjectType projectType;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    //Set with date when taskStatus == started
     private Date startDate;
 
-    @Temporal(TemporalType.DATE)
+    //Set with date when taskStatus == finished
     private Date endDate;
 
     @Enumerated(EnumType.STRING)
     private BillingStatus billingStatus;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Languages sourceLanguage;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Languages targetLanguage;
 
+    //ValidLinguisticTechnology validation depending on projectType
     @Enumerated(EnumType.STRING)
     private LinguisticTechnology linguisticTechnology;
 
+    //ValidDTPTechnology validation depending on projectType
     @Enumerated(EnumType.STRING)
     private DTPTechnology dtpTechnology;
 
@@ -71,6 +87,11 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void updateDatesAndTimeRemaining(TaskStatus newStatus) {
+        TaskUtil taskUtil = new TaskUtil();
+        taskUtil.updateDatesAndTimeRemaining(this, newStatus);
+    }
 
     /*//Constructor for testing
     public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology) {

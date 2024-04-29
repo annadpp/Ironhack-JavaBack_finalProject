@@ -36,10 +36,14 @@ public class TaskService {
         existingTask.setDeadline(taskDetails.getDeadline());
         existingTask.setTimeRemaining(taskDetails.getTimeRemaining());
         existingTask.setTaskStatus(taskDetails.getTaskStatus());
-        existingTask.setRole(taskDetails.getRole());
+        existingTask.setProjectType(taskDetails.getProjectType());
         existingTask.setStartDate(taskDetails.getStartDate());
+/*
         existingTask.setEndDate(taskDetails.getEndDate());
+*/
+/*
         existingTask.setBillingStatus(taskDetails.getBillingStatus());
+*/
         existingTask.setSourceLanguage(taskDetails.getSourceLanguage());
         existingTask.setTargetLanguage(taskDetails.getTargetLanguage());
         existingTask.setLinguisticTechnology(taskDetails.getLinguisticTechnology());

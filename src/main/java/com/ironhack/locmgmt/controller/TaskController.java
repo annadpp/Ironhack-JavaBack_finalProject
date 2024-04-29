@@ -14,19 +14,19 @@ import java.time.Duration;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/tasks")
 public class TaskController {
 
     @Autowired
     private TaskService taskService;
 
-    @GetMapping("/tasks")
+    @GetMapping("/get")
     public ResponseEntity<List<Task>> getAllTasks() {
         List<Task> tasks = taskService.getAllTasks();
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
-    @GetMapping("/task/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
         Task client = taskService.getTaskById(id);
         if (client != null) {
@@ -36,33 +36,35 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/saveTask")
+    @PostMapping("/save")
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         Task createdTask = taskService.createTask(task);
         return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
     }
 
-    @PutMapping("/updateTask/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
         Task updatedTask = taskService.updateTask(id, task);
         return new ResponseEntity<>(updatedTask, HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteTask/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/updateTaskBillingStatus/{taskId}")
-    public ResponseEntity<Task> updateTaskBillingStatus(@PathVariable Long taskId, @RequestBody Task updatedTask) {
-        Task task = taskService.getTaskById(taskId); //Get task by ID
+    @PostMapping("/update/{id}")
+    public ResponseEntity<Task> updateTaskBillingStatus(@PathVariable Long id, @RequestBody Task updatedTask) {
+        Task task = taskService.getTaskById(id); //Get task by ID
         if (task == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); //If not found, 404
         }
         //Update task billing status
+/*
         task.setBillingStatus(updatedTask.getBillingStatus());
-        Task savedTask = taskService.updateTask(taskId, task); //Save changes in db
+*/
+        Task savedTask = taskService.updateTask(id, task); //Save changes in db
         return new ResponseEntity<>(savedTask, HttpStatus.OK); //Updated task back with 200 OK
     }
 }
