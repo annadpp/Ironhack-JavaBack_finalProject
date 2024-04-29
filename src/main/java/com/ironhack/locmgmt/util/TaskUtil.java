@@ -7,19 +7,28 @@ import java.time.Duration;
 import java.util.Date;
 
 public class TaskUtil {
-
-    public void updateDatesAndTimeRemaining(Task task, TaskStatus newStatus) {
-        if (newStatus == TaskStatus.STARTED) {
-            task.setStartDate(new Date());
-        } else if (newStatus == TaskStatus.FINISHED) {
-            task.setEndDate(new Date());
+    public static void updateTaskDates(Task task) {
+        if (task.getTaskStatus() == TaskStatus.STARTED && task.getStartDate() == null) {
+            task.setStartDate(new Date()); //Set the start date to the current date/time
+        } else if (task.getTaskStatus() == TaskStatus.FINISHED && task.getEndDate() == null) {
+            task.setEndDate(new Date()); //Set the end date to the current date/time
+        } else if (task.getTaskStatus() == TaskStatus.NOT_STARTED) {
+            task.setStartDate(null); //Set start date to null when task is not started
+            task.setEndDate(null);
+            task.setTimeRemaining(null);
+            task.setDeadline(null);
         }
 
-        // Update timeRemaining
-        if (task.getStartDate() != null && task.getEndDate() == null) {
-            task.setTimeRemaining(Duration.between(task.getStartDate().toInstant(), task.getDeadline().toInstant()));
-        } else {
-            task.setTimeRemaining(null);
+        if (task.getTaskStatus() == TaskStatus.STARTED && task.getDeadline() != null) {
+            updateTimeRemaining(task);
+        }
+    }
+
+    public static void updateTimeRemaining(Task task) {
+        if (task.getDeadline() != null && task.getStartDate() != null) {
+                long diffInMillies = Math.abs(task.getDeadline().getTime() - task.getStartDate().getTime());
+                Duration duration = Duration.ofMillis(diffInMillies);
+                task.setTimeRemaining(duration);
         }
     }
 }

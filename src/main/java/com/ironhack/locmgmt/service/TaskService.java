@@ -2,14 +2,19 @@ package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.Task;
+import com.ironhack.locmgmt.model.enums.BillingStatus;
+import com.ironhack.locmgmt.model.enums.TaskStatus;
 import com.ironhack.locmgmt.repository.TaskRepository;
 
+import com.ironhack.locmgmt.util.TaskUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.ironhack.locmgmt.util.TaskUtil.updateTaskDates;
 
 @Service
 public class TaskService {
@@ -34,6 +39,14 @@ public class TaskService {
     }
 
     public Task createTask(Task task) {
+        //Sets taskStatus and billingStatus to NOT if info not passed by the user when creating task
+        task.setTaskStatus(task.getTaskStatus() != null ? task.getTaskStatus() : TaskStatus.NOT_STARTED);
+        task.setBillingStatus(task.getBillingStatus() != null ? task.getBillingStatus() : BillingStatus.NOT_INVOICED);
+
+        //Update task dates and time remaining
+        TaskUtil.updateTaskDates(task);
+        TaskUtil.updateTimeRemaining(task);
+
         try {
             return taskRepository.save(task);
         } catch (DataIntegrityViolationException e) {
@@ -53,9 +66,11 @@ public class TaskService {
         }
         if (taskDetails.getDeadline() != null) {
             existingTask.setDeadline(taskDetails.getDeadline());
+            TaskUtil.updateTimeRemaining(existingTask);
         }
         if (taskDetails.getTaskStatus() != null) {
             existingTask.setTaskStatus(taskDetails.getTaskStatus());
+            updateTaskDates(existingTask);
         }
         if (taskDetails.getProjectType() != null) {
             existingTask.setProjectType(taskDetails.getProjectType());

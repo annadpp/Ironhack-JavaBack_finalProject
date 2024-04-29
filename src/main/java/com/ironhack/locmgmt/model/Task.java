@@ -13,12 +13,12 @@ import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Duration;
 import java.util.Date;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -31,22 +31,22 @@ public class Task {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "The task name cannot be blank")
     private String name;
 
     private String description;
 
-    @Future
+    @Future(message = "The 'deadline' field must be a future date in the format 'yyyy-MM-dd'")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deadline;
 
     //Set with difference between startDate and deadline
     private Duration timeRemaining;
 
-    @Builder.Default
     @Enumerated(EnumType.STRING)
-    private TaskStatus taskStatus = TaskStatus.NOT_STARTED;
+    private TaskStatus taskStatus;
 
-    @NotNull
+    @NotNull(message = "The project type must be specified")
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
@@ -56,15 +56,14 @@ public class Task {
     //Set with date when taskStatus == finished
     private Date endDate;
 
-    @Builder.Default
     @Enumerated(EnumType.STRING)
-    private BillingStatus billingStatus = BillingStatus.NOT_INVOICED;
+    private BillingStatus billingStatus;
 
-    @NotNull
+    @NotNull(message = "The source language must be specified")
     @Enumerated(EnumType.STRING)
     private Languages sourceLanguage;
 
-    @NotNull
+    @NotNull(message = "The target language must be specified")
     @Enumerated(EnumType.STRING)
     private Languages targetLanguage;
 
@@ -93,10 +92,7 @@ public class Task {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updateDatesAndTimeRemaining(TaskStatus newStatus) {
-        TaskUtil taskUtil = new TaskUtil();
-        taskUtil.updateDatesAndTimeRemaining(this, newStatus);
-    }
+
 
     /*//Constructor for testing
     public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology) {
