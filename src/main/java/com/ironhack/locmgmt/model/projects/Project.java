@@ -6,6 +6,7 @@ import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
 import com.ironhack.locmgmt.model.users.User;
 
+import jakarta.validation.constraints.*;
 import lombok.*;
 import jakarta.persistence.*;
 
@@ -24,19 +25,23 @@ public class Project {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @NotEmpty(message = "Name cannot be empty")
     private String name;
 
+    @NotEmpty(message = "Description cannot be empty")
     private String description;
 
     private Date startDate;
 
     private Date endDate;
 
+    @Positive(message = "Budget must be positive.")
     private BigDecimal totalBudget;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus projectStatus;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
