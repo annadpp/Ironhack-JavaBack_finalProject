@@ -6,8 +6,10 @@ import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
 import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.util.TaskUtil;
+
 import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
 import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
+
 import jakarta.validation.constraints.*;
 import lombok.*;
 import jakarta.persistence.*;
@@ -16,6 +18,7 @@ import java.time.Duration;
 import java.util.Date;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -39,9 +42,9 @@ public class Task {
     //Set with difference between startDate and deadline
     private Duration timeRemaining;
 
-    @NotNull
+    @Builder.Default
     @Enumerated(EnumType.STRING)
-    private TaskStatus taskStatus;
+    private TaskStatus taskStatus = TaskStatus.NOT_STARTED;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -53,8 +56,9 @@ public class Task {
     //Set with date when taskStatus == finished
     private Date endDate;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
-    private BillingStatus billingStatus;
+    private BillingStatus billingStatus = BillingStatus.NOT_INVOICED;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -84,6 +88,7 @@ public class Task {
     @JoinColumn(name = "linguist_id")
     private Linguist linguist;
 
+    //Remove when merged
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
