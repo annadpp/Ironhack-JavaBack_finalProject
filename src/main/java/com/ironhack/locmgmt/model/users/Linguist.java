@@ -21,7 +21,12 @@ public class Linguist extends User {
     @NotNull
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    private List<Languages> languages;
+    private List<Languages> sourceLanguages;
+
+    @NotNull
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    private List<Languages> targetLanguages;
 
     @NotNull
     @ElementCollection
