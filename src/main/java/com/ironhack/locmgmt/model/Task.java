@@ -5,7 +5,6 @@ import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
 import com.ironhack.locmgmt.model.users.User;
-import com.ironhack.locmgmt.util.TaskUtil;
 
 import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
 import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;

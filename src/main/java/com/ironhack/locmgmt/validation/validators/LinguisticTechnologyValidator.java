@@ -13,9 +13,13 @@ public class LinguisticTechnologyValidator implements ConstraintValidator<ValidL
 
     @Override
     public boolean isValid(Task task, ConstraintValidatorContext context) {
-        if (task.getProjectType() == ProjectType.TRANSLATION || task.getProjectType() == ProjectType.REVIEW || task.getProjectType() == ProjectType.POSTEDITING) {
-            return task.getLinguisticTechnology() != null;
+        if (task.getProjectType() == ProjectType.TRANSLATION ||
+                task.getProjectType() == ProjectType.REVIEW ||
+                task.getProjectType() == ProjectType.POSTEDITING) {
+            if (task.getLinguisticTechnology() == null || task.getDtpTechnology() != null) {
+                return false;
+            }
         }
-        return true;  //No validation needed for other project types
+        return true;
     }
 }

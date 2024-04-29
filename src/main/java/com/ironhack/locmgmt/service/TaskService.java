@@ -3,6 +3,7 @@ package com.ironhack.locmgmt.service;
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.BillingStatus;
+import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
 import com.ironhack.locmgmt.repository.TaskRepository;
 
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 
 import static com.ironhack.locmgmt.util.TaskUtil.updateTaskDates;
@@ -111,5 +114,37 @@ public class TaskService {
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error deleting task with id: " + id);
         }
+    }
+
+    public List<Task> findTasksByDeadlineBetween(Date start, Date end) {
+        List<Task> tasks = taskRepository.findByDeadlineBetween(start, end);
+        if (tasks.isEmpty()) {
+            throw new EmptyListException("No tasks found with the given deadline range");
+        }
+        return tasks;
+    }
+
+    public List<Task> findTasksByTimeRemainingLessThan(Duration duration) {
+        if (duration.isNegative() || duration.isZero()) {
+            throw new InvalidDataAccessApiUsageException("Duration must be a positive value");
+        }
+        List<Task> tasks = taskRepository.findByTimeRemainingLessThan(duration);
+        return tasks;
+    }
+
+    public List<Task> findTasksByProjectType(ProjectType projectType) {
+        List<Task> tasks = taskRepository.findByProjectType(projectType);
+        if (tasks.isEmpty()) {
+            throw new EmptyListException("No tasks found for the given project type");
+        }
+        return tasks;
+    }
+
+    public List<Task> findTasksByBillingStatus(BillingStatus billingStatus) {
+        List<Task> tasks = taskRepository.findByBillingStatus(billingStatus);
+        if (tasks.isEmpty()) {
+            throw new EmptyListException("No tasks found for the given billing status");
+        }
+        return tasks;
     }
 }

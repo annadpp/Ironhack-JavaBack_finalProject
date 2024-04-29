@@ -14,8 +14,10 @@ public class DTPTechnologyValidator implements ConstraintValidator<ValidDTPTechn
     @Override
     public boolean isValid(Task task, ConstraintValidatorContext context) {
         if (task.getProjectType() == ProjectType.DTP) {
-            return task.getDtpTechnology() != null;
+            if (task.getDtpTechnology() == null || task.getLinguisticTechnology() != null) {
+                return false;
+            }
         }
-        return true;  //No validation needed for other project types
+        return true;
     }
 }

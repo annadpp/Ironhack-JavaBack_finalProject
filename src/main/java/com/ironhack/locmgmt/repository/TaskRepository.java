@@ -3,19 +3,25 @@ package com.ironhack.locmgmt.repository;
 import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.BillingStatus;
 
+import com.ironhack.locmgmt.model.enums.ProjectType;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import java.util.Date;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    /*add updateTotalPrice*/
+    List<Task> findByDeadlineBetween(Date start, Date end);
 
-    @Query("UPDATE Task t SET t.billingStatus = :billingStatus WHERE t.id = :taskId")
-    void updateBillingStatus(@Param("taskId") Long taskId, @Param("billingStatus") BillingStatus billingStatus);
+    List<Task> findByTimeRemainingLessThan(Duration duration);
+
+    List<Task> findByProjectType(ProjectType projectType);
+
+    List<Task> findByBillingStatus(BillingStatus billingStatus);
+
+    //Add more repositories if we have time
 }
