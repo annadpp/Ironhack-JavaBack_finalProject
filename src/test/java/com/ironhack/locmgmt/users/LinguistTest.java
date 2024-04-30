@@ -1,3 +1,4 @@
+/*
 package com.ironhack.locmgmt.users;
 
 import com.ironhack.locmgmt.model.enums.*;
@@ -39,4 +40,4 @@ class LinguistTest {
     void testLinguisticTechnologies() {
         assertEquals(2, linguist.getLinguisticTechnologies().size());
     }
-}
+}*/

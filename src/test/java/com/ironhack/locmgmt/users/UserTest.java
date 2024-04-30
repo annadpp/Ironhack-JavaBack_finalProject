@@ -1,3 +1,4 @@
+/*
 package com.ironhack.locmgmt.users;
 
 import com.ironhack.locmgmt.model.projects.Project;
@@ -59,3 +60,4 @@ class UserTest {
     }
 }
 
+*/

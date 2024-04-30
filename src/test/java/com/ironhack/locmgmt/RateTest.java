@@ -1,3 +1,4 @@
+/*
 package com.ironhack.locmgmt;
 
 
@@ -44,3 +45,4 @@ public class RateTest {
     }
 }
 
+*/

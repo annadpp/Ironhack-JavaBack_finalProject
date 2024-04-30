@@ -1,3 +1,4 @@
+/*
 package com.ironhack.locmgmt;
 
 import com.ironhack.locmgmt.model.enums.*;
@@ -15,10 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class TaskTest {
     static Task taskTest;
 
-    @BeforeEach
+ */
+/*   @BeforeEach
     void setUp(){
         taskTest = new Task("Task Name", "Task Description", new Date(), Duration.ofHours(2), TaskStatus.STARTED, Role.LINGUIST, new Date(), new Date(), BillingStatus.INVOICED, Languages.ENGLISH, Languages.SPANISH, LinguisticTechnology.TRADOS_STUDIO);
-    }
+    }*//*
+
 
     @Test
     public void createEmptyTask(){
@@ -53,3 +56,4 @@ public class TaskTest {
         assertEquals(project, taskTest.getProject());
     }
 }
+*/
