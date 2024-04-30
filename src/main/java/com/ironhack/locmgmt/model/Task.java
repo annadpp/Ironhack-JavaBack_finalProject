@@ -1,10 +1,10 @@
 package com.ironhack.locmgmt.model;
 
 import com.ironhack.locmgmt.model.enums.*;
-/*import com.ironhack.locmgmt.model.projects.Project;
+import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
-import com.ironhack.locmgmt.model.users.User;*/
+import com.ironhack.locmgmt.model.users.User;
 
 import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
 import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
@@ -74,7 +74,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private DTPTechnology dtpTechnology;
 
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "project_manager_id")
     private ProjectManager projectManager;
 
@@ -89,7 +89,7 @@ public class Task {
     //Remove when merged
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;*/
+    private User user;
 
     /*//Constructor for testing
     public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology) {

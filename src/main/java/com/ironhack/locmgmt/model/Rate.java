@@ -3,9 +3,7 @@ package com.ironhack.locmgmt.model;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 
-/*
 import com.ironhack.locmgmt.model.users.Linguist;
-*/
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -41,9 +39,9 @@ public class Rate {
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "linguist_id")
-    private Linguist linguist;*/
+    private Linguist linguist;
 
     /*//Constructor for testing
     public Rate(BigDecimal price, Languages sourceLanguage, Languages targetLanguage, ProjectType projectType) {

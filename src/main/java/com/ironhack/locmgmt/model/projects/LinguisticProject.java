@@ -1,14 +1,11 @@
 package com.ironhack.locmgmt.model.projects;
 
-import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import jakarta.persistence.*;
-
-import java.util.List;
 
 @Data
 @Builder

@@ -2,17 +2,11 @@ package com.ironhack.locmgmt.model.projects;
 
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 
-import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
-import com.ironhack.locmgmt.model.enums.TaskStatus;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import jakarta.persistence.*;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 @Data
 @Builder

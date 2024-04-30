@@ -1,8 +1,8 @@
 package com.ironhack.locmgmt.model.users;
 
 import com.ironhack.locmgmt.model.enums.UserType;
-/*import com.ironhack.locmgmt.model.Task;
-import com.ironhack.locmgmt.model.projects.Project;*/
+import com.ironhack.locmgmt.model.Task;
+import com.ironhack.locmgmt.model.projects.Project;
 
 import lombok.*;
 import jakarta.persistence.*;
@@ -37,11 +37,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    /*@OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private List<Task> tasks;
 
     @ManyToMany(mappedBy = "users")
-    private List<Project> projects;*/
+    private List<Project> projects;
 
     /*//Constructors/getters/setters for testing
     public User(String username, String password, String name, String email, UserType userType) {

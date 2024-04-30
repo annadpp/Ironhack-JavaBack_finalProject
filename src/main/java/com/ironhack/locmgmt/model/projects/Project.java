@@ -1,8 +1,10 @@
 package com.ironhack.locmgmt.model.projects;
 
-/*import com.ironhack.locmgmt.model.Client;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.Task;
-import com.ironhack.locmgmt.model.users.User;*/
+import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
@@ -65,7 +67,7 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private List<Languages> targetLanguages;
 
-    /*@ManyToMany
+    @ManyToMany
     @JoinTable(
             name = "project_user",
             joinColumns = @JoinColumn(name = "project_id"),
@@ -78,7 +80,8 @@ public class Project {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private Client client;*/
+    @JsonIgnoreProperties("projects")
+    private Client client;
 
     /*//Constructor/getters/setters for testing
     public Project(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, TaskStatus projectStatus, ProjectType projectType) {
