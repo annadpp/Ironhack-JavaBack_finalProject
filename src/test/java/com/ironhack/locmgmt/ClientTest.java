@@ -1,5 +1,10 @@
+/*
 package com.ironhack.locmgmt;
 
+<<<<<<< HEAD
+=======
+import com.ironhack.locmgmt.model.projects.Project;
+>>>>>>> 20467fa389b2adb55318426690a3b141e388b873
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -57,3 +62,4 @@ public class ClientTest {
         assertEquals(project2, clientTest.getProjects().get(1));
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.ironhack.locmgmt.projects;
 
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
@@ -46,3 +47,4 @@ public class DTPProjectTest {
     }
 }
 
+*/

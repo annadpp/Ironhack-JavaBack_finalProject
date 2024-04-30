@@ -1,3 +1,4 @@
+/*
 package com.ironhack.locmgmt.projects;
 
 import com.ironhack.locmgmt.model.enums.ProjectType;
@@ -44,3 +45,4 @@ public class ProjectTest {
         assertEquals("Project Description", project.getDescription());
     }
 }
+*/

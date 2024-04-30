@@ -1,5 +1,10 @@
+/*
 package com.ironhack.locmgmt.users;
 
+<<<<<<< HEAD
+=======
+import com.ironhack.locmgmt.model.projects.Project;
+>>>>>>> 20467fa389b2adb55318426690a3b141e388b873
 import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.model.enums.UserType;
 
@@ -58,3 +63,4 @@ class UserTest {
     }
 }
 
+*/

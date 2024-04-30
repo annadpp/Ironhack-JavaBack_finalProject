@@ -15,3 +15,4 @@ public class EmptyListException extends RuntimeException {
         logger.error(message);  // Log the error message using SLF4J
     }
 }
+
