@@ -5,7 +5,6 @@ import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
-import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

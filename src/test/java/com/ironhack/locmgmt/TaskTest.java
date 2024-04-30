@@ -2,7 +2,6 @@
 package com.ironhack.locmgmt;
 
 import com.ironhack.locmgmt.model.enums.*;
-import com.ironhack.locmgmt.model.projects.Project;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

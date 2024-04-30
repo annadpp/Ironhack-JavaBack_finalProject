@@ -4,7 +4,6 @@ package com.ironhack.locmgmt.projects;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
-import com.ironhack.locmgmt.model.projects.DTPProject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
