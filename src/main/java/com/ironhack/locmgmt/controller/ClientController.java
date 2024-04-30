@@ -50,7 +50,7 @@ public class ClientController {
         clientService.deleteClient(id);
     }
 
-    @GetMapping("/get/client")
+    @GetMapping("/get/byName")
     @ResponseStatus(HttpStatus.OK)
     public List<Client> getClientByName(@RequestParam String name) {
         List<Client> clients = clientService.getClientByName(name);
@@ -59,7 +59,7 @@ public class ClientController {
         }
         return clients;    }
 
-    @GetMapping("/get/email")
+    @GetMapping("/get/emailByName")
     @ResponseStatus(HttpStatus.OK)
     public List<String> getClientEmailByName(@RequestParam String name) {
         List<String> emails = clientService.getClientEmailByName(name);

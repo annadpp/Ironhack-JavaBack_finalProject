@@ -1,6 +1,5 @@
 package com.ironhack.locmgmt;
 
-import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.*;
 import com.ironhack.locmgmt.model.projects.Project;
 

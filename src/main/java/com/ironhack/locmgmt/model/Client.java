@@ -1,6 +1,8 @@
 package com.ironhack.locmgmt.model;
 
+/*
 import com.ironhack.locmgmt.model.projects.Project;
+*/
 
 import lombok.*;
 import jakarta.persistence.*;
@@ -22,6 +24,7 @@ public class Client {
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
+    @NotEmpty(message = "Email cannot be empty")
     @Email(message = "Invalid email address")
     private String email;
 
@@ -29,8 +32,8 @@ public class Client {
 
     private String address;
 
-    @OneToMany(mappedBy = "client")
-    private List<Project> projects;
+    /*@OneToMany(mappedBy = "client")
+    private List<Project> projects;*/
 
     /*//Constructor for testing
     public Client(String name, String email, String VATNumber, String address) {
