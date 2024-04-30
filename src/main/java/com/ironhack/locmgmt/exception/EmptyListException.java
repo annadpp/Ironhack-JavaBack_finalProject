@@ -12,24 +12,6 @@ public class EmptyListException extends RuntimeException {
 
     public EmptyListException(String message) {
         super(message);
-<<<<<<< HEAD
         logger.error(message);  // Log the error message using SLF4J
     }
 }
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-        logger.error(message);  // Log the error message using SLF4J
-    }
-}
-=======
-        logger.error(message);  //Log the error message using SLF4J
-    }
-}
->>>>>>> 3a640d4f1dcbc26e5f5e811a256e03b4fba69a81
-=======
-        logger.error(message);  //Log the error message using SLF4J
-    }
-}
->>>>>>> 3a640d4f1dcbc26e5f5e811a256e03b4fba69a81
->>>>>>> a5ca25981f9d3da71654eef9b0c02b895751f890
