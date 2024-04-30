@@ -1,6 +1,7 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
+import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
 import com.ironhack.locmgmt.model.projects.DTPProject;
 import com.ironhack.locmgmt.repository.DTPProjectRepository;
@@ -104,5 +105,29 @@ public class DTPProjectService {
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error deleting DTP project with id: " + id);
         }
+    }
+
+    public List<DTPProject> findByDtpTechnology(DTPTechnology dtpTechnology) {
+        List<DTPProject> projects = dtpProjectRepository.findByDtpTechnology(dtpTechnology);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No DTP projects found with DTP technology: " + dtpTechnology);
+        }
+        return projects;
+    }
+
+    public List<DTPProject> findByPagesGreaterThan(Integer pages) {
+        List<DTPProject> projects = dtpProjectRepository.findByPagesGreaterThan(pages);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No DTP projects found with pages greater than: " + pages);
+        }
+        return projects;
+    }
+
+    public List<DTPProject> findByPagesLessThan(Integer pages) {
+        List<DTPProject> projects = dtpProjectRepository.findByPagesLessThan(pages);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No DTP projects found with pages less than: " + pages);
+        }
+        return projects;
     }
 }

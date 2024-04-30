@@ -1,6 +1,7 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
+import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.repository.ProjectRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -30,6 +31,10 @@ public class ProjectService {
         }
     }
 
+    public Project getProjectById(Long id) {
+        return projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + id));
+    }
+
     public void deleteProject(Long id) {
         try {
             projectRepository.deleteById(id);
@@ -40,4 +45,8 @@ public class ProjectService {
         }
     }
 
+    //Filters by project type
+    public List<Project> findProjectsByProjectType(ProjectType projectType) {
+        return projectRepository.findByProjectType(projectType);
+    }
 }

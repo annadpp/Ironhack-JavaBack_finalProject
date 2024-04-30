@@ -1,5 +1,6 @@
 package com.ironhack.locmgmt.controller;
 
+import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.projects.DTPProject;
 import com.ironhack.locmgmt.service.DTPProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,24 @@ public class DTPProjectController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDTPProject(@PathVariable Long id) {
         dtpProjectService.deleteDTPProject(id);
+    }
+
+    @GetMapping("/get/byDTPTechnology/{dtpTechnology}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DTPProject> getProjectsByDTPTechnology(@PathVariable DTPTechnology dtpTechnology) {
+        return dtpProjectService.findByDtpTechnology(dtpTechnology);
+    }
+
+    @GetMapping("/get/byPagesGreaterThan/{pages}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DTPProject> getProjectsByPagesGreaterThan(@PathVariable Integer pages) {
+        return dtpProjectService.findByPagesGreaterThan(pages);
+    }
+
+    @GetMapping("/get/byPagesLessThan/{pages}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DTPProject> getProjectsByPagesLessThan(@PathVariable Integer pages) {
+        return dtpProjectService.findByPagesLessThan(pages);
     }
 }
 

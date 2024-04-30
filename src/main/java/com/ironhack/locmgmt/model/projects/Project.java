@@ -58,7 +58,7 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
-    //fix taking from task
+    /*fix taking from task*/
     @Enumerated(EnumType.STRING)
     private Languages sourceLanguage;
 
