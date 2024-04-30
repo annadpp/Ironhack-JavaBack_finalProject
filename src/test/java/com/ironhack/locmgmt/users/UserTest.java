@@ -1,6 +1,5 @@
 package com.ironhack.locmgmt.users;
 
-import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.model.enums.UserType;
