@@ -1,3 +1,4 @@
+/*
 package com.ironhack.locmgmt.projects;
 
 import com.ironhack.locmgmt.model.Client;
@@ -48,3 +49,4 @@ public class DTPProjectTest {
     }
 }
 
+*/

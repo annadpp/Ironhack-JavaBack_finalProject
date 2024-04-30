@@ -34,16 +34,10 @@ public class ProjectController {
         return user;
     }
 
-    /*Fix error*/
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProject(@PathVariable Long id) {
         projectService.deleteProject(id);
-    }
-
-    @GetMapping("/get/byProjectType")
-    public List<Project> getProjectsByProjectType(@RequestParam ProjectType projectType) {
-        return projectService.findProjectsByProjectType(projectType);
     }
 
 }

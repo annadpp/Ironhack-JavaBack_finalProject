@@ -45,8 +45,4 @@ public class ProjectService {
         }
     }
 
-    //Filters by project type
-    public List<Project> findProjectsByProjectType(ProjectType projectType) {
-        return projectRepository.findByProjectType(projectType);
-    }
 }

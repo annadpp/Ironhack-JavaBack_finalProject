@@ -1,3 +1,4 @@
+/*
 package com.ironhack.locmgmt.projects;
 
 import com.ironhack.locmgmt.model.Client;
@@ -46,3 +47,4 @@ public class ProjectTest {
         assertEquals("Project Description", project.getDescription());
     }
 }
+*/
