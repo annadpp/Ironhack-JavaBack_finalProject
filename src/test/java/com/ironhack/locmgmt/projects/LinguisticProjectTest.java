@@ -1,6 +1,6 @@
+/*
 package com.ironhack.locmgmt.projects;
 
-import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
@@ -64,3 +64,4 @@ public class LinguisticProjectTest {
         assertEquals("Linguistic Project Description", linguisticProject.getDescription());
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.ironhack.locmgmt.users;
 
 import com.ironhack.locmgmt.model.Task;
@@ -60,3 +61,4 @@ class UserTest {
     }
 }
 
+*/

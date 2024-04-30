@@ -93,7 +93,7 @@ public class TaskService {
         if (taskDetails.getDtpTechnology() != null) {
             existingTask.setDtpTechnology(taskDetails.getDtpTechnology());
         }
-        if (taskDetails.getProjectManager() != null) {
+        /*if (taskDetails.getProjectManager() != null) {
             existingTask.setProjectManager(taskDetails.getProjectManager());
         }
         if (taskDetails.getProject() != null) {
@@ -101,7 +101,7 @@ public class TaskService {
         }
         if (taskDetails.getLinguist() != null) {
             existingTask.setLinguist(taskDetails.getLinguist());
-        }
+        }*/
 
         return taskRepository.save(existingTask);
     }

@@ -1,10 +1,10 @@
 package com.ironhack.locmgmt.model;
 
 import com.ironhack.locmgmt.model.enums.*;
-import com.ironhack.locmgmt.model.projects.Project;
+/*import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
-import com.ironhack.locmgmt.model.users.User;
+import com.ironhack.locmgmt.model.users.User;*/
 
 import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
 import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
@@ -30,7 +30,7 @@ public class Task {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @NotBlank(message = "The task name cannot be blank")
+    @NotBlank(message = "Task name cannot be empty")
     private String name;
 
     private String description;
@@ -45,7 +45,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
 
-    @NotNull(message = "The project type must be specified")
+    @NotNull(message = "Project type cannot be empty")
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
@@ -58,11 +58,11 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private BillingStatus billingStatus;
 
-    @NotNull(message = "The source language must be specified")
+    @NotNull(message = "Source language cannot be empty")
     @Enumerated(EnumType.STRING)
     private Languages sourceLanguage;
 
-    @NotNull(message = "The target language must be specified")
+    @NotNull(message = "Target language cannot be empty")
     @Enumerated(EnumType.STRING)
     private Languages targetLanguage;
 
@@ -74,7 +74,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private DTPTechnology dtpTechnology;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "project_manager_id")
     private ProjectManager projectManager;
 
@@ -89,9 +89,7 @@ public class Task {
     //Remove when merged
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
-
-
+    private User user;*/
 
     /*//Constructor for testing
     public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology) {
