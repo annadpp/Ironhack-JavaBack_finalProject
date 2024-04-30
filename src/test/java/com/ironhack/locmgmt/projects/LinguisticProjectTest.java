@@ -1,6 +1,5 @@
 package com.ironhack.locmgmt.projects;
 
-import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
