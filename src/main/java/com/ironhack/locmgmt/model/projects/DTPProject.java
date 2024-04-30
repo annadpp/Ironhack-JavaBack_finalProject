@@ -30,6 +30,8 @@ public class DTPProject extends Project {
     @Positive(message = "Pages must be positive")
     private Integer pages;
 
+    //add sourcelanguage and targetlanguages
+
     /*//Constructor for testing
     public DTPProject(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, TaskStatus projectStatus, ProjectType projectType, DTPTechnology dtpTechnology, Integer pages) {
         super(name, description, startDate, endDate, totalBudget, projectStatus, projectType);

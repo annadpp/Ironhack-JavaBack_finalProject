@@ -32,6 +32,7 @@ public class LinguisticProject extends Project {
     @Enumerated(EnumType.STRING)
     private LinguisticTechnology linguisticTechnology;
 
+    //fix taking from task
     @Enumerated(EnumType.STRING)
     private Languages sourceLanguage;
 

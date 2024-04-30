@@ -7,48 +7,47 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/linguistic-projects")
 public class LinguisticProjectController {
 
     @Autowired
     private LinguisticProjectService linguisticProjectService;
 
-    @GetMapping("/linguistic-projects")
-    public ResponseEntity<List<LinguisticProject>> getAllClients() {
-        List<LinguisticProject> linguisticProjects = linguisticProjectService.getAllLinguisticProjects();
-        return new ResponseEntity<>(linguisticProjects, HttpStatus.OK);
+    @GetMapping("/get")
+    public List<LinguisticProject> getAllClients() {
+        return linguisticProjectService.getAllLinguisticProjects();
     }
 
-    @GetMapping("/linguistic-project/{id}")
-    public ResponseEntity<LinguisticProject> getLinguisticProjectById(@PathVariable Long id) {
+    @GetMapping("/get/{id}")
+    public LinguisticProject getLinguisticProjectById(@PathVariable Long id) {
         LinguisticProject linguisticProject = linguisticProjectService.getLinguisticProjectById(id);
-        if (linguisticProject != null) {
-            return new ResponseEntity<>(linguisticProject, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (linguisticProject == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Linguistic project not found");
         }
+        return linguisticProject;
     }
 
-    @PostMapping("/saveLinguistic-project")
-    public ResponseEntity<LinguisticProject> createLinguisticProject(@RequestBody LinguisticProject linguisticProject) {
-        LinguisticProject createdLinguisticProject = linguisticProjectService.createLinguisticProject(linguisticProject);
-        return new ResponseEntity<>(createdLinguisticProject, HttpStatus.CREATED);
+    @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public LinguisticProject createLinguisticProject(@RequestBody LinguisticProject linguisticProject) {
+        return linguisticProjectService.createLinguisticProject(linguisticProject);
     }
 
-    @PutMapping("/updateLinguistic-project/{id}")
-    public ResponseEntity<LinguisticProject> updateLinguisticProject(@PathVariable Long id, @RequestBody LinguisticProject linguisticProject) {
-        LinguisticProject updatedLinguisticProject = linguisticProjectService.updateLinguisticProject(id, linguisticProject);
-        return new ResponseEntity<>(updatedLinguisticProject, HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public LinguisticProject updateLinguisticProject(@PathVariable Long id, @RequestBody LinguisticProject linguisticProject) {
+        return linguisticProjectService.updateLinguisticProject(id, linguisticProject);
     }
 
-    @DeleteMapping("/deleteLinguistic-project/{id}")
-    public ResponseEntity<?> deleteLinguisticProject(@PathVariable Long id) {
+    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteLinguisticProject(@PathVariable Long id) {
         linguisticProjectService.deleteLinguisticProject(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
 

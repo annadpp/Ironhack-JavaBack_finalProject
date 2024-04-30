@@ -6,48 +6,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/dtp-projects")
 public class DTPProjectController {
 
     @Autowired
     private DTPProjectService dtpProjectService;
 
-    @GetMapping("/dtp-projects")
-    public ResponseEntity<List<DTPProject>> getAllDTPProjects() {
-        List<DTPProject> dtpProjects = dtpProjectService.getAllDTPProjects();
-        return new ResponseEntity<>(dtpProjects, HttpStatus.OK);
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DTPProject> getAllDTPProjects() {
+        return dtpProjectService.getAllDTPProjects();
     }
 
-    @GetMapping("/dtp-project/{id}")
-    public ResponseEntity<DTPProject> getLinguisticProjectById(@PathVariable Long id) {
+    @GetMapping("/get/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public DTPProject getLinguisticProjectById(@PathVariable Long id) {
         DTPProject dtpProject = dtpProjectService.getDTPProjectById(id);
-        if (dtpProject != null) {
-            return new ResponseEntity<>(dtpProject, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (dtpProject == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "DTP project not found");
         }
+        return dtpProject;
     }
 
-    @PostMapping("/saveDTP-project")
-    public ResponseEntity<DTPProject> createLinguisticProject(@RequestBody DTPProject dtpProject) {
-        DTPProject createdDTPProject = dtpProjectService.createDTPProject(dtpProject);
-        return new ResponseEntity<>(createdDTPProject, HttpStatus.CREATED);
+    @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public DTPProject createLinguisticProject(@RequestBody DTPProject dtpProject) {
+        return dtpProjectService.createDTPProject(dtpProject);
     }
 
-    @PutMapping("/updateDTP-project/{id}")
-    public ResponseEntity<DTPProject> updateDTPProject(@PathVariable Long id, @RequestBody DTPProject DTPProject) {
-        DTPProject updatedDtpProject = dtpProjectService.updateDTPProject(id, DTPProject);
-        return new ResponseEntity<>(updatedDtpProject, HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public DTPProject updateDTPProject(@PathVariable Long id, @RequestBody DTPProject DTPProject) {
+        return dtpProjectService.updateDTPProject(id, DTPProject);
     }
 
-    @DeleteMapping("/deleteDTP-project/{id}")
-    public ResponseEntity<?> deleteDTPProject(@PathVariable Long id) {
+    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteDTPProject(@PathVariable Long id) {
         dtpProjectService.deleteDTPProject(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
 
