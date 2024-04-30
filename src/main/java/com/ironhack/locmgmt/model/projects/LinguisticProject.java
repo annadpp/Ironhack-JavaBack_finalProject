@@ -2,15 +2,12 @@ package com.ironhack.locmgmt.model.projects;
 
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
-
 import com.ironhack.locmgmt.model.enums.ProjectType;
-import com.ironhack.locmgmt.model.enums.TaskStatus;
+
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -32,17 +29,6 @@ public class LinguisticProject extends Project {
     @Enumerated(EnumType.STRING)
     private LinguisticTechnology linguisticTechnology;
 
-    //fix taking from task
-    @Enumerated(EnumType.STRING)
-    private Languages sourceLanguage;
-
-    @ElementCollection(targetClass = Languages.class)
-    @CollectionTable(
-            name = "project_languages",
-            joinColumns = @JoinColumn(name = "project_id")
-    )
-    @Column(name = "language")
-    private List<Languages> targetLanguages;
 
     /*//Constructor for testing
     public LinguisticProject(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, TaskStatus projectStatus, ProjectType projectType, Integer newWords, Integer fuzzyWords, LinguisticTechnology linguisticTechnology, Languages sourceLanguage, List<Languages> targetLanguages) {

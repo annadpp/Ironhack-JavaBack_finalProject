@@ -2,6 +2,7 @@ package com.ironhack.locmgmt.model.projects;
 
 import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.Task;
+import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
 import com.ironhack.locmgmt.model.users.User;
@@ -36,7 +37,7 @@ public class Project {
     //Set with date when projectStatus == finished
     private Date endDate;
 
-    @NotEmpty(message = "Budget cannot be empty")
+    @NotNull(message = "Budget cannot be empty")
     @Positive(message = "Budget must be positive")
     private BigDecimal totalBudget;
 
@@ -45,6 +46,13 @@ public class Project {
 
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
+
+    //fix taking from task
+    @Enumerated(EnumType.STRING)
+    private Languages sourceLanguage;
+
+    @Enumerated(EnumType.STRING)
+    private List<Languages> targetLanguages;
 
     @ManyToMany
     @JoinTable(

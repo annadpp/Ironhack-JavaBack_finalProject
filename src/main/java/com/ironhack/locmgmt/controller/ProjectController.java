@@ -21,6 +21,7 @@ public class ProjectController {
        return projectService.getAllProjects();
     }
 
+    /*Fix error*/
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProject(@PathVariable Long id) {
