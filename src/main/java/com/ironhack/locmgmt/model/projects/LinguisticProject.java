@@ -5,6 +5,7 @@ import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import jakarta.persistence.*;
 
@@ -13,16 +14,19 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class LinguisticProject extends Project {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private ProjectType projectType = ProjectType.LINGUISTIC;
 
+    @Positive(message = "New words must be positive")
     private Integer newWords;
 
+    @Positive(message = "Fuzzy words must be positive")
     private Integer fuzzyWords;
 
     @Enumerated(EnumType.STRING)

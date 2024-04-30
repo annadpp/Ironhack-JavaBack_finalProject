@@ -4,6 +4,8 @@ import com.ironhack.locmgmt.model.enums.DTPTechnology;
 
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import jakarta.persistence.*;
 
@@ -11,14 +13,21 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Entity
 public class DTPProject extends Project {
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private ProjectType projectType = ProjectType.DTP;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     private DTPTechnology dtpTechnology;
 
+    @Positive(message = "Pages must be positive")
     private Integer pages;
 
     /*//Constructor for testing

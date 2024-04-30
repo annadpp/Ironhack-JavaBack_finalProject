@@ -28,20 +28,21 @@ public class Project {
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
-    @NotEmpty(message = "Description cannot be empty")
     private String description;
 
+    //Set with date when projectStatus == started
     private Date startDate;
 
+    //Set with date when projectStatus == finished
     private Date endDate;
 
-    @Positive(message = "Budget must be positive.")
+    @NotEmpty(message = "Budget cannot be empty")
+    @Positive(message = "Budget must be positive")
     private BigDecimal totalBudget;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus projectStatus;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
