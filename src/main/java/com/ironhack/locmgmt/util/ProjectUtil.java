@@ -2,6 +2,7 @@ package com.ironhack.locmgmt.util;
 
 import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
+import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.model.projects.Project;
 
 import java.time.Duration;
@@ -31,5 +32,11 @@ public class ProjectUtil {
             Duration duration = Duration.ofMillis(diffInMillies);
             project.setTimeRemaining(duration);
         }
+    }
+
+    public static void calculateTotalWords(LinguisticProject linguisticProject) {
+        Integer newWords = linguisticProject.getNewWords() != null ? linguisticProject.getNewWords() : 0;
+        Integer fuzzyWords = linguisticProject.getFuzzyWords() != null ? linguisticProject.getFuzzyWords() : 0;
+        linguisticProject.setTotalWords(newWords + fuzzyWords);
     }
 }

@@ -26,6 +26,8 @@ public class LinguisticProject extends Project {
     @Positive(message = "Fuzzy words must be positive")
     private Integer fuzzyWords;
 
+    private Integer totalWords;
+
     @Enumerated(EnumType.STRING)
     private LinguisticTechnology linguisticTechnology;
 

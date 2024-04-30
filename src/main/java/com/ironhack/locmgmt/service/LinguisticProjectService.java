@@ -1,8 +1,10 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
+import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
 import com.ironhack.locmgmt.model.projects.LinguisticProject;
+import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.repository.LinguisticProjectRepository;
 import com.ironhack.locmgmt.util.ProjectUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,6 +15,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.ironhack.locmgmt.util.ProjectUtil.updateProjectDates;
@@ -45,6 +48,9 @@ public class LinguisticProjectService {
         //Update project dates and time remaining
         ProjectUtil.updateProjectDates(linguisticProject);
 
+        // Calculate total words
+        ProjectUtil.calculateTotalWords(linguisticProject);
+
         try {
             return linguisticProjectRepository.save(linguisticProject);
         } catch (DataIntegrityViolationException e) {
@@ -59,9 +65,11 @@ public class LinguisticProjectService {
         //Update the inherent DTP Project fields passed
         if (linguisticProjectDetails.getNewWords() != null) {
             existingLinguisticProject.setNewWords(linguisticProjectDetails.getNewWords());
+            ProjectUtil.calculateTotalWords(existingLinguisticProject);
         }
         if (linguisticProjectDetails.getFuzzyWords() != null) {
             existingLinguisticProject.setFuzzyWords(linguisticProjectDetails.getFuzzyWords());
+            ProjectUtil.calculateTotalWords(existingLinguisticProject);
         }
         if (linguisticProjectDetails.getLinguisticTechnology() != null) {
             existingLinguisticProject.setLinguisticTechnology(linguisticProjectDetails.getLinguisticTechnology());
@@ -107,5 +115,82 @@ public class LinguisticProjectService {
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error deleting Linguistic project with id: " + id);
         }
+    }
+
+    public List<LinguisticProject> findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(Integer newWords, Integer fuzzyWords) {
+        if (newWords == null || fuzzyWords == null) {
+            throw new IllegalArgumentException("NewWords and FuzzyWords must be provided.");
+        }
+        List<LinguisticProject> projects = linguisticProjectRepository.findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(newWords, fuzzyWords);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
+    }
+
+    public List<LinguisticProject> findByNewWordsLessThanAndFuzzyWordsLessThan(Integer newWords, Integer fuzzyWords) {
+        if (newWords == null || fuzzyWords == null) {
+            throw new IllegalArgumentException("NewWords and FuzzyWords must be provided.");
+        }
+        List<LinguisticProject> projects = linguisticProjectRepository.findByNewWordsLessThanAndFuzzyWordsLessThan(newWords, fuzzyWords);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
+    }
+
+    public List<LinguisticProject> findByTotalWordsGreaterThan(Integer totalWords) {
+        if (totalWords == null) {
+            throw new IllegalArgumentException("TotalWords must be provided.");
+        }
+        List<LinguisticProject> projects = linguisticProjectRepository.findByTotalWordsGreaterThan(totalWords);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
+    }
+
+    public List<LinguisticProject> findByTotalWordsLessThan(Integer totalWords) {
+        if (totalWords == null) {
+            throw new IllegalArgumentException("TotalWords must be provided.");
+        }
+        List<LinguisticProject> projects = linguisticProjectRepository.findByTotalWordsLessThan(totalWords);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
+    }
+
+    public List<LinguisticProject> findByTotalBudgetGreaterThan(BigDecimal totalBudget) {
+        if (totalBudget == null) {
+            throw new IllegalArgumentException("TotalBudget must be provided.");
+        }
+        List<LinguisticProject> projects = linguisticProjectRepository.findByTotalBudgetGreaterThan(totalBudget);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
+    }
+
+    public List<LinguisticProject> findByTotalBudgetLessThan(BigDecimal totalBudget) {
+        if (totalBudget == null) {
+            throw new IllegalArgumentException("TotalBudget must be provided.");
+        }
+        List<LinguisticProject> projects = linguisticProjectRepository.findByTotalBudgetLessThan(totalBudget);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
+    }
+
+    public List<LinguisticProject> findByLinguisticTechnology(LinguisticTechnology linguisticTechnology) {
+        if (linguisticTechnology == null) {
+            throw new IllegalArgumentException("LinguisticTechnology must be provided.");
+        }
+        List<LinguisticProject> projects = linguisticProjectRepository.findByLinguisticTechnology(linguisticTechnology);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
     }
 }
