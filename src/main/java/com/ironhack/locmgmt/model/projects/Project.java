@@ -10,8 +10,10 @@ import com.ironhack.locmgmt.model.users.User;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -37,9 +39,18 @@ public class Project {
     //Set with date when projectStatus == finished
     private Date endDate;
 
+    @Future(message = "The 'deadline' field must be a future date in the format 'yyyy-MM-dd'")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date deadline;
+
+    //Set with difference between startDate and deadline
+    private Duration timeRemaining;
+
     @NotNull(message = "Budget cannot be empty")
     @Positive(message = "Budget must be positive")
     private BigDecimal totalBudget;
+
+    /*ADD MARGIN -> CALCULATE WITH TASKS PRICE*/
 
     @Enumerated(EnumType.STRING)
     private TaskStatus projectStatus;

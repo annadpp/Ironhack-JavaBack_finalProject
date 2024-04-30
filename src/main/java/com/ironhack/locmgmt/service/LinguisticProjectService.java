@@ -1,8 +1,10 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
+import com.ironhack.locmgmt.model.enums.TaskStatus;
 import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.repository.LinguisticProjectRepository;
+import com.ironhack.locmgmt.util.ProjectUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -12,6 +14,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.ironhack.locmgmt.util.ProjectUtil.updateProjectDates;
 
 @Service
 public class LinguisticProjectService {
@@ -34,10 +38,15 @@ public class LinguisticProjectService {
         return linguisticProjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
     }
 
-    /*projectstatus base not_started*/
-    public LinguisticProject createLinguisticProject(LinguisticProject DTPProject) {
+    public LinguisticProject createLinguisticProject(LinguisticProject linguisticProject) {
+        //Sets projectStatus to NOT if info not passed by the user when creating project
+        linguisticProject.setProjectStatus(linguisticProject.getProjectStatus() != null ? linguisticProject.getProjectStatus() : TaskStatus.NOT_STARTED);
+
+        //Update project dates and time remaining
+        ProjectUtil.updateProjectDates(linguisticProject);
+
         try {
-            return linguisticProjectRepository.save(DTPProject);
+            return linguisticProjectRepository.save(linguisticProject);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error while creating the Linguistic project", e);
         }
@@ -64,6 +73,14 @@ public class LinguisticProjectService {
         }
         if (linguisticProjectDetails.getDescription() != null) {
             existingLinguisticProject.setDescription(linguisticProjectDetails.getDescription());
+        }
+        if (linguisticProjectDetails.getDeadline() != null) {
+            existingLinguisticProject.setDeadline(linguisticProjectDetails.getDeadline());
+            ProjectUtil.updateTimeRemaining(existingLinguisticProject);
+        }
+        if (linguisticProjectDetails.getProjectStatus() != null) {
+            existingLinguisticProject.setProjectStatus(linguisticProjectDetails.getProjectStatus());
+            updateProjectDates(existingLinguisticProject);
         }
         if (linguisticProjectDetails.getTotalBudget() != null) {
             existingLinguisticProject.setTotalBudget(linguisticProjectDetails.getTotalBudget());

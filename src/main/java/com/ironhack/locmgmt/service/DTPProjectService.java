@@ -1,8 +1,11 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
+import com.ironhack.locmgmt.model.enums.TaskStatus;
 import com.ironhack.locmgmt.model.projects.DTPProject;
 import com.ironhack.locmgmt.repository.DTPProjectRepository;
+import com.ironhack.locmgmt.util.ProjectUtil;
+
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -12,6 +15,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.ironhack.locmgmt.util.ProjectUtil.updateProjectDates;
 
 @Service
 public class DTPProjectService {
@@ -34,8 +39,13 @@ public class DTPProjectService {
         return dtpProjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("DTP project not found with id: " + id));
     }
 
-    /*projectstatus base not_started*/
     public DTPProject createDTPProject(DTPProject DTPProject) {
+        //Sets projectStatus to NOT if info not passed by the user when creating project
+        DTPProject.setProjectStatus(DTPProject.getProjectStatus() != null ? DTPProject.getProjectStatus() : TaskStatus.NOT_STARTED);
+
+        //Update project dates and time remaining
+        ProjectUtil.updateProjectDates(DTPProject);
+
         try {
             return dtpProjectRepository.save(DTPProject);
         } catch (DataIntegrityViolationException e) {
@@ -61,6 +71,14 @@ public class DTPProjectService {
         }
         if (dtpProjectDetails.getDescription() != null) {
             existingDTPProject.setDescription(dtpProjectDetails.getDescription());
+        }
+        if (dtpProjectDetails.getDeadline() != null) {
+            existingDTPProject.setDeadline(dtpProjectDetails.getDeadline());
+            ProjectUtil.updateTimeRemaining(existingDTPProject);
+        }
+        if (dtpProjectDetails.getProjectStatus() != null) {
+            existingDTPProject.setProjectStatus(dtpProjectDetails.getProjectStatus());
+            updateProjectDates(existingDTPProject);
         }
         if (dtpProjectDetails.getTotalBudget() != null) {
             existingDTPProject.setTotalBudget(dtpProjectDetails.getTotalBudget());
