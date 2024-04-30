@@ -51,8 +51,8 @@ public class RateService {
                 .orElseThrow(() -> new EntityNotFoundException("Rate not found with id: " + rateId));
 
         //Only updates fields provided in rateDetails
-        if (rateDetails.getPrice() != null) {
-            existingRate.setPrice(rateDetails.getPrice());
+        if (rateDetails.getWordPrice() != null) {
+            existingRate.setWordPrice(rateDetails.getWordPrice());
         }
         if (rateDetails.getSourceLanguage() != null) {
             existingRate.setSourceLanguage(rateDetails.getSourceLanguage());

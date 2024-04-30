@@ -1,6 +1,5 @@
 package com.ironhack.locmgmt.projects;
 
-import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.TaskStatus;
