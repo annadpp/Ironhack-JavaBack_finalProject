@@ -11,8 +11,6 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findByUserType(UserType userType);
-
     /*To be totally implemented with security*/
     Optional<User> findByUsername(String username);
 }

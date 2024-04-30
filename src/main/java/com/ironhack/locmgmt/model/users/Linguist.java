@@ -18,28 +18,23 @@ public class Linguist extends User {
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.LINGUIST;
 
-    @NotNull
-    @ElementCollection
+    @NotNull(message = "Source languages cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<Languages> sourceLanguages;
 
-    @NotNull
-    @ElementCollection
+    @NotNull(message = "Target languages cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<Languages> targetLanguages;
 
-    @NotNull
-    @ElementCollection
+    @NotNull(message = "Project types cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
 
-    @NotNull
-    @ElementCollection
+    @NotNull(message = "DTP technologies cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<DTPTechnology> dtpTechnologies;
 
-    @NotNull
-    @ElementCollection
+    @NotNull(message = "Linguistic technologies cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<LinguisticTechnology> linguisticTechnologies;
 

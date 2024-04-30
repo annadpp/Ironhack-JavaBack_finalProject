@@ -47,11 +47,10 @@ public class ProjectManagerService {
                 .orElseThrow(() -> new RuntimeException("Project manager not found with id: " + id));
 
         // Update the inherent Project Manager fields passed
-        if (existingProjectManager.getSpokenLanguages() != null) {
+        if (projectManagerDetails.getSpokenLanguages() != null) {
         existingProjectManager.setSpokenLanguages(projectManagerDetails.getSpokenLanguages());
         }
-
-        if (existingProjectManager.getProjectTypes() != null) {
+        if (projectManagerDetails.getProjectTypes() != null) {
             existingProjectManager.setProjectTypes(projectManagerDetails.getProjectTypes());
         }
 
@@ -59,10 +58,10 @@ public class ProjectManagerService {
         if (projectManagerDetails.getUsername() != null) {
             existingProjectManager.setUsername(projectManagerDetails.getUsername());
         }
-        if (existingProjectManager.getName() != null) {
+        if (projectManagerDetails.getName() != null) {
             existingProjectManager.setName(projectManagerDetails.getName());
         }
-        if (existingProjectManager.getEmail() != null) {
+        if (projectManagerDetails.getEmail() != null) {
             projectManagerDetails.setEmail(projectManagerDetails.getEmail());
         }
 

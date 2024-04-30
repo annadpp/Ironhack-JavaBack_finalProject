@@ -20,14 +20,12 @@ public class ProjectManager extends User {
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.PROJECT_MANAGER;
 
-    @NotNull
-    @Size(min = 1)
+    @NotNull(message = "Spoken languages cannot be empty")
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Languages> spokenLanguages;
 
-    @NotNull
-    @Size(min = 1)
+    @NotNull(message = "Project types cannot be empty")
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;

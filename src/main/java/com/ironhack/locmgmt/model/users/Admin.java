@@ -17,7 +17,7 @@ public class Admin extends User {
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.ADMIN;
 
-    @NotNull
+    @NotNull(message = "Department cannot be empty")
     @Enumerated(EnumType.STRING)
     private Department department;
 

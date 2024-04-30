@@ -52,16 +52,6 @@ public class UserService {
         }
     }
 
-    //Filters by user type
-    public List<User> getUsersByUserType(UserType userType) {
-        List<User> users = userRepository.findByUserType(userType);
-        if (users.isEmpty()) {
-            throw new EmptyListException("No users were found");
-        }
-        return users;
-    }
-
-
     //Update password
     /*public void updatePassword(String username, String oldPassword, String newPassword) {
         User user = userRepository.findByUsername(username)

@@ -45,7 +45,6 @@ public class AdminController {
         return adminService.updateAdmin(id, admin);
     }
 
-
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAdmin(@PathVariable Long id) {

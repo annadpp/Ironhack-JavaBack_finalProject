@@ -4,6 +4,7 @@ public enum ProjectType {
     TRANSLATION,
     REVIEW,
     POSTEDITING,
+    LINGUISTIC,
     DTP
 }
 

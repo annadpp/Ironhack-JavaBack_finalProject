@@ -6,7 +6,6 @@ import com.ironhack.locmgmt.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -38,12 +37,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-    }
-
-    @GetMapping("/get/byUserType/{userType}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<User> getUsersByUserType(@PathVariable UserType userType) {
-        return userService.getUsersByUserType(userType);
     }
 
     //User only
