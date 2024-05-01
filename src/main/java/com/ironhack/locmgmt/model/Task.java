@@ -76,20 +76,31 @@ public class Task {
     private DTPTechnology dtpTechnology;
 
     //CHECK -> gets project manager from project
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "project_manager_id")
-    @JsonIgnoreProperties({"tasks", "password", "userType", "projects"})
-    private ProjectManager projectManager;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    @JsonIgnoreProperties({"tasks", "projectManager", "linguists", "client"})
-    private Project project;
+    @JsonIgnoreProperties({"tasks", "password", "userType", "projects"})*/
+    /*private ProjectManager projectManager;*/
 
     @ManyToOne
     @JoinColumn(name = "linguist_id")
     @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "rates"})
     private Linguist linguist;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    @JsonIgnoreProperties({"tasks", "linguists", "client", "projectManager"})
+    private Project project;
+
+    //Gets project manager from info from project
+    @Transient
+    @JsonIgnoreProperties({"projects"})
+    public ProjectManager getProjectManager() {
+        if (project != null) {
+            return project.getProjectManager();
+        }
+        return null;
+    }
+
 
     /*//Constructor for testing
     public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology) {

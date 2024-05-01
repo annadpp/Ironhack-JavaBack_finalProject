@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityNotFoundException;
+
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -33,6 +35,12 @@ public class AdminService {
 
     public Admin createAdmin(Admin admin) {
         try {
+            // Set tasks and projects to empty lists
+            admin.setTasks(Collections.emptyList());
+            admin.setProjects(Collections.emptyList());
+
+            /*Add "Admins cannot be assigned to tasks or projects" if we have time*/
+
             return adminRepository.save(admin);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error while creating the admin", e);

@@ -16,6 +16,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 import static com.ironhack.locmgmt.util.ProjectUtil.updateProjectDates;
@@ -42,6 +43,12 @@ public class LinguisticProjectService {
     }
 
     public LinguisticProject createLinguisticProject(LinguisticProject linguisticProject) {
+        // Set tasks and linguists and projects to empty lists
+        linguisticProject.setTasks(Collections.emptyList());
+        linguisticProject.setLinguists(Collections.emptyList());
+
+        /*Add "Projects cannot be assigned directly to tasks or linguists" if we have time*/
+
         //Sets projectStatus to NOT if info not passed by the user when creating project
         linguisticProject.setProjectStatus(linguisticProject.getProjectStatus() != null ? linguisticProject.getProjectStatus() : TaskStatus.NOT_STARTED);
 

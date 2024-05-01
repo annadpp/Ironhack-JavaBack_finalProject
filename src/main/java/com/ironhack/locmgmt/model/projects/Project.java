@@ -75,12 +75,12 @@ public class Project {
     private ProjectManager projectManager;
 
     //CHECK -> gets linguists from tasks
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(
             name = "project_linguists",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "linguist_id")
-    )
+    )*/
     private List<Linguist> linguists;
 
     @OneToMany(mappedBy = "project")

@@ -38,11 +38,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    @OneToMany(mappedBy = "projectManager")
-    @JsonIgnoreProperties({"projectManager", "project", "linguist"})
+    /*FIX FOR BOTH LINGUIST AND PROJECT MANAGER*/
+    @OneToMany(mappedBy = "linguist")
+    @JsonIgnoreProperties({"project", "projectManager", "linguist"})
     private List<Task> tasks;
 
-    //mapped by?
+    /*FIX FOR BOTH LINGUIST AND PROJECT MANAGER*/
     @ManyToMany(mappedBy = "projectManager")
     @JsonIgnoreProperties({"projectManager", "project", "linguists", "tasks", "client"})
     private List<Project> projects;

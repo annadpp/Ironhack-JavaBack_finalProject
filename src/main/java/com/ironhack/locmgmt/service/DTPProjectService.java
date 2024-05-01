@@ -15,6 +15,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.ironhack.locmgmt.util.ProjectUtil.updateProjectDates;
@@ -41,6 +42,12 @@ public class DTPProjectService {
     }
 
     public DTPProject createDTPProject(DTPProject DTPProject) {
+        // Set tasks and linguists and projects to empty lists
+        DTPProject.setTasks(Collections.emptyList());
+        DTPProject.setLinguists(Collections.emptyList());
+
+        /*Add "Projects cannot be assigned directly to tasks or linguists" if we have time*/
+
         //Sets projectStatus to NOT if info not passed by the user when creating project
         DTPProject.setProjectStatus(DTPProject.getProjectStatus() != null ? DTPProject.getProjectStatus() : TaskStatus.NOT_STARTED);
 

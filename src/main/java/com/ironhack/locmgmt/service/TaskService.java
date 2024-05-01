@@ -14,6 +14,7 @@ import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +43,9 @@ public class TaskService {
     }
 
     public Task createTask(Task task) {
+     
+        /*Add "Project managers cannot be assigned directly to tasks. They depend on the project the task is assigned to." if we have time*/
+
         //Sets taskStatus and billingStatus to NOT if info not passed by the user when creating task
         task.setTaskStatus(task.getTaskStatus() != null ? task.getTaskStatus() : TaskStatus.NOT_STARTED);
         task.setBillingStatus(task.getBillingStatus() != null ? task.getBillingStatus() : BillingStatus.NOT_INVOICED);

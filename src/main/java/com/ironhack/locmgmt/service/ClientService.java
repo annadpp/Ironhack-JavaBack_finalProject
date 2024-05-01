@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -37,6 +38,12 @@ public class ClientService {
 
     public Client createClient(Client client) {
         try {
+            // Set projects to empty lists
+            client.setProjects(Collections.emptyList());
+            client.setProjects(Collections.emptyList());
+
+            /*Add "Clients cannot be assigned to projects directly. Add the information in the project itself." if we have time*/
+
             return clientRepository.save(client);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error while creating the client", e);
@@ -66,6 +73,7 @@ public class ClientService {
         return clientRepository.save(existingClient);
     }
 
+    /*FIX ERROR*/
     public void deleteClient(Long clientId) {
         try {clientRepository.deleteById(clientId);}
         catch (EmptyResultDataAccessException e) {
