@@ -1,5 +1,6 @@
 package com.ironhack.locmgmt.model.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.Rate;
 import com.ironhack.locmgmt.model.enums.*;
 
@@ -40,6 +41,7 @@ public class Linguist extends User {
     private List<LinguisticTechnology> linguisticTechnologies;
 
     @OneToMany(mappedBy = "linguist")
+    @JsonIgnoreProperties("linguist")
     private List<Rate> rates;
 
     /*//Constructor for testing

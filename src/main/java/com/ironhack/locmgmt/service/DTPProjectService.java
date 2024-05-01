@@ -93,6 +93,7 @@ public class DTPProjectService {
         if (dtpProjectDetails.getTargetLanguages() != null) {
             existingDTPProject.setTargetLanguages(dtpProjectDetails.getTargetLanguages());
         }
+        //Add client when creating DTP project
         if (dtpProjectDetails.getClient() != null) {
             existingDTPProject.setClient(dtpProjectDetails.getClient());
         }

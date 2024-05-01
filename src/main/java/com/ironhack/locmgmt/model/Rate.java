@@ -1,5 +1,6 @@
 package com.ironhack.locmgmt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 
@@ -41,6 +42,7 @@ public class Rate {
 
     @ManyToOne
     @JoinColumn(name = "linguist_id")
+    @JsonIgnoreProperties("rates")
     private Linguist linguist;
 
     /*//Constructor for testing

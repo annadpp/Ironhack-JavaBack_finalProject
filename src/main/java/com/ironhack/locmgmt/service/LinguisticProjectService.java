@@ -102,6 +102,10 @@ public class LinguisticProjectService {
         if (linguisticProjectDetails.getTargetLanguages() != null) {
             existingLinguisticProject.setTargetLanguages(linguisticProjectDetails.getTargetLanguages());
         }
+        //Add client when creating project
+        if (linguisticProjectDetails.getClient() != null) {
+            existingLinguisticProject.setClient(linguisticProjectDetails.getClient());
+        }
 
         return linguisticProjectRepository.save(existingLinguisticProject);
     }

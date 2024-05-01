@@ -63,6 +63,10 @@ public class RateService {
         if (rateDetails.getProjectType() != null) {
             existingRate.setProjectType(rateDetails.getProjectType());
         }
+        //Add linguist when creating rate
+        if (rateDetails.getLinguist() != null) {
+            existingRate.setLinguist(rateDetails.getLinguist());
+        }
 
         return rateRepository.save(existingRate);
     }
