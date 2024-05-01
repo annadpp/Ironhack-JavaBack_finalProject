@@ -42,7 +42,7 @@ public class Rate {
 
     @ManyToOne
     @JoinColumn(name = "linguist_id")
-    @JsonIgnoreProperties("rates")
+    @JsonIgnoreProperties({"rates", "password", "userType", "tasks", "projects", "sourceLanguages", "targetLanguages", "projectTypes", "dtpTechnologies", "linguisticTechnologies"})
     private Linguist linguist;
 
     /*//Constructor for testing

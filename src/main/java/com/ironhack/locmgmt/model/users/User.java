@@ -1,5 +1,6 @@
 package com.ironhack.locmgmt.model.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.UserType;
 import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.projects.Project;
@@ -37,10 +38,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "projectManager")
+    @JsonIgnoreProperties({"projectManager", "project", "linguist"})
     private List<Task> tasks;
 
-    @ManyToMany(mappedBy = "users")
+    //mapped by?
+    @ManyToMany(mappedBy = "projectManager")
+    @JsonIgnoreProperties({"projectManager", "project", "linguists", "tasks", "client"})
     private List<Project> projects;
 
     /*//Constructors/getters/setters for testing

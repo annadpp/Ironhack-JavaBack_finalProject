@@ -34,7 +34,7 @@ public class Client {
     private String address;
 
     @OneToMany(mappedBy = "client")
-    @JsonIgnoreProperties("client")
+    @JsonIgnoreProperties({"client", "tasks", "timeRemaining", "projectManager", "linguists"}) //ignore projectManager when added
     private List<Project> projects;
 
     /*//Constructor for testing

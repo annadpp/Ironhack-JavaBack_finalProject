@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.Task;
+import com.ironhack.locmgmt.model.users.Linguist;
+import com.ironhack.locmgmt.model.users.ProjectManager;
 import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
@@ -67,15 +69,22 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private List<Languages> targetLanguages;
 
+    @ManyToOne
+    @JoinColumn(name = "project_manager_id")
+    @JsonIgnoreProperties({"projects", "password", "tasks"})
+    private ProjectManager projectManager;
+
+    //CHECK -> gets linguists from tasks
     @ManyToMany
     @JoinTable(
-            name = "project_user",
+            name = "project_linguists",
             joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
+            inverseJoinColumns = @JoinColumn(name = "linguist_id")
     )
-    private List<User> users;
+    private List<Linguist> linguists;
 
     @OneToMany(mappedBy = "project")
+    @JsonIgnoreProperties({"project", "projectManager", "linguist"})
     private List<Task> tasks;
 
     @ManyToOne

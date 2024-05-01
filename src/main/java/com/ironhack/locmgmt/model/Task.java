@@ -1,5 +1,6 @@
 package com.ironhack.locmgmt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.*;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
@@ -74,22 +75,21 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private DTPTechnology dtpTechnology;
 
+    //CHECK -> gets project manager from project
     @ManyToOne
     @JoinColumn(name = "project_manager_id")
+    @JsonIgnoreProperties({"tasks", "password", "userType", "projects"})
     private ProjectManager projectManager;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @JsonIgnoreProperties({"tasks", "projectManager", "linguists", "client"})
     private Project project;
 
     @ManyToOne
     @JoinColumn(name = "linguist_id")
+    @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "rates"})
     private Linguist linguist;
-
-    //Remove when merged
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     /*//Constructor for testing
     public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology) {
