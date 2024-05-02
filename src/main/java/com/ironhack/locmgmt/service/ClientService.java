@@ -40,7 +40,6 @@ public class ClientService {
         try {
             // Set projects to empty lists
             client.setProjects(Collections.emptyList());
-            client.setProjects(Collections.emptyList());
 
             /*Add "Clients cannot be assigned to projects directly. Add the information in the project itself." if we have time*/
 
@@ -73,7 +72,7 @@ public class ClientService {
         return clientRepository.save(existingClient);
     }
 
-    /*FIX ERROR*/
+    /*FIX ERROR WHEN ID BEING USED*/
     public void deleteClient(Long clientId) {
         try {clientRepository.deleteById(clientId);}
         catch (EmptyResultDataAccessException e) {

@@ -2,7 +2,7 @@ package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
-import com.ironhack.locmgmt.model.enums.TaskStatus;
+import com.ironhack.locmgmt.model.enums.Status;
 import com.ironhack.locmgmt.model.projects.DTPProject;
 import com.ironhack.locmgmt.repository.DTPProjectRepository;
 import com.ironhack.locmgmt.util.ProjectUtil;
@@ -43,13 +43,17 @@ public class DTPProjectService {
 
     public DTPProject createDTPProject(DTPProject DTPProject) {
         // Set tasks and linguists and projects to empty lists
+       /* DTPProject.setSourceLanguage(null);
+        DTPProject.setTargetLanguages(Collections.emptyList());*/
         DTPProject.setTasks(Collections.emptyList());
+/*
         DTPProject.setLinguists(Collections.emptyList());
+*/
 
         /*Add "Projects cannot be assigned directly to tasks or linguists" if we have time*/
 
         //Sets projectStatus to NOT if info not passed by the user when creating project
-        DTPProject.setProjectStatus(DTPProject.getProjectStatus() != null ? DTPProject.getProjectStatus() : TaskStatus.NOT_STARTED);
+        DTPProject.setProjectStatus(DTPProject.getProjectStatus() != null ? DTPProject.getProjectStatus() : Status.NOT_STARTED);
 
         //Update project dates and time remaining
         ProjectUtil.updateProjectDates(DTPProject);
@@ -94,12 +98,12 @@ public class DTPProjectService {
         if (dtpProjectDetails.getProjectStatus() != null) {
             existingDTPProject.setProjectStatus(dtpProjectDetails.getProjectStatus());
         }
-        if (dtpProjectDetails.getSourceLanguage() != null) {
+        /*if (dtpProjectDetails.getSourceLanguage() != null) {
             existingDTPProject.setSourceLanguage(dtpProjectDetails.getSourceLanguage());
         }
         if (dtpProjectDetails.getTargetLanguages() != null) {
             existingDTPProject.setTargetLanguages(dtpProjectDetails.getTargetLanguages());
-        }
+        }*/
         //Add client when updating DTP project
         if (dtpProjectDetails.getClient() != null) {
             existingDTPProject.setClient(dtpProjectDetails.getClient());

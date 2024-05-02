@@ -4,7 +4,7 @@ import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.BillingStatus;
 import com.ironhack.locmgmt.model.enums.ProjectType;
-import com.ironhack.locmgmt.model.enums.TaskStatus;
+import com.ironhack.locmgmt.model.enums.Status;
 import com.ironhack.locmgmt.repository.TaskRepository;
 
 import com.ironhack.locmgmt.util.TaskUtil;
@@ -14,7 +14,6 @@ import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class TaskService {
         /*Add "Project managers cannot be assigned directly to tasks. They depend on the project the task is assigned to." if we have time*/
 
         //Sets taskStatus and billingStatus to NOT if info not passed by the user when creating task
-        task.setTaskStatus(task.getTaskStatus() != null ? task.getTaskStatus() : TaskStatus.NOT_STARTED);
+        task.setTaskStatus(task.getTaskStatus() != null ? task.getTaskStatus() : Status.NOT_STARTED);
         task.setBillingStatus(task.getBillingStatus() != null ? task.getBillingStatus() : BillingStatus.NOT_INVOICED);
 
         //Update task dates and time remaining

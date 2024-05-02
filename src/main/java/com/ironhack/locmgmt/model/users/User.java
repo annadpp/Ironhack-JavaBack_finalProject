@@ -38,16 +38,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    /*FIX FOR BOTH LINGUIST AND PROJECT MANAGER*/
-    @OneToMany(mappedBy = "linguist")
-    @JsonIgnoreProperties({"project", "projectManager", "linguist"})
-    private List<Task> tasks;
-
-    /*FIX FOR BOTH LINGUIST AND PROJECT MANAGER*/
-    @ManyToMany(mappedBy = "projectManager")
-    @JsonIgnoreProperties({"projectManager", "project", "linguists", "tasks", "client"})
-    private List<Project> projects;
-
     /*//Constructors/getters/setters for testing
     public User(String username, String password, String name, String email, UserType userType) {
         this.username = username;

@@ -3,7 +3,7 @@ package com.ironhack.locmgmt.util;
 /*
 import com.ironhack.locmgmt.model.Task;
 */
-import com.ironhack.locmgmt.model.enums.TaskStatus;
+import com.ironhack.locmgmt.model.enums.Status;
 import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.model.projects.Project;
 
@@ -12,18 +12,18 @@ import java.util.Date;
 
 public class ProjectUtil {
     public static void updateProjectDates(Project project) {
-        if (project.getProjectStatus() == TaskStatus.STARTED && project.getStartDate() == null) {
+        if (project.getProjectStatus() == Status.STARTED && project.getStartDate() == null) {
             project.setStartDate(new Date()); //Set the start date to the current date/time
-        } else if (project.getProjectStatus() == TaskStatus.FINISHED && project.getEndDate() == null) {
+        } else if (project.getProjectStatus() == Status.FINISHED && project.getEndDate() == null) {
             project.setEndDate(new Date()); //Set the end date to the current date/time
-        } else if (project.getProjectStatus() == TaskStatus.NOT_STARTED) {
+        } else if (project.getProjectStatus() == Status.NOT_STARTED) {
             project.setStartDate(null); //Set start date to null when task is not started
             project.setEndDate(null);
             project.setTimeRemaining(null);
             project.setDeadline(null);
         }
 
-        if (project.getProjectStatus() == TaskStatus.STARTED && project.getDeadline() != null) {
+        if (project.getProjectStatus() == Status.STARTED && project.getDeadline() != null) {
             updateTimeRemaining(project);
         }
     }

@@ -38,7 +38,9 @@ public class ProjectManagerService {
     public ProjectManager createProjectManager(ProjectManager projectManager) {
         try {
             // Set tasks and projects to empty lists
+/*
             projectManager.setTasks(Collections.emptyList());
+*/
             projectManager.setProjects(Collections.emptyList());
 
             /*Add "Project managers cannot be assigned to tasks or projects directly" if we have time*/

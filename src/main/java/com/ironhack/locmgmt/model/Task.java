@@ -5,7 +5,6 @@ import com.ironhack.locmgmt.model.enums.*;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
-import com.ironhack.locmgmt.model.users.User;
 
 import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
 import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
@@ -44,7 +43,7 @@ public class Task {
     private Duration timeRemaining;
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus taskStatus;
+    private Status taskStatus;
 
     @NotNull(message = "Project type cannot be empty")
     @Enumerated(EnumType.STRING)
@@ -76,10 +75,10 @@ public class Task {
     private DTPTechnology dtpTechnology;
 
     //CHECK -> gets project manager from project
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "project_manager_id")
-    @JsonIgnoreProperties({"tasks", "password", "userType", "projects"})*/
-    /*private ProjectManager projectManager;*/
+    @JsonIgnoreProperties({"tasks", "password", "userType", "projects"})
+    private ProjectManager projectManager;
 
     @ManyToOne
     @JoinColumn(name = "linguist_id")
@@ -91,7 +90,7 @@ public class Task {
     @JsonIgnoreProperties({"tasks", "linguists", "client", "projectManager"})
     private Project project;
 
-    //Gets project manager from info from project
+    //GETS PROJECT MANAGER FROM PROJECT ASSIGNED TO THE TASK
     @Transient
     @JsonIgnoreProperties({"projects"})
     public ProjectManager getProjectManager() {
