@@ -1,8 +1,7 @@
-package com.ironhack.locmgmt.users;
+package com.ironhack.locmgmt.model.users;
 
 import com.ironhack.locmgmt.model.enums.Department;
 import com.ironhack.locmgmt.model.enums.UserType;
-import com.ironhack.locmgmt.model.users.Admin;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

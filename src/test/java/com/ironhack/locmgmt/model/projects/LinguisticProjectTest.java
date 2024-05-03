@@ -1,10 +1,9 @@
-package com.ironhack.locmgmt.projects;
+package com.ironhack.locmgmt.model.projects;
 
 import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.Status;
 
-import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

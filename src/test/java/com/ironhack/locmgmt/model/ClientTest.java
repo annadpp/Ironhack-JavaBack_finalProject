@@ -1,4 +1,4 @@
-package com.ironhack.locmgmt;
+package com.ironhack.locmgmt.model;
 
 import com.ironhack.locmgmt.model.Client;
 import org.junit.jupiter.api.BeforeEach;

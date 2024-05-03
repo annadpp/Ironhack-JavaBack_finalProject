@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    /*To be totally implemented with security*/
-    Optional<User> findByUsername(String username);
+/*    *//*To be totally implemented with security*//*
+    Optional<User> findByUsername(String username);*/
 }
