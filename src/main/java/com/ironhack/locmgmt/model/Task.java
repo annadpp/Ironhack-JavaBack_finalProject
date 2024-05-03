@@ -74,12 +74,6 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private DTPTechnology dtpTechnology;
 
-    //CHECK -> gets project manager from project
-    @ManyToOne
-    @JoinColumn(name = "project_manager_id")
-    @JsonIgnoreProperties({"tasks", "password", "userType", "projects"})
-    private ProjectManager projectManager;
-
     @ManyToOne
     @JoinColumn(name = "linguist_id")
     @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "rates"})
@@ -92,7 +86,7 @@ public class Task {
 
     //GETS PROJECT MANAGER FROM PROJECT ASSIGNED TO THE TASK
     @Transient
-    @JsonIgnoreProperties({"projects"})
+    @JsonIgnoreProperties({"projects", "tasks"})
     public ProjectManager getProjectManager() {
         if (project != null) {
             return project.getProjectManager();

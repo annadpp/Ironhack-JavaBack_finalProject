@@ -37,10 +37,7 @@ public class ProjectManagerService {
 
     public ProjectManager createProjectManager(ProjectManager projectManager) {
         try {
-            // Set tasks and projects to empty lists
-/*
-            projectManager.setTasks(Collections.emptyList());
-*/
+            //Sets projects to empty lists
             projectManager.setProjects(Collections.emptyList());
 
             /*Add "Project managers cannot be assigned to tasks or projects directly" if we have time*/
@@ -63,7 +60,7 @@ public class ProjectManagerService {
             existingProjectManager.setProjectTypes(projectManagerDetails.getProjectTypes());
         }
 
-        // Update the fields inherited from the User class
+        // Update the fields inherited from the User class -> not password (User only)
         if (projectManagerDetails.getUsername() != null) {
             existingProjectManager.setUsername(projectManagerDetails.getUsername());
         }

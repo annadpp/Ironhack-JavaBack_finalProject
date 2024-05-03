@@ -42,13 +42,8 @@ public class DTPProjectService {
     }
 
     public DTPProject createDTPProject(DTPProject DTPProject) {
-        // Set tasks and linguists and projects to empty lists
-       /* DTPProject.setSourceLanguage(null);
-        DTPProject.setTargetLanguages(Collections.emptyList());*/
+        // Set tasks to empty lists
         DTPProject.setTasks(Collections.emptyList());
-/*
-        DTPProject.setLinguists(Collections.emptyList());
-*/
 
         /*Add "Projects cannot be assigned directly to tasks or linguists" if we have time*/
 
@@ -98,12 +93,7 @@ public class DTPProjectService {
         if (dtpProjectDetails.getProjectStatus() != null) {
             existingDTPProject.setProjectStatus(dtpProjectDetails.getProjectStatus());
         }
-        /*if (dtpProjectDetails.getSourceLanguage() != null) {
-            existingDTPProject.setSourceLanguage(dtpProjectDetails.getSourceLanguage());
-        }
-        if (dtpProjectDetails.getTargetLanguages() != null) {
-            existingDTPProject.setTargetLanguages(dtpProjectDetails.getTargetLanguages());
-        }*/
+
         //Add client when updating DTP project
         if (dtpProjectDetails.getClient() != null) {
             existingDTPProject.setClient(dtpProjectDetails.getClient());

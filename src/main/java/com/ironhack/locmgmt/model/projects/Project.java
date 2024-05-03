@@ -62,13 +62,6 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
-    /*fix taking from tasks assigned to this project*/
-    /*@Enumerated(EnumType.STRING)
-    private Languages sourceLanguage;
-
-    @Enumerated(EnumType.STRING)
-    private List<Languages> targetLanguages;*/
-
     //GETS SOURCE LANGUAGE FROM TASKS ASSIGNED TO THE PROJECT
     @Transient
     public Languages getSourceLanguage() {
@@ -97,18 +90,9 @@ public class Project {
     @JsonIgnoreProperties({"projects", "password", "tasks"})
     private ProjectManager projectManager;
 
-    //gets linguists from tasks assigned to this project
-    /*@ManyToMany
-    @JoinTable(
-            name = "project_linguists",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "linguist_id")
-    )
-    private List<Linguist> linguists;*/
-
     //GETS LINGUISTS FROM TASKS ASSIGNED TO THE PROJECT
     @Transient
-    @JsonIgnoreProperties({"projects", "rates", "tasks"})
+    @JsonIgnoreProperties({"projects", "rates", "tasks", "sourceLanguages", "targetLanguages", "projectTypes", "dtpTechnologies", "linguisticTechnologies"})
     public List<Linguist> getLinguists() {
         if (tasks == null || tasks.isEmpty()) {
             return Collections.emptyList();
@@ -120,7 +104,6 @@ public class Project {
         }
         return linguists;
     }
-
 
     @OneToMany(mappedBy = "project")
     @JsonIgnoreProperties({"project", "projectManager", "linguist"})

@@ -52,13 +52,9 @@ public class Linguist extends User {
     @JsonIgnoreProperties({"linguist", "tasks", "projectManager", "project"})
     private List<Task> tasks;
 
-    /*@ManyToMany(mappedBy = "linguists")
-    @JsonIgnoreProperties({"projectManager", "projects", "linguists", "tasks", "client"})
-    private List<Project> projects;*/
-
     //GETS PROJECTS FROM TASKS ASSIGNED TO THE PROJECT
     @Transient
-    @JsonIgnoreProperties({"projectManager", "linguists", "tasks", "client"})
+    @JsonIgnoreProperties({"projectManager", "linguists", "tasks", "client", "totalBudget", "projectType", "dtpTechnolgoy", "pages", "targetLanguages", "sourceLanguage"})
     public List<Project> getProjects() {
         if (tasks == null || tasks.isEmpty()) {
             return Collections.emptyList();

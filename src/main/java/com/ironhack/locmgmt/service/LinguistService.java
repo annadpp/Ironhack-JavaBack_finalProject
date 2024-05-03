@@ -81,7 +81,7 @@ public class LinguistService {
             existingLinguist.setLinguisticTechnologies(linguistDetails.getLinguisticTechnologies());
         }
 
-        // Update the fields inherited from the User class
+        // Update the fields inherited from the User class -> not password (User only)
         if (linguistDetails.getUsername() != null) {
             existingLinguist.setUsername(linguistDetails.getUsername());
         }

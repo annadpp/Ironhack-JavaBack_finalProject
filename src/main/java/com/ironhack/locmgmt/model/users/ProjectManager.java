@@ -34,10 +34,6 @@ public class ProjectManager extends User {
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
 
-    /*@OneToMany(mappedBy = "projectManager")
-    @JsonIgnoreProperties({"project", "projectManager", "linguist"})
-    private List<Task> tasks;*/
-
     @OneToMany(mappedBy = "projectManager")
     @JsonIgnoreProperties({"projectManager", "projects", "linguists", "tasks", "client"})
     private List<Project> projects;

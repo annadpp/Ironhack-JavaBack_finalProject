@@ -96,10 +96,6 @@ public class TaskService {
         if (taskDetails.getDtpTechnology() != null) {
             existingTask.setDtpTechnology(taskDetails.getDtpTechnology());
         }
-        /*//Add project manager when updating task
-        if (taskDetails.getProjectManager() != null) {
-            existingTask.setProjectManager(taskDetails.getProjectManager());
-        }*/
         //Add project when updating task
         if (taskDetails.getProject() != null) {
             existingTask.setProject(taskDetails.getProject());

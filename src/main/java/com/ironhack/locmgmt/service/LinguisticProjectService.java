@@ -42,11 +42,8 @@ public class LinguisticProjectService {
     }
 
     public LinguisticProject createLinguisticProject(LinguisticProject linguisticProject) {
-        // Set tasks and linguists and projects to empty lists
-        /*linguisticProject.setSourceLanguage(null);
-        linguisticProject.setTargetLanguages(Collections.emptyList());*/
+        //Sets tasks to empty lists
         linguisticProject.setTasks(Collections.emptyList());
-        /*linguisticProject.setLinguists(Collections.emptyList());*/
 
         /*Add "Projects cannot be assigned directly to tasks or linguists" if we have time*/
 
@@ -104,12 +101,6 @@ public class LinguisticProjectService {
         if (linguisticProjectDetails.getProjectStatus() != null) {
             existingLinguisticProject.setProjectStatus(linguisticProjectDetails.getProjectStatus());
         }
-        /*if (linguisticProjectDetails.getSourceLanguage() != null) {
-            existingLinguisticProject.setSourceLanguage(linguisticProjectDetails.getSourceLanguage());
-        }
-        if (linguisticProjectDetails.getTargetLanguages() != null) {
-            existingLinguisticProject.setTargetLanguages(linguisticProjectDetails.getTargetLanguages());
-        }*/
         //Add client when updating project
         if (linguisticProjectDetails.getClient() != null) {
             existingLinguisticProject.setClient(linguisticProjectDetails.getClient());
