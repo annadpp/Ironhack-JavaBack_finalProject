@@ -45,11 +45,12 @@ public class Rate {
     @JsonIgnoreProperties({"rates", "password", "userType", "tasks", "projects", "sourceLanguages", "targetLanguages", "projectTypes", "dtpTechnologies", "linguisticTechnologies"})
     private Linguist linguist;
 
-    /*//Constructor for testing
-    public Rate(BigDecimal price, Languages sourceLanguage, Languages targetLanguage, ProjectType projectType) {
-        this.price = price;
-        this.language = language;
+    //Constructor for testing
+    public Rate(BigDecimal wordPrice, Languages sourceLanguage, Languages targetLanguage, ProjectType projectType) {
+        this.wordPrice = wordPrice;
+        this.sourceLanguage = sourceLanguage;
+        this.targetLanguage = targetLanguage;
         this.projectType = projectType;
-    }*/
+    }
 }
 

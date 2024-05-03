@@ -114,8 +114,8 @@ public class Project {
     @JsonIgnoreProperties("projects")
     private Client client;
 
-    /*//Constructor/getters/setters for testing
-    public Project(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, TaskStatus projectStatus, ProjectType projectType) {
+    //Constructor/getters/setters for testing
+    public Project(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, Status projectStatus, ProjectType projectType) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -124,61 +124,5 @@ public class Project {
         this.projectStatus = projectStatus;
         this.projectType = projectType;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public BigDecimal getTotalBudget() {
-        return totalBudget;
-    }
-
-    public void setTotalBudget(BigDecimal totalBudget) {
-        this.totalBudget = totalBudget;
-    }
-
-    public TaskStatus getProjectStatus() {
-        return projectStatus;
-    }
-
-    public void setProjectStatus(TaskStatus projectStatus) {
-        this.projectStatus = projectStatus;
-    }
-
-    public ProjectType getProjectType() {
-        return projectType;
-    }
-
-    public void setProjectType(ProjectType projectType) {
-        this.projectType = projectType;
-    }*/
 }
 

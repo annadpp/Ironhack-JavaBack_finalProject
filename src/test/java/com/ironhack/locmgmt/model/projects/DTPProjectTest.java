@@ -1,9 +1,10 @@
-/*
 package com.ironhack.locmgmt.projects;
 
+import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
-import com.ironhack.locmgmt.model.enums.ProjectType;
-import com.ironhack.locmgmt.model.enums.TaskStatus;
+import com.ironhack.locmgmt.model.enums.Status;
+
+import com.ironhack.locmgmt.model.projects.DTPProject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ public class DTPProjectTest {
     @BeforeEach
     void setUp() {
         Client client = new Client();
-        dtpProject = new DTPProject("Project Name", "Project Description", new Date(), new Date(), BigDecimal.TEN, TaskStatus.STARTED, ProjectType.TRANSLATION, DTPTechnology.AFTER_EFFECTS, 120);
+        dtpProject = new DTPProject("Project Name", "Project Description", new Date(), new Date(), BigDecimal.TEN, Status.STARTED, DTPTechnology.AFTER_EFFECTS, 120);
     }
 
     @Test
@@ -46,5 +47,3 @@ public class DTPProjectTest {
         assertEquals("Project Description", dtpProject.getDescription());
     }
 }
-
-*/

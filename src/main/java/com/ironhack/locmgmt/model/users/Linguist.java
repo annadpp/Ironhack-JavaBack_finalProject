@@ -73,12 +73,13 @@ public class Linguist extends User {
         return projectsList;
     }
 
-    /*//Constructor for testing
-    public Linguist(String username, String password, String name, String email, UserType userType, List<Languages> languages, List<ProjectType> projectTypes, List<DTPTechnology> dtpTechnologies, List<LinguisticTechnology> linguisticTechnologies) {
+    //Constructor for testing
+    public Linguist(String username, String password, String name, String email, UserType userType, List<Languages> sourceLanguages, List<Languages> targetLanguages, List<ProjectType> projectTypes, List<DTPTechnology> dtpTechnologies, List<LinguisticTechnology> linguisticTechnologies) {
         super(username, password, name, email, userType);
-        this.languages = languages;
+        this.sourceLanguages = sourceLanguages;
+        this.targetLanguages = targetLanguages;
         this.projectTypes = projectTypes;
         this.dtpTechnologies = dtpTechnologies;
         this.linguisticTechnologies = linguisticTechnologies;
-    }*/
+    }
 }

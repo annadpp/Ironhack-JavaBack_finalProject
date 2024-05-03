@@ -1,4 +1,3 @@
-/*
 package com.ironhack.locmgmt.users;
 
 import com.ironhack.locmgmt.model.enums.Languages;
@@ -32,12 +31,16 @@ class ProjectManagerTest {
     }
 
     @Test
-    void testLanguages() {
-        assertEquals(2, projectManager.getLanguages().size());
+    void testSpokenLanguages() {
+        assertEquals(2, projectManager.getSpokenLanguages().size());
+        assertEquals(Languages.ENGLISH, projectManager.getSpokenLanguages().get(0));
+        assertEquals(Languages.FRENCH, projectManager.getSpokenLanguages().get(1));
     }
 
     @Test
     void testProjectTypes() {
         assertEquals(2, projectManager.getProjectTypes().size());
+        assertEquals(ProjectType.TRANSLATION, projectManager.getProjectTypes().get(0));
+        assertEquals(ProjectType.POSTEDITING, projectManager.getProjectTypes().get(1));
     }
-}*/
+}

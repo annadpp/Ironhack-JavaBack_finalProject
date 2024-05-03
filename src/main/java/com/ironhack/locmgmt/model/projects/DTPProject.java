@@ -3,10 +3,14 @@ package com.ironhack.locmgmt.model.projects;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 
 import com.ironhack.locmgmt.model.enums.ProjectType;
+import com.ironhack.locmgmt.model.enums.Status;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @Builder
@@ -26,11 +30,11 @@ public class DTPProject extends Project {
     @Positive(message = "Pages must be positive")
     private Integer pages;
 
-    /*//Constructor for testing
-    public DTPProject(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, TaskStatus projectStatus, ProjectType projectType, DTPTechnology dtpTechnology, Integer pages) {
-        super(name, description, startDate, endDate, totalBudget, projectStatus, projectType);
+    //Constructor for testing
+    public DTPProject(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, Status projectStatus, DTPTechnology dtpTechnology, Integer pages) {
+        super(name, description, startDate, endDate, totalBudget, projectStatus, ProjectType.DTP);
         this.dtpTechnology = dtpTechnology;
         this.pages = pages;
-    }*/
+    }
 }
 

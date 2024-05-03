@@ -1,4 +1,3 @@
-/*
 package com.ironhack.locmgmt.users;
 
 import com.ironhack.locmgmt.model.enums.Department;
@@ -29,4 +28,4 @@ class AdminTest {
     void testDepartment() {
         assertEquals(Department.ADMINISTRATION, admin.getDepartment());
     }
-}*/
+}

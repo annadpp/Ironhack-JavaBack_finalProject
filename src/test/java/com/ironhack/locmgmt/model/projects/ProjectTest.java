@@ -1,8 +1,10 @@
-/*
 package com.ironhack.locmgmt.projects;
 
+import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.enums.ProjectType;
-import com.ironhack.locmgmt.model.enums.TaskStatus;
+import com.ironhack.locmgmt.model.enums.Status;
+
+import com.ironhack.locmgmt.model.projects.Project;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +20,7 @@ public class ProjectTest {
     @BeforeEach
     void setUp() {
         Client client = new Client();
-        project = new Project("Project Name", "Project Description", new Date(), new Date(), BigDecimal.TEN, TaskStatus.STARTED, ProjectType.TRANSLATION);
+        project = new Project("Project Name", "Project Description", new Date(), new Date(), BigDecimal.TEN, Status.STARTED, ProjectType.TRANSLATION);
     }
 
     @Test
@@ -45,4 +47,4 @@ public class ProjectTest {
         assertEquals("Project Description", project.getDescription());
     }
 }
-*/
+

@@ -95,20 +95,22 @@ public class Task {
     }
 
 
-    /*//Constructor for testing
-    public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology) {
-        this.id = id;
+    //Constructor for testing
+    public Task(String name, String description, Date deadline, Duration timeRemaining, Status taskStatus, ProjectType projectType, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology, DTPTechnology dtpTechnology, Linguist linguist, Project project) {
         this.name = name;
         this.description = description;
         this.deadline = deadline;
         this.timeRemaining = timeRemaining;
         this.taskStatus = taskStatus;
-        this.role = role;
+        this.projectType = projectType;
         this.startDate = startDate;
         this.endDate = endDate;
         this.billingStatus = billingStatus;
         this.sourceLanguage = sourceLanguage;
         this.targetLanguage = targetLanguage;
         this.linguisticTechnology = linguisticTechnology;
-    }*/
+        this.dtpTechnology = dtpTechnology;
+        this.linguist = linguist;
+        this.project = project;
+    }
 }

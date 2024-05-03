@@ -37,11 +37,11 @@ public class Client {
     @JsonIgnoreProperties({"client", "tasks", "timeRemaining", "projectManager", "linguists"})
     private List<Project> projects;
 
-    /*//Constructor for testing
+    //Constructor for testing
     public Client(String name, String email, String VATNumber, String address) {
-    this.name = name;
-    this.email = email;
-    this.VATNumber = VATNumber;
-    this.address = address;
-}*/
+        this.name = name;
+        this.email = email;
+        this.VATNumber = VATNumber;
+        this.address = address;
+    }
 }

@@ -55,11 +55,11 @@ public class ProjectManager extends User {
         return allTasks;
     }
 
-    /*//Constructor for testing
-    public ProjectManager(String username, String password, String name, String email, UserType userType, List<Languages> languages, List<ProjectType> projectTypes) {
+    //Constructor for testing
+    public ProjectManager(String username, String password, String name, String email, UserType userType, List<Languages> spokenLanguages, List<ProjectType> projectTypes) {
         super(username, password, name, email, userType);
-        this.languages = languages;
+        this.spokenLanguages = spokenLanguages;
         this.projectTypes = projectTypes;
-    }*/
+    }
 }
 

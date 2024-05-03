@@ -1,4 +1,3 @@
-/*
 package com.ironhack.locmgmt.users;
 
 import com.ironhack.locmgmt.model.enums.*;
@@ -18,11 +17,12 @@ class LinguistTest {
 
     @BeforeEach
     void setUp() {
-        List<Languages> languages = Arrays.asList(Languages.ENGLISH, Languages.SPANISH);
+        List<Languages> sourceLanguages = Arrays.asList(Languages.ENGLISH, Languages.SPANISH);
+        List<Languages> targetLanguages = Arrays.asList(Languages.GERMAN, Languages.FRENCH);
         List<ProjectType> projectTypes = Arrays.asList(ProjectType.TRANSLATION, ProjectType.REVIEW);
         List<DTPTechnology> dtpTechnologies = Arrays.asList(DTPTechnology.FIGMA, DTPTechnology.INDESIGN);
         List<LinguisticTechnology> linguisticTechnologies = Arrays.asList(LinguisticTechnology.TRADOS_STUDIO, LinguisticTechnology.MEMO_Q);
-        linguist = new Linguist("linguistUser", "linguistPassword", "Linguist", "linguist@example.com", UserType.LINGUIST, languages, projectTypes, dtpTechnologies, linguisticTechnologies);
+        linguist = new Linguist("linguistUser", "linguistPassword", "Linguist", "linguist@example.com", UserType.LINGUIST, sourceLanguages, targetLanguages, projectTypes, dtpTechnologies, linguisticTechnologies);
     }
 
     @Test
@@ -32,12 +32,27 @@ class LinguistTest {
     }
 
     @Test
-    void testLanguages() {
-        assertEquals(2, linguist.getLanguages().size());
+    void testSourceLanguages() {
+        assertEquals(2, linguist.getSourceLanguages().size());
+    }
+
+    @Test
+    void testTargetLanguages() {
+        assertEquals(2, linguist.getTargetLanguages().size());
+    }
+
+    @Test
+    void testProjectTypes() {
+        assertEquals(2, linguist.getProjectTypes().size());
+    }
+
+    @Test
+    void testDtpTechnologies() {
+        assertEquals(2, linguist.getDtpTechnologies().size());
     }
 
     @Test
     void testLinguisticTechnologies() {
         assertEquals(2, linguist.getLinguisticTechnologies().size());
     }
-}*/
+}
