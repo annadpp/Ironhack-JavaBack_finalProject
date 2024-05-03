@@ -44,11 +44,11 @@ public class Linguist extends User {
     @Enumerated(EnumType.STRING)
     private List<LinguisticTechnology> linguisticTechnologies;
 
-    @OneToMany(mappedBy = "linguist")
+    @OneToMany(mappedBy = "linguist", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JsonIgnoreProperties("linguist")
     private List<Rate> rates;
 
-    @OneToMany(mappedBy = "linguist")
+    @OneToMany(mappedBy = "linguist", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JsonIgnoreProperties({"linguist", "tasks", "projectManager", "project"})
     private List<Task> tasks;
 

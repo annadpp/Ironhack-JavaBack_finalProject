@@ -75,12 +75,12 @@ public class Task {
     private DTPTechnology dtpTechnology;
 
     @ManyToOne
-    @JoinColumn(name = "linguist_id")
+    @JoinColumn(name = "linguist_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
     @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "rates"})
     private Linguist linguist;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
     @JsonIgnoreProperties({"tasks", "linguists", "client", "projectManager"})
     private Project project;
 
@@ -93,7 +93,6 @@ public class Task {
         }
         return null;
     }
-
 
     //Constructor for testing
     public Task(String name, String description, Date deadline, Duration timeRemaining, Status taskStatus, ProjectType projectType, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology, DTPTechnology dtpTechnology, Linguist linguist, Project project) {

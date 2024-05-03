@@ -86,7 +86,7 @@ public class Project {
     }
 
     @ManyToOne
-    @JoinColumn(name = "project_manager_id")
+    @JoinColumn(name = "project_manager_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
     @JsonIgnoreProperties({"projects", "password", "tasks"})
     private ProjectManager projectManager;
 
@@ -105,12 +105,12 @@ public class Project {
         return linguists;
     }
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JsonIgnoreProperties({"project", "projectManager", "linguist"})
     private List<Task> tasks;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
     @JsonIgnoreProperties("projects")
     private Client client;
 

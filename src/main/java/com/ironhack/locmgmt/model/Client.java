@@ -33,7 +33,7 @@ public class Client {
 
     private String address;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = false)
     @JsonIgnoreProperties({"client", "tasks", "timeRemaining", "projectManager", "linguists"})
     private List<Project> projects;
 

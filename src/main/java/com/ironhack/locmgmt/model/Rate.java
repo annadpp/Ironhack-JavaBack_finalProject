@@ -41,7 +41,7 @@ public class Rate {
     private ProjectType projectType;
 
     @ManyToOne
-    @JoinColumn(name = "linguist_id")
+    @JoinColumn(name = "linguist_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
     @JsonIgnoreProperties({"rates", "password", "userType", "tasks", "projects", "sourceLanguages", "targetLanguages", "projectTypes", "dtpTechnologies", "linguisticTechnologies"})
     private Linguist linguist;
 

@@ -34,7 +34,7 @@ public class ProjectManager extends User {
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
 
-    @OneToMany(mappedBy = "projectManager")
+    @OneToMany(mappedBy = "projectManager", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JsonIgnoreProperties({"projectManager", "projects", "linguists", "tasks", "client"})
     private List<Project> projects;
 
