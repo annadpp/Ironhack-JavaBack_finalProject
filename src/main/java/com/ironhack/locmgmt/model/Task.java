@@ -1,10 +1,10 @@
 package com.ironhack.locmgmt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.*;
-/*import com.ironhack.locmgmt.model.projects.Project;
+import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
-import com.ironhack.locmgmt.model.users.User;*/
 
 import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
 import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
@@ -43,7 +43,7 @@ public class Task {
     private Duration timeRemaining;
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus taskStatus;
+    private Status taskStatus;
 
     @NotNull(message = "Project type cannot be empty")
     @Enumerated(EnumType.STRING)
@@ -74,22 +74,26 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private DTPTechnology dtpTechnology;
 
-    /*@ManyToOne
-    @JoinColumn(name = "project_manager_id")
-    private ProjectManager projectManager;
+    @ManyToOne
+    @JoinColumn(name = "linguist_id")
+    @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "rates"})
+    private Linguist linguist;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @JsonIgnoreProperties({"tasks", "linguists", "client", "projectManager"})
     private Project project;
 
-    @ManyToOne
-    @JoinColumn(name = "linguist_id")
-    private Linguist linguist;
+    //GETS PROJECT MANAGER FROM PROJECT ASSIGNED TO THE TASK
+    @Transient
+    @JsonIgnoreProperties({"projects", "tasks"})
+    public ProjectManager getProjectManager() {
+        if (project != null) {
+            return project.getProjectManager();
+        }
+        return null;
+    }
 
-    //Remove when merged
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;*/
 
     /*//Constructor for testing
     public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology) {

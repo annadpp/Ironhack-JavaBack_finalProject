@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -36,6 +37,11 @@ public class ProjectManagerService {
 
     public ProjectManager createProjectManager(ProjectManager projectManager) {
         try {
+            //Sets projects to empty lists
+            projectManager.setProjects(Collections.emptyList());
+
+            /*Add "Project managers cannot be assigned to tasks or projects directly" if we have time*/
+
             return projectManagerRepository.save(projectManager);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error while creating the project manager", e);
@@ -54,7 +60,7 @@ public class ProjectManagerService {
             existingProjectManager.setProjectTypes(projectManagerDetails.getProjectTypes());
         }
 
-        // Update the fields inherited from the User class
+        // Update the fields inherited from the User class -> not password (User only)
         if (projectManagerDetails.getUsername() != null) {
             existingProjectManager.setUsername(projectManagerDetails.getUsername());
         }

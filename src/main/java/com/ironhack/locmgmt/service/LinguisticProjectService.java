@@ -2,9 +2,8 @@ package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
-import com.ironhack.locmgmt.model.enums.TaskStatus;
+import com.ironhack.locmgmt.model.enums.Status;
 import com.ironhack.locmgmt.model.projects.LinguisticProject;
-import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.repository.LinguisticProjectRepository;
 import com.ironhack.locmgmt.util.ProjectUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,6 +15,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 import static com.ironhack.locmgmt.util.ProjectUtil.updateProjectDates;
@@ -42,8 +42,13 @@ public class LinguisticProjectService {
     }
 
     public LinguisticProject createLinguisticProject(LinguisticProject linguisticProject) {
+        //Sets tasks to empty lists
+        linguisticProject.setTasks(Collections.emptyList());
+
+        /*Add "Projects cannot be assigned directly to tasks or linguists" if we have time*/
+
         //Sets projectStatus to NOT if info not passed by the user when creating project
-        linguisticProject.setProjectStatus(linguisticProject.getProjectStatus() != null ? linguisticProject.getProjectStatus() : TaskStatus.NOT_STARTED);
+        linguisticProject.setProjectStatus(linguisticProject.getProjectStatus() != null ? linguisticProject.getProjectStatus() : Status.NOT_STARTED);
 
         //Update project dates and time remaining
         ProjectUtil.updateProjectDates(linguisticProject);
@@ -96,12 +101,15 @@ public class LinguisticProjectService {
         if (linguisticProjectDetails.getProjectStatus() != null) {
             existingLinguisticProject.setProjectStatus(linguisticProjectDetails.getProjectStatus());
         }
-        if (linguisticProjectDetails.getSourceLanguage() != null) {
-            existingLinguisticProject.setSourceLanguage(linguisticProjectDetails.getSourceLanguage());
+        //Add client when updating project
+        if (linguisticProjectDetails.getClient() != null) {
+            existingLinguisticProject.setClient(linguisticProjectDetails.getClient());
         }
-        if (linguisticProjectDetails.getTargetLanguages() != null) {
-            existingLinguisticProject.setTargetLanguages(linguisticProjectDetails.getTargetLanguages());
+        //Add project manager when updating DTP project
+        if (linguisticProjectDetails.getProjectManager() != null) {
+            existingLinguisticProject.setProjectManager(linguisticProjectDetails.getProjectManager());
         }
+
 
         return linguisticProjectRepository.save(existingLinguisticProject);
     }

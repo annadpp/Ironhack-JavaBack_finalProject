@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -40,6 +41,15 @@ public class LinguistService {
 
     public Linguist createLinguist(Linguist linguist) {
         try {
+            // Set rates, tasks and projects to empty lists
+/*
+            linguist.setProjects(Collections.emptyList());
+*/
+            linguist.setTasks(Collections.emptyList());
+            linguist.setRates(Collections.emptyList());
+
+            /*Add "Linguists cannot be assigned to rates, tasks or projects directly" if we have time*/
+
             return linguistRepository.save(linguist);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error while creating the linguist", e);
@@ -71,7 +81,7 @@ public class LinguistService {
             existingLinguist.setLinguisticTechnologies(linguistDetails.getLinguisticTechnologies());
         }
 
-        // Update the fields inherited from the User class
+        // Update the fields inherited from the User class -> not password (User only)
         if (linguistDetails.getUsername() != null) {
             existingLinguist.setUsername(linguistDetails.getUsername());
         }

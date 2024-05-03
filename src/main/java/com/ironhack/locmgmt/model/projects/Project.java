@@ -1,11 +1,13 @@
 package com.ironhack.locmgmt.model.projects;
 
-/*import com.ironhack.locmgmt.model.Client;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.Task;
-import com.ironhack.locmgmt.model.users.User;*/
+import com.ironhack.locmgmt.model.users.Linguist;
+import com.ironhack.locmgmt.model.users.ProjectManager;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
-import com.ironhack.locmgmt.model.enums.TaskStatus;
+import com.ironhack.locmgmt.model.enums.Status;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -14,6 +16,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -53,32 +57,62 @@ public class Project {
     /*ADD MARGIN -> CALCULATE WITH TASKS PRICE*/
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus projectStatus;
+    private Status projectStatus;
 
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
-    /*fix taking from task*/
-    @Enumerated(EnumType.STRING)
-    private Languages sourceLanguage;
+    //GETS SOURCE LANGUAGE FROM TASKS ASSIGNED TO THE PROJECT
+    @Transient
+    public Languages getSourceLanguage() {
+        if (tasks == null || tasks.isEmpty()) {
+            return null;
+        }
+        return tasks.get(0).getSourceLanguage();
+    }
 
-    @Enumerated(EnumType.STRING)
-    private List<Languages> targetLanguages;
+    //GETS TARGET LANGUAGES FROM TASKS ASSIGNED TO THE PROJECT
+    @Transient
+    public List<Languages> getTargetLanguages() {
+        if (tasks == null || tasks.isEmpty()) {
+            return Collections.emptyList();
+        }
 
-    /*@ManyToMany
-    @JoinTable(
-            name = "project_user",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> users;
+        List<Languages> targetLanguages = new ArrayList<>();
+        for (Task task : tasks) {
+            targetLanguages.add(task.getTargetLanguage());
+        }
+        return targetLanguages;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "project_manager_id")
+    @JsonIgnoreProperties({"projects", "password", "tasks"})
+    private ProjectManager projectManager;
+
+    //GETS LINGUISTS FROM TASKS ASSIGNED TO THE PROJECT
+    @Transient
+    @JsonIgnoreProperties({"projects", "rates", "tasks", "sourceLanguages", "targetLanguages", "projectTypes", "dtpTechnologies", "linguisticTechnologies"})
+    public List<Linguist> getLinguists() {
+        if (tasks == null || tasks.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Linguist> linguists = new ArrayList<>();
+        for (Task task : tasks) {
+            linguists.add(task.getLinguist());
+        }
+        return linguists;
+    }
 
     @OneToMany(mappedBy = "project")
+    @JsonIgnoreProperties({"project", "projectManager", "linguist"})
     private List<Task> tasks;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private Client client;*/
+    @JsonIgnoreProperties("projects")
+    private Client client;
 
     /*//Constructor/getters/setters for testing
     public Project(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, TaskStatus projectStatus, ProjectType projectType) {

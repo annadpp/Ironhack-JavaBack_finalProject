@@ -1,8 +1,9 @@
 package com.ironhack.locmgmt.model;
 
-/*
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ironhack.locmgmt.model.projects.Project;
-*/
 
 import lombok.*;
 import jakarta.persistence.*;
@@ -32,8 +33,9 @@ public class Client {
 
     private String address;
 
-    /*@OneToMany(mappedBy = "client")
-    private List<Project> projects;*/
+    @OneToMany(mappedBy = "client")
+    @JsonIgnoreProperties({"client", "tasks", "timeRemaining", "projectManager", "linguists"})
+    private List<Project> projects;
 
     /*//Constructor for testing
     public Client(String name, String email, String VATNumber, String address) {

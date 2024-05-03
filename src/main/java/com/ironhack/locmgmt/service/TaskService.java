@@ -4,7 +4,7 @@ import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.BillingStatus;
 import com.ironhack.locmgmt.model.enums.ProjectType;
-import com.ironhack.locmgmt.model.enums.TaskStatus;
+import com.ironhack.locmgmt.model.enums.Status;
 import com.ironhack.locmgmt.repository.TaskRepository;
 
 import com.ironhack.locmgmt.util.TaskUtil;
@@ -42,8 +42,11 @@ public class TaskService {
     }
 
     public Task createTask(Task task) {
+     
+        /*Add "Project managers cannot be assigned directly to tasks. They depend on the project the task is assigned to." if we have time*/
+
         //Sets taskStatus and billingStatus to NOT if info not passed by the user when creating task
-        task.setTaskStatus(task.getTaskStatus() != null ? task.getTaskStatus() : TaskStatus.NOT_STARTED);
+        task.setTaskStatus(task.getTaskStatus() != null ? task.getTaskStatus() : Status.NOT_STARTED);
         task.setBillingStatus(task.getBillingStatus() != null ? task.getBillingStatus() : BillingStatus.NOT_INVOICED);
 
         //Update task dates and time remaining
@@ -93,15 +96,14 @@ public class TaskService {
         if (taskDetails.getDtpTechnology() != null) {
             existingTask.setDtpTechnology(taskDetails.getDtpTechnology());
         }
-        /*if (taskDetails.getProjectManager() != null) {
-            existingTask.setProjectManager(taskDetails.getProjectManager());
-        }
+        //Add project when updating task
         if (taskDetails.getProject() != null) {
             existingTask.setProject(taskDetails.getProject());
         }
+        //Add linguist when updating task
         if (taskDetails.getLinguist() != null) {
             existingTask.setLinguist(taskDetails.getLinguist());
-        }*/
+        }
 
         return taskRepository.save(existingTask);
     }

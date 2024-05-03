@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityNotFoundException;
+
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -49,7 +51,7 @@ public class AdminService {
             existingAdmin.setDepartment(adminDetails.getDepartment());
         }
 
-        // Update the fields inherited from the User class
+        // Update the fields inherited from the User class -> not password (User only)
         if (adminDetails.getUsername() != null) {
             existingAdmin.setUsername(adminDetails.getUsername());
         }
