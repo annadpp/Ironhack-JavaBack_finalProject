@@ -12,7 +12,7 @@ import jakarta.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Admin extends User {
+public class Admin extends UserEntity {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.ADMIN;
@@ -22,8 +22,8 @@ public class Admin extends User {
     private Department department;
 
     //Constructor for testing
-    public Admin(String username, String password, String name, String email, UserType userType, Department department) {
-        super(username, password, name, email, userType);
+    /*public Admin(String username, String password, String name, String email, UserType userType, Role role, Department department) {
+        super(username, password, name, email, userType, role);
         this.department = department;
-    }
+    }*/
 }

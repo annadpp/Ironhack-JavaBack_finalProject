@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ProjectManager extends User {
+public class ProjectManager extends UserEntity {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.PROJECT_MANAGER;
@@ -56,10 +56,10 @@ public class ProjectManager extends User {
     }
 
     //Constructor for testing
-    public ProjectManager(String username, String password, String name, String email, UserType userType, List<Languages> spokenLanguages, List<ProjectType> projectTypes) {
+    /*public ProjectManager(String username, String password, String name, String email, UserType userType, List<Languages> spokenLanguages, List<ProjectType> projectTypes) {
         super(username, password, name, email, userType);
         this.spokenLanguages = spokenLanguages;
         this.projectTypes = projectTypes;
-    }
+    }*/
 }
 

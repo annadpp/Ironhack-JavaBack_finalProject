@@ -2,21 +2,19 @@ package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.enums.UserType;
-import com.ironhack.locmgmt.model.users.User;
+import com.ironhack.locmgmt.model.users.UserEntity;
 import com.ironhack.locmgmt.repository.UserRepository;
-import com.ironhack.locmgmt.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class UserServiceTest {
+class UserEntityServiceTest {
 
     @Autowired
     private UserService userService;
@@ -27,22 +25,22 @@ class UserServiceTest {
     @Test
     void deleteUser_ExistingId_DeletedSuccessfully() {
         userRepository.deleteAll(); // Clear the repository
-        User user = new User("user1", "password1", "User 1", "user1@example.com", UserType.ADMIN);
-        userRepository.save(user);
+        UserEntity userEntity = new UserEntity("user1", "password1", "User 1", "user1@example.com", UserType.ADMIN);
+        userRepository.save(userEntity);
 
-        userService.deleteUser(user.getId());
+        userService.deleteUser(userEntity.getId());
 
-        assertThrows(EntityNotFoundException.class, () -> userService.getUserById(user.getId()));
+        assertThrows(EntityNotFoundException.class, () -> userService.getUserById(userEntity.getId()));
     }
 
     @Test
     void getAllUsers_Success() {
-        User user1 = new User("user1", "password1", "User 1", "user1@example.com", UserType.PROJECT_MANAGER);
-        User user2 = new User("user2", "password2", "User 2", "user2@example.com", UserType.ADMIN);
-        userRepository.save(user1);
-        userRepository.save(user2);
+        UserEntity userEntity1 = new UserEntity("user1", "password1", "User 1", "user1@example.com", UserType.PROJECT_MANAGER);
+        UserEntity userEntity2 = new UserEntity("user2", "password2", "User 2", "user2@example.com", UserType.ADMIN);
+        userRepository.save(userEntity1);
+        userRepository.save(userEntity2);
 
-        List<User> result = userService.getAllUsers();
+        List<UserEntity> result = userService.getAllUsers();
 
         assertFalse(result.isEmpty());
         assertEquals(2, result.size());
@@ -56,13 +54,13 @@ class UserServiceTest {
 
     @Test
     void getUserById_ExistingId_UserReturned() {
-        User user = new User("user1", "password1", "User 1", "user1@example.com", UserType.PROJECT_MANAGER);
-        userRepository.save(user);
+        UserEntity userEntity = new UserEntity("user1", "password1", "User 1", "user1@example.com", UserType.PROJECT_MANAGER);
+        userRepository.save(userEntity);
 
-        User result = userService.getUserById(user.getId());
+        UserEntity result = userService.getUserById(userEntity.getId());
 
         assertNotNull(result);
-        assertEquals(user.getUsername(), result.getUsername());
+        assertEquals(userEntity.getUsername(), result.getUsername());
     }
 
     @Test

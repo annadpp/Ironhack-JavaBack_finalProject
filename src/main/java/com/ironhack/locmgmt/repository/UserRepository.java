@@ -1,16 +1,13 @@
 package com.ironhack.locmgmt.repository;
 
-import com.ironhack.locmgmt.model.enums.UserType;
-import com.ironhack.locmgmt.model.users.User;
+import com.ironhack.locmgmt.model.users.UserEntity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
-import java.util.List;
-
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-/*    *//*To be totally implemented with security*//*
-    Optional<User> findByUsername(String username);*/
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
+Optional<UserEntity> findByUsername(String username);
+Boolean existsByUsername(String username);
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ironhack.locmgmt.model.enums.Department;
 import com.ironhack.locmgmt.model.enums.UserType;
 import com.ironhack.locmgmt.model.users.Admin;
-import com.ironhack.locmgmt.model.users.User;
+import com.ironhack.locmgmt.model.users.UserEntity;
 import com.ironhack.locmgmt.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.List;
-
 import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-public class UserControllerTest {
+public class UserEntityControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -38,8 +36,8 @@ public class UserControllerTest {
     @BeforeEach
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        User user = new User("john", "password", "John Doe", "john@example.com", UserType.ADMIN);
-        userRepository.save(user);
+        UserEntity userEntity = new UserEntity("john", "password", "John Doe", "john@example.com", UserType.ADMIN);
+        userRepository.save(userEntity);
     }
 
     @AfterEach
@@ -56,9 +54,9 @@ public class UserControllerTest {
 
         String responseBody = result.getResponse().getContentAsString();
 
-        User user = objectMapper.readValue(responseBody, User.class);
+        UserEntity userEntity = objectMapper.readValue(responseBody, UserEntity.class);
 
-        assertEquals("John Doe", user.getName());
+        assertEquals("John Doe", userEntity.getName());
     }
 
     @Test

@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Linguist extends User {
+public class Linguist extends UserEntity {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.LINGUIST;
@@ -74,12 +74,12 @@ public class Linguist extends User {
     }
 
     //Constructor for testing
-    public Linguist(String username, String password, String name, String email, UserType userType, List<Languages> sourceLanguages, List<Languages> targetLanguages, List<ProjectType> projectTypes, List<DTPTechnology> dtpTechnologies, List<LinguisticTechnology> linguisticTechnologies) {
+   /* public Linguist(String username, String password, String name, String email, UserType userType, List<Languages> sourceLanguages, List<Languages> targetLanguages, List<ProjectType> projectTypes, List<DTPTechnology> dtpTechnologies, List<LinguisticTechnology> linguisticTechnologies) {
         super(username, password, name, email, userType);
         this.sourceLanguages = sourceLanguages;
         this.targetLanguages = targetLanguages;
         this.projectTypes = projectTypes;
         this.dtpTechnologies = dtpTechnologies;
         this.linguisticTechnologies = linguisticTechnologies;
-    }
+    }*/
 }
