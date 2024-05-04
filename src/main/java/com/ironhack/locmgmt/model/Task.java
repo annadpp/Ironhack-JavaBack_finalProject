@@ -2,10 +2,13 @@ package com.ironhack.locmgmt.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.*;
+import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
+import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.users.ProjectManager;
 
+import com.ironhack.locmgmt.util.TaskUtil;
 import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
 import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
 
@@ -16,11 +19,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Duration;
 import java.util.Date;
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "tasks")
 @ValidLinguisticTechnology
 @ValidDTPTechnology
@@ -35,12 +40,17 @@ public class Task {
 
     private String description;
 
-    @Future(message = "The 'deadline' field must be a future date in the format 'yyyy-MM-dd'")
+    @FutureOrPresent(message = "The 'deadline' field must be a date from now in the format 'yyyy-MM-dd'")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deadline;
 
-    //Set with difference between startDate and deadline
+    //Sets with difference between now and deadline
     private Duration timeRemaining;
+
+    //Sets with difference between startDate and deadline
+    private Duration totalTime;
+
+    private BigDecimal taskCost;
 
     @Enumerated(EnumType.STRING)
     private Status taskStatus;
@@ -49,10 +59,10 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
-    //Set with date when taskStatus == started
+    //Sets with date when taskStatus == started
     private Date startDate;
 
-    //Set with date when taskStatus == finished
+    //Sets with date when taskStatus == finished
     private Date endDate;
 
     @Enumerated(EnumType.STRING)
@@ -92,6 +102,20 @@ public class Task {
             return project.getProjectManager();
         }
         return null;
+    }
+
+    //Updates remaining time task is built
+    public static TaskBuilder builder() {
+        return new CustomTaskBuilder();
+    }
+
+    private static class CustomTaskBuilder extends TaskBuilder {
+        @Override
+        public Task build() {
+            Task task = super.build();
+            TaskUtil.updateTimeRemaining(task); //Updates remaining time
+            return task;
+        }
     }
 
     //Constructor for testing

@@ -49,9 +49,10 @@ public class TaskService {
         task.setTaskStatus(task.getTaskStatus() != null ? task.getTaskStatus() : Status.NOT_STARTED);
         task.setBillingStatus(task.getBillingStatus() != null ? task.getBillingStatus() : BillingStatus.NOT_INVOICED);
 
-        //Update task dates and time remaining
+        //Update task dates, time remaining and total time
         TaskUtil.updateTaskDates(task);
         TaskUtil.updateTimeRemaining(task);
+        TaskUtil.updateTotalTime(task);
 
         try {
             return taskRepository.save(task);
@@ -73,6 +74,7 @@ public class TaskService {
         if (taskDetails.getDeadline() != null) {
             existingTask.setDeadline(taskDetails.getDeadline());
             TaskUtil.updateTimeRemaining(existingTask);
+            TaskUtil.updateTotalTime(existingTask);
         }
         if (taskDetails.getTaskStatus() != null) {
             existingTask.setTaskStatus(taskDetails.getTaskStatus());
