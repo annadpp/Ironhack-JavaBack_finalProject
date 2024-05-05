@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ProjectManager extends UserEntity {
+public class ProjectManager extends User {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.PROJECT_MANAGER;

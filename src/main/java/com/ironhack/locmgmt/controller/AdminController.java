@@ -39,11 +39,11 @@ public class AdminController {
         return adminService.createAdmin(admin);
     }
 
-    @PutMapping("/update/{id}")
+    /*@PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Admin updateAdmin(@PathVariable Long id, @RequestBody Admin admin) {
         return adminService.updateAdmin(id, admin);
-    }
+    }*/
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

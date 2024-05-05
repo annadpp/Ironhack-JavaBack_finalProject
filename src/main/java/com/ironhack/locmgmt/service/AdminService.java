@@ -42,7 +42,7 @@ public class AdminService {
     }
 
     /*Only Admin*/
-    public Admin updateAdmin(Long id, Admin adminDetails) {
+    /*public Admin updateAdmin(Long id, Admin adminDetails) {
         Admin existingAdmin = adminRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Admin not found with id: " + id));
 
@@ -63,7 +63,7 @@ public class AdminService {
         }
 
         return adminRepository.save(existingAdmin);
-    }
+    }*/
 
     public void deleteAdmin(Long id) {
         try {

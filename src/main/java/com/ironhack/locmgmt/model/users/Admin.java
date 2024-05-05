@@ -12,7 +12,7 @@ import jakarta.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Admin extends UserEntity {
+public class Admin extends User {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.ADMIN;

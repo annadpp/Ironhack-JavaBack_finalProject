@@ -82,7 +82,7 @@ public class LinguistService {
         }
 
         // Update the fields inherited from the User class -> not password (User only)
-        if (linguistDetails.getUsername() != null) {
+        /*if (linguistDetails.getUsername() != null) {
             existingLinguist.setUsername(linguistDetails.getUsername());
         }
         if (linguistDetails.getName() != null) {
@@ -90,7 +90,7 @@ public class LinguistService {
         }
         if (linguistDetails.getEmail() != null) {
             existingLinguist.setEmail(linguistDetails.getEmail());
-        }
+        }*/
 /*
         existingLinguist.setRates(linguistDetails.getRates());
 */

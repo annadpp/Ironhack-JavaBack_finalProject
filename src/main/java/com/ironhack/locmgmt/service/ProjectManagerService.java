@@ -61,7 +61,7 @@ public class ProjectManagerService {
         }
 
         // Update the fields inherited from the User class -> not password (User only)
-        if (projectManagerDetails.getUsername() != null) {
+        /*if (projectManagerDetails.getUsername() != null) {
             existingProjectManager.setUsername(projectManagerDetails.getUsername());
         }
         if (projectManagerDetails.getName() != null) {
@@ -69,7 +69,7 @@ public class ProjectManagerService {
         }
         if (projectManagerDetails.getEmail() != null) {
             projectManagerDetails.setEmail(projectManagerDetails.getEmail());
-        }
+        }*/
 
         return projectManagerRepository.save(existingProjectManager);
     }

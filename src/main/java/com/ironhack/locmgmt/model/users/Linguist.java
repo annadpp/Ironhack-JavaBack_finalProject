@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Linguist extends UserEntity {
+public class Linguist extends User {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.LINGUIST;

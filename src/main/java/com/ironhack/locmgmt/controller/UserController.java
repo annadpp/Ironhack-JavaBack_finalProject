@@ -1,6 +1,6 @@
 package com.ironhack.locmgmt.controller;
 
-import com.ironhack.locmgmt.model.users.UserEntity;
+import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +18,18 @@ public class UserController {
 
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserEntity> getAllUsers() {
+    public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/get/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserEntity getUserById(@PathVariable Long id) {
-        UserEntity userEntity = userService.getUserById(id);
-        if (userEntity == null) {
+    public User getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        if (user == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
-        return userEntity;
+        return user;
     }
 
     @DeleteMapping("/delete/{id}")

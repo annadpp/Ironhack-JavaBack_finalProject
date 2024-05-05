@@ -1,7 +1,7 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
-import com.ironhack.locmgmt.model.users.UserEntity;
+import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -25,9 +25,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 */
 
-    public List<UserEntity> getAllUsers() {
+    public List<User> getAllUsers() {
         try {
-            List<UserEntity> userEntities = userRepository.findAll();
+            List<User> userEntities = userRepository.findAll();
             if (userEntities.isEmpty()) {
                 throw new EmptyListException("No users were found");
             }
@@ -37,7 +37,7 @@ public class UserService {
         }
     }
 
-    public UserEntity getUserById(Long id) {
+    public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
     }
 
