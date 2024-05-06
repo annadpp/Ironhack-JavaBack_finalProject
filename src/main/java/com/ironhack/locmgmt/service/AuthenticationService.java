@@ -1,7 +1,10 @@
 package com.ironhack.locmgmt.service;
 
-import com.ironhack.locmgmt.security.AuthenticationResponse;
 import com.ironhack.locmgmt.model.enums.Role;
+import com.ironhack.locmgmt.model.users.Admin;
+import com.ironhack.locmgmt.model.users.Linguist;
+import com.ironhack.locmgmt.model.users.ProjectManager;
+import com.ironhack.locmgmt.security.AuthenticationResponse;
 /*
 import com.ironhack.locmgmt.security.Token;
 */
@@ -17,9 +20,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -46,22 +46,41 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public AuthenticationResponse register(User request) {
-
-        // check if user already exist. if exist than authenticate the user
-        if(repository.findByUsername(request.getUsername()).isPresent()) {
-            return new AuthenticationResponse(null, "User already exist");
+    public AuthenticationResponse registerUser(User request, Role role) {
+        if (repository.findByUsername(request.getUsername()).isPresent()) {
+            return new AuthenticationResponse(null, role.name() + " already exists");
         }
 
-        User user = new User();
-/*
+        User user = null;
+        if (request instanceof Admin) {
+            Admin adminRequest = (Admin) request;
+            Admin admin = new Admin();
+            admin.setDepartment(adminRequest.getDepartment());
+            user = admin;
+        } else if (request instanceof Linguist) {
+            Linguist linguistRequest = (Linguist) request;
+            Linguist linguist = new Linguist();
+            linguist.setSourceLanguages(linguistRequest.getSourceLanguages());
+            linguist.setTargetLanguages(linguistRequest.getTargetLanguages());
+            linguist.setProjectTypes(linguistRequest.getProjectTypes());
+            linguist.setDtpTechnologies(linguistRequest.getDtpTechnologies());
+            linguist.setLinguisticTechnologies(linguistRequest.getLinguisticTechnologies());
+            user = linguist;
+        } else if (request instanceof ProjectManager) {
+            ProjectManager pmRequest = (ProjectManager) request;
+            ProjectManager projectManager = new ProjectManager();
+            projectManager.setSpokenLanguages(pmRequest.getSpokenLanguages());
+            projectManager.setProjectTypes(pmRequest.getProjectTypes());
+            user = projectManager;
+        } else {
+            return new AuthenticationResponse(null, "Invalid user type for role " + role);
+        }
+
         user.setName(request.getName());
-*/
+        user.setEmail(request.getEmail());
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-
-        user.setRole(request.getRole());
+        user.setRole(role);
 
         user = repository.save(user);
 
@@ -71,8 +90,19 @@ public class AuthenticationService {
         saveUserToken(jwt, user);
 */
 
-        return new AuthenticationResponse(jwt, "User registration was successful");
+        return new AuthenticationResponse(jwt, role.name() + " registration was successful");
+    }
 
+    public AuthenticationResponse registerAdmin(Admin request) {
+        return registerUser(request, Role.ADMIN);
+    }
+
+    public AuthenticationResponse registerLinguist(Linguist request) {
+        return registerUser(request, Role.LINGUIST);
+    }
+
+    public AuthenticationResponse registerProjectManager(ProjectManager request) {
+        return registerUser(request, Role.PROJECT_MANAGER);
     }
 
     public AuthenticationResponse authenticate(User request) {
@@ -89,7 +119,7 @@ public class AuthenticationService {
         /*revokeAllTokenByUser(user);
         saveUserToken(jwt, user);*/
 
-        return new AuthenticationResponse(jwt, "User login was successful");
+        return new AuthenticationResponse(jwt, "Login was successful");
 
     }
     /*private void revokeAllTokenByUser(User user) {

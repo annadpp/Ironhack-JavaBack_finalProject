@@ -21,7 +21,7 @@ class LinguistTest {
         List<ProjectType> projectTypes = Arrays.asList(ProjectType.TRANSLATION, ProjectType.REVIEW);
         List<DTPTechnology> dtpTechnologies = Arrays.asList(DTPTechnology.FIGMA, DTPTechnology.INDESIGN);
         List<LinguisticTechnology> linguisticTechnologies = Arrays.asList(LinguisticTechnology.TRADOS_STUDIO, LinguisticTechnology.MEMO_Q);
-        linguist = new Linguist("linguistUser", "linguistPassword", "Linguist", "linguist@example.com", UserType.LINGUIST, sourceLanguages, targetLanguages, projectTypes, dtpTechnologies, linguisticTechnologies);
+        linguist = new Linguist("linguistUser", "linguistPassword", "Linguist", "linguist@example.com", Role.LINGUIST, sourceLanguages, targetLanguages, projectTypes, dtpTechnologies, linguisticTechnologies);
     }
 
     @Test

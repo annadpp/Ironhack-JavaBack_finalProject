@@ -2,7 +2,7 @@ package com.ironhack.locmgmt.model.users;
 
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
-import com.ironhack.locmgmt.model.enums.UserType;
+import com.ironhack.locmgmt.model.enums.Role;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class ProjectManagerTest {
     void setUp() {
         List<Languages> languages = Arrays.asList(Languages.ENGLISH, Languages.FRENCH);
         List<ProjectType> projectTypes = Arrays.asList(ProjectType.TRANSLATION, ProjectType.POSTEDITING);
-        projectManager = new ProjectManager("projectManagerUser", "projectManagerPassword", "Project Manager", "pm@example.com", UserType.PROJECT_MANAGER, languages, projectTypes);
+        projectManager = new ProjectManager("projectManagerUser", "projectManagerPassword", "Project Manager", "pm@example.com", Role.PROJECT_MANAGER, languages, projectTypes);
     }
 
     @Test

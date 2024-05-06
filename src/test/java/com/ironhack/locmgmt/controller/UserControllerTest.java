@@ -2,7 +2,7 @@ package com.ironhack.locmgmt.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ironhack.locmgmt.model.enums.Department;
-import com.ironhack.locmgmt.model.enums.UserType;
+import com.ironhack.locmgmt.model.enums.Role;
 import com.ironhack.locmgmt.model.users.Admin;
 import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.repository.UserRepository;
@@ -36,7 +36,7 @@ public class UserControllerTest {
     @BeforeEach
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        User user = new User("john", "password", "John Doe", "john@example.com", UserType.ADMIN);
+        User user = new User("john", "password", "John Doe", "john@example.com", Role.ADMIN);
         userRepository.save(user);
     }
 
@@ -94,7 +94,7 @@ public class UserControllerTest {
 
     @Test
     void createAdmin_ValidAdmin_ReturnsCreatedAdmin() throws Exception {
-        Admin admin = new Admin("Jane", "password", "Jane Smith", "jane@example.com", UserType.ADMIN, Department.ADMINISTRATION);
+        Admin admin = new Admin("Jane", "password", "Jane Smith", "jane@example.com", Role.ADMIN, Department.ADMINISTRATION);
         String body = objectMapper.writeValueAsString(admin);
         mockMvc.perform(post("/admins/save")
                         .contentType(MediaType.APPLICATION_JSON)

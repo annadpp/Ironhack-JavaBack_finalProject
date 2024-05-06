@@ -2,14 +2,12 @@ package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.enums.Department;
-import com.ironhack.locmgmt.model.enums.UserType;
+import com.ironhack.locmgmt.model.enums.Role;
 import com.ironhack.locmgmt.model.users.Admin;
 import com.ironhack.locmgmt.repository.AdminRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -32,13 +30,13 @@ class AdminServiceTest {
 
     @Test
     void setUp() {
-        referenceAdmin = new Admin("admin1", "password", "Admin One", "admin1@example.com", UserType.ADMIN, Department.IT);
+        referenceAdmin = new Admin("admin1", "password", "Admin One", "admin1@example.com", Role.ADMIN, Department.IT);
         adminRepository.save(referenceAdmin);
     }
 
     @Test
     void createAdmin_Success() {
-        Admin newAdmin = new Admin("admin2", "password", "Admin Two", "admin2@example.com", UserType.ADMIN, Department.ADMINISTRATION);
+        Admin newAdmin = new Admin("admin2", "password", "Admin Two", "admin2@example.com", Role.ADMIN, Department.ADMINISTRATION);
 
         Admin createdAdmin = adminService.createAdmin(newAdmin);
 
@@ -49,15 +47,15 @@ class AdminServiceTest {
 
     @Test
     void createAdmin_NullDepartment_ExceptionThrown() {
-        Admin newAdmin = new Admin("admin2", "password", "Admin Two", "admin2@example.com", UserType.ADMIN, null);
+        Admin newAdmin = new Admin("admin2", "password", "Admin Two", "admin2@example.com", Role.ADMIN, null);
 
         assertThrows(ConstraintViolationException.class, () -> adminService.createAdmin(newAdmin));
     }
 
     @Test
     void updateAdmin_Success() {
-        referenceAdmin = adminService.createAdmin(new Admin("admin1", "password", "Admin One", "admin1@example.com", UserType.ADMIN, Department.IT));
-        Admin updatedAdmin = new Admin("admin1_updated", "password_updated", "Admin One Updated", "admin1_updated@example.com", UserType.ADMIN, Department.ADMINISTRATION);
+        referenceAdmin = adminService.createAdmin(new Admin("admin1", "password", "Admin One", "admin1@example.com", Role.ADMIN, Department.IT));
+        Admin updatedAdmin = new Admin("admin1_updated", "password_updated", "Admin One Updated", "admin1_updated@example.com", Role.ADMIN, Department.ADMINISTRATION);
 
         Admin result = adminService.updateAdmin(referenceAdmin.getId(), updatedAdmin);
 
@@ -70,7 +68,7 @@ class AdminServiceTest {
 
     @Test
     void deleteAdmin_Success() {
-        Admin newAdmin = new Admin("adminToDelete", "password", "Admin To Delete", "adminToDelete@example.com", UserType.ADMIN, Department.ADMINISTRATION);
+        Admin newAdmin = new Admin("adminToDelete", "password", "Admin To Delete", "adminToDelete@example.com", Role.ADMIN, Department.ADMINISTRATION);
         Admin savedAdmin = adminRepository.save(newAdmin);
 
         adminService.deleteAdmin(savedAdmin.getId());
@@ -87,7 +85,7 @@ class AdminServiceTest {
 
     @Test
     void getAllAdmins_Success() {
-        Admin newAdmin = new Admin("newAdmin", "password", "New Admin", "newAdmin@example.com", UserType.ADMIN, Department.ADMINISTRATION);
+        Admin newAdmin = new Admin("newAdmin", "password", "New Admin", "newAdmin@example.com", Role.ADMIN, Department.ADMINISTRATION);
         adminService.createAdmin(newAdmin);
 
         assertDoesNotThrow(() -> {

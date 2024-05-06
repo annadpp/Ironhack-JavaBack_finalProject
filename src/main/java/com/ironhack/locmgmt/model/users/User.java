@@ -1,13 +1,13 @@
 package com.ironhack.locmgmt.model.users;
 
 import com.ironhack.locmgmt.model.enums.Role;
-import com.ironhack.locmgmt.model.enums.UserType;
 /*
 import com.ironhack.locmgmt.security.Token;
 */
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,17 +15,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-/*@Data*/
-/*@AllArgsConstructor
-@NoArgsConstructor*/
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-/*
     @Setter(AccessLevel.NONE)
-*/
     private Long id;
 
     @NotEmpty(message = "Username cannot be empty")
@@ -46,26 +44,11 @@ public class User implements UserDetails {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private UserType userType;
-
-    @Enumerated(EnumType.STRING)
     private Role role;
 
     //JWT
     /*@OneToMany(mappedBy = "user")
     private List<Token> tokens;*/
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -87,30 +70,11 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     /*public List<Token> getTokens() {
         return tokens;

@@ -1,6 +1,6 @@
 package com.ironhack.locmgmt.model.users;
 
-import com.ironhack.locmgmt.model.enums.UserType;
+import com.ironhack.locmgmt.model.enums.Role;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ class UserTest {
 
     @BeforeEach
     void setUp() {
-        user = new User("testUser", "testPassword", "Test User", "test@example.com", UserType.ADMIN);
+        user = new User("testUser", "testPassword", "Test User", "test@example.com", Role.ADMIN);
     }
 
     @Test
@@ -23,7 +23,7 @@ class UserTest {
         assertEquals("testPassword", user.getPassword());
         assertEquals("Test User", user.getName());
         assertEquals("test@example.com", user.getEmail());
-        assertEquals(UserType.ADMIN, user.getUserType());
+        assertEquals(Role.ADMIN, user.getUserType());
     }
 
     @Test
@@ -52,7 +52,7 @@ class UserTest {
 
     @Test
     void testUserTypeSetter() {
-        user.setUserType(UserType.ADMIN);
-        assertEquals(UserType.ADMIN, user.getUserType());
+        user.setUserType(Role.ADMIN);
+        assertEquals(Role.ADMIN, user.getUserType());
     }
 }

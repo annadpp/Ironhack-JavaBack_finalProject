@@ -1,7 +1,7 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
-import com.ironhack.locmgmt.model.enums.UserType;
+import com.ironhack.locmgmt.model.enums.Role;
 import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,7 +25,7 @@ class UserServiceTest {
     @Test
     void deleteUser_ExistingId_DeletedSuccessfully() {
         userRepository.deleteAll(); // Clear the repository
-        User user = new User("user1", "password1", "User 1", "user1@example.com", UserType.ADMIN);
+        User user = new User("user1", "password1", "User 1", "user1@example.com", Role.ADMIN);
         userRepository.save(user);
 
         userService.deleteUser(user.getId());
@@ -35,8 +35,8 @@ class UserServiceTest {
 
     @Test
     void getAllUsers_Success() {
-        User user1 = new User("user1", "password1", "User 1", "user1@example.com", UserType.PROJECT_MANAGER);
-        User user2 = new User("user2", "password2", "User 2", "user2@example.com", UserType.ADMIN);
+        User user1 = new User("user1", "password1", "User 1", "user1@example.com", Role.PROJECT_MANAGER);
+        User user2 = new User("user2", "password2", "User 2", "user2@example.com", Role.ADMIN);
         userRepository.save(user1);
         userRepository.save(user2);
 
@@ -54,7 +54,7 @@ class UserServiceTest {
 
     @Test
     void getUserById_ExistingId_UserReturned() {
-        User user = new User("user1", "password1", "User 1", "user1@example.com", UserType.PROJECT_MANAGER);
+        User user = new User("user1", "password1", "User 1", "user1@example.com", Role.PROJECT_MANAGER);
         userRepository.save(user);
 
         User result = userService.getUserById(user.getId());
