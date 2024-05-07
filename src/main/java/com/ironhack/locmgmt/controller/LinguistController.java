@@ -1,5 +1,7 @@
 package com.ironhack.locmgmt.controller;
 
+import com.ironhack.locmgmt.dto.LinguistDTO;
+import com.ironhack.locmgmt.dto.TaskDTO;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
@@ -36,12 +38,12 @@ public class LinguistController {
         return linguist;
     }
 
-    /*@PostMapping("/save")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Linguist createLinguist(@RequestBody Linguist linguist) {
-        return linguistService.createLinguist(linguist);
+    @GetMapping("/get/linguist")
+    @ResponseStatus(HttpStatus.OK)
+    public List<LinguistDTO> getAllLinguistLinguist() {
+        return linguistService.getAllLinguistsDTO();
     }
-*/
+
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Linguist updateLinguist(@PathVariable Long id, @RequestBody Linguist linguist) {

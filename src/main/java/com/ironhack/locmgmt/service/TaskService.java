@@ -56,7 +56,6 @@ public class TaskService {
             List<TaskDTO> taskDTOs = new ArrayList<>();
             for (Task task : tasks) {
                 TaskDTO taskDTO = new TaskDTO();
-                // Establecer atributos de TaskDTO
                 taskDTO.setId(task.getId());
                 taskDTO.setName(task.getName());
                 taskDTO.setDescription(task.getDescription());
