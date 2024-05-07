@@ -1,6 +1,7 @@
 package com.ironhack.locmgmt.repository;
 
 import com.ironhack.locmgmt.model.enums.Department;
+import com.ironhack.locmgmt.model.enums.Role;
 import com.ironhack.locmgmt.model.enums.UserType;
 import com.ironhack.locmgmt.model.users.Admin;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ class AdminRepositoryTest {
     @Test
     void findByDepartment() {
         // Create a sample admin
-        Admin admin = new Admin("adminUser", "adminPassword", "Admin", "admin@example.com", UserType.ADMIN, Department.ADMINISTRATION);
+        Admin admin = new Admin("adminUser", "adminPassword", "Admin", "admin@example.com", Role.ADMIN, Department.ADMINISTRATION);
         adminRepository.save(admin);
 
         // Retrieve admins by department

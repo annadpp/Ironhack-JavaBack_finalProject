@@ -1,6 +1,5 @@
 package com.ironhack.locmgmt.controller;
 
-import com.ironhack.locmgmt.model.enums.UserType;
 import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.service.UserService;
 
@@ -33,6 +32,7 @@ public class UserController {
         return user;
     }
 
+    //PENSAR SI ELIMINARLO
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id) {

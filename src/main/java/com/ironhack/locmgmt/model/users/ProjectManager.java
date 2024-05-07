@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
-import com.ironhack.locmgmt.model.enums.UserType;
+import com.ironhack.locmgmt.model.enums.Role;
 import com.ironhack.locmgmt.model.projects.Project;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -15,21 +15,20 @@ import java.util.Collections;
 import java.util.List;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class ProjectManager extends User {
-    @Builder.Default
-    @Enumerated(EnumType.STRING)
-    private UserType userType = UserType.PROJECT_MANAGER;
-
+/*
     @NotNull(message = "Spoken languages cannot be empty")
+*/
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Languages> spokenLanguages;
 
+/*
     @NotNull(message = "Project types cannot be empty")
+*/
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
@@ -56,8 +55,8 @@ public class ProjectManager extends User {
     }
 
     //Constructor for testing
-    public ProjectManager(String username, String password, String name, String email, UserType userType, List<Languages> spokenLanguages, List<ProjectType> projectTypes) {
-        super(username, password, name, email, userType);
+    public ProjectManager(String username, String password, String name, String email, Role role, List<Languages> spokenLanguages, List<ProjectType> projectTypes) {
+        super(username, password, name, email, role);
         this.spokenLanguages = spokenLanguages;
         this.projectTypes = projectTypes;
     }

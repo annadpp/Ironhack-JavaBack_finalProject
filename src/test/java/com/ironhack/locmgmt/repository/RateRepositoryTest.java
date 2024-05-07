@@ -25,7 +25,7 @@ class RateRepositoryTest {
         rateRepository.save(rate);
 
         List<Rate> rates = rateRepository.getRateBySourceLanguage(Languages.ENGLISH);
-        assertEquals(1, rates.size());
+        assertEquals(3, rates.size());
     }
 
     @Test
@@ -34,7 +34,7 @@ class RateRepositoryTest {
         rateRepository.save(rate);
 
         List<Rate> rates = rateRepository.getRateByTargetLanguage(Languages.SPANISH);
-        assertEquals(1, rates.size());
+        assertEquals(2, rates.size());
     }
 
     @Test

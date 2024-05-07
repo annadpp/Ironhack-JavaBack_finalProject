@@ -33,11 +33,11 @@ public class AdminController {
         return admin;
     }
 
-    @PostMapping("/save")
+    /*@PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
     public Admin createAdmin(@RequestBody Admin admin) {
         return adminService.createAdmin(admin);
-    }
+    }*/
 
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)

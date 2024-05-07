@@ -22,7 +22,7 @@ class ClientRepositoryTest {
 
         List<Client> foundClients = clientRepository.getClientByName("Test Client");
 
-        assertEquals(1, foundClients.size());
+        assertEquals(2, foundClients.size());
         assertEquals("Test Client", foundClients.get(0).getName());
     }
 

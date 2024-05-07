@@ -6,6 +6,7 @@ import com.ironhack.locmgmt.model.enums.ProjectType;
 
 import com.ironhack.locmgmt.model.users.Linguist;
 
+import com.ironhack.locmgmt.validation.annotations.ValidRate;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import jakarta.persistence.*;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ValidRate
 @Table(name = "rates")
 public class Rate {
     @Id
@@ -24,8 +26,11 @@ public class Rate {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @Positive(message = "Price must be positive.")
+    @Positive(message = "Word price must be positive.")
     private BigDecimal wordPrice;
+
+    @Positive(message = "Page price must be positive.")
+    private BigDecimal pagePrice;
 
     @NotNull(message = "Source language cannot be empty")
     @Enumerated(EnumType.STRING)

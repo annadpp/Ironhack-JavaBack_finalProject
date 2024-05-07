@@ -34,11 +34,11 @@ public class ProjectManagerController {
         return projectManager;
     }
 
-    @PostMapping("/save")
+    /*@PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectManager createProjectManager(@RequestBody ProjectManager projectManager) {
         return projectManagerService.createProjectManager(projectManager);
-    }
+    }*/
 
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)

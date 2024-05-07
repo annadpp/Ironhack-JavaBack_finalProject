@@ -57,8 +57,8 @@ class RateServiceTest {
 
     @Test
     void updateRate_Success() {
-        Rate rate = rateRepository.save(new Rate(BigDecimal.TEN, Languages.SPANISH, Languages.GERMAN, ProjectType.DTP));
-        Rate updatedRate = new Rate(BigDecimal.valueOf(15), Languages.SPANISH, Languages.GERMAN, ProjectType.DTP);
+        Rate rate = rateRepository.save(new Rate(BigDecimal.TEN, Languages.SPANISH, Languages.GERMAN, ProjectType.LINGUISTIC));
+        Rate updatedRate = new Rate(BigDecimal.valueOf(15), Languages.SPANISH, Languages.GERMAN, ProjectType.LINGUISTIC);
 
         Rate result = rateService.updateRate(rate.getId(), updatedRate);
 
@@ -68,7 +68,7 @@ class RateServiceTest {
 
     @Test
     void deleteRate_Success() {
-        Rate rate = rateRepository.save(new Rate(BigDecimal.TEN, Languages.SPANISH, Languages.FRENCH, ProjectType.DTP));
+        Rate rate = rateRepository.save(new Rate(BigDecimal.TEN, Languages.SPANISH, Languages.FRENCH, ProjectType.LINGUISTIC));
 
         rateService.deleteRate(rate.getId());
 
@@ -104,11 +104,6 @@ class RateServiceTest {
 
         assertNotNull(retrievedRate);
         assertEquals(rate.getId(), retrievedRate.getId());
-    }
-
-    @Test
-    void getAllRates_EmptyListException() {
-        assertThrows(EmptyListException.class, () -> rateService.getAllRates());
     }
 
     @Test

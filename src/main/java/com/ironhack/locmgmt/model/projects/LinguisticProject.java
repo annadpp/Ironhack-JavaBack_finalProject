@@ -4,6 +4,7 @@ import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 
 import com.ironhack.locmgmt.model.enums.Status;
+import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import jakarta.persistence.*;
@@ -16,6 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ValidLinguisticTechnology
 public class LinguisticProject extends Project {
     @Builder.Default
     @Enumerated(EnumType.STRING)

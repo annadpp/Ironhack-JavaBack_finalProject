@@ -1,29 +1,25 @@
 package com.ironhack.locmgmt.model.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.Department;
 
-import com.ironhack.locmgmt.model.enums.UserType;
+import com.ironhack.locmgmt.model.enums.Role;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import jakarta.persistence.*;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Admin extends User {
-    @Builder.Default
-    @Enumerated(EnumType.STRING)
-    private UserType userType = UserType.ADMIN;
-
     @NotNull(message = "Department cannot be empty")
     @Enumerated(EnumType.STRING)
     private Department department;
 
     //Constructor for testing
-    public Admin(String username, String password, String name, String email, UserType userType, Department department) {
-        super(username, password, name, email, userType);
+    public Admin(String username, String password, String name, String email, Role role, Department department) {
+        super(username, password, name, email, role);
         this.department = department;
     }
 }

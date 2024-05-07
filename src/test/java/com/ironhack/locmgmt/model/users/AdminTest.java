@@ -1,7 +1,7 @@
 package com.ironhack.locmgmt.model.users;
 
 import com.ironhack.locmgmt.model.enums.Department;
-import com.ironhack.locmgmt.model.enums.UserType;
+import com.ironhack.locmgmt.model.enums.Role;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ class AdminTest {
 
     @BeforeEach
     void setUp() {
-        admin = new Admin("adminUser", "adminPassword", "Admin", "admin@example.com", UserType.ADMIN, Department.ADMINISTRATION);
+        admin = new Admin("adminUser", "adminPassword", "Admin", "admin@example.com", Role.ADMIN, Department.ADMINISTRATION);
     }
 
     @Test

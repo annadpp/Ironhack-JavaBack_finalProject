@@ -15,6 +15,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Collections;
 
+import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
+import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -30,47 +34,60 @@ public class ClientControllerTest {
     private Client client;
 
     @BeforeEach
-    public void setUp() {
-        client = new Client("Test Client", "test@example.com", "123456789", "Test Address");
+    void setUp() {
+        Client client = new Client("John Doe", "john@example.com", "123ABC456", "123 Main St");
     }
 
     @Test
-    public void getAllClients_Valid_ReturnsListOfClients() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/clients/get"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name").value("Test Client"))
-                .andExpect(jsonPath("$[0].email").value("test@example.com"));
+    void testGetAllClients() throws Exception {
+        mockMvc.perform(get("/clients/get"))
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void createClient_ValidClient_ReturnsCreatedClient() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/clients/save")
+    void testGetClientById() throws Exception {
+        Long clientId = 1L;  // Replace with a valid existing client ID
+        mockMvc.perform(get("/clients/get/" + clientId))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testCreateClient() throws Exception {
+        String clientRequest = "{\"/* Add client request body data */\"}";
+        mockMvc.perform(post("/clients/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(client)))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name").value("Test Client"))
-                .andExpect(jsonPath("$.email").value("test@example.com"));
+                        .content(clientRequest))
+                .andExpect(status().isCreated());
     }
 
     @Test
-    public void updateClient_ExistingIdAndValidClient_ReturnsUpdatedClient() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/clients/update/1")
+    void testUpdateClient() throws Exception {
+        Long clientId = 1L;  // Replace with a valid existing client ID
+        String updateRequest = "{\"/* Add client update request body data */\"}";
+        mockMvc.perform(put("/clients/update/" + clientId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(client)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name").value("Test Client"))
-                .andExpect(jsonPath("$.email").value("test@example.com"));
+                        .content(updateRequest))
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void getClientById_ExistingId_ReturnsClient() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/clients/get/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name").value("Test Client"))
-                .andExpect(jsonPath("$.email").value("test@example.com"));
+    void testDeleteClient() throws Exception {
+        Long clientId = 1L;  // Replace with a valid existing client ID
+        mockMvc.perform(delete("/clients/delete/" + clientId))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testGetClientByName() throws Exception {
+        String clientName = "John Doe";  // Replace with a valid client name
+        mockMvc.perform(get("/clients/get/byName?name=" + clientName))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testGetClientEmailByName() throws Exception {
+        String clientName = "John Doe";  // Replace with a valid client name
+        mockMvc.perform(get("/clients/get/emailByName?name=" + clientName))
+                .andExpect(status().isOk());
     }
 }

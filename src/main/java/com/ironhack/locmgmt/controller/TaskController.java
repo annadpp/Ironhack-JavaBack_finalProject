@@ -1,5 +1,6 @@
 package com.ironhack.locmgmt.controller;
 
+import com.ironhack.locmgmt.dto.TaskDTO;
 import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.BillingStatus;
 import com.ironhack.locmgmt.model.enums.ProjectType;
@@ -22,10 +23,16 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @GetMapping("/get")
+    @GetMapping("/get/project-manager")
     @ResponseStatus(HttpStatus.OK)
-    public List<Task> getAllTasks() {
+    public List<Task> getAllTasksPM() {
         return taskService.getAllTasks();
+    }
+
+    @GetMapping("/get/linguist")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDTO> getAllTasksLinguist() {
+        return taskService.getAllTasksDTO();
     }
 
     @GetMapping("/get/{id}")
