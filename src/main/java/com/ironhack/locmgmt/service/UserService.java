@@ -1,7 +1,6 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
-import com.ironhack.locmgmt.model.enums.UserType;
 import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.repository.UserRepository;
 
@@ -22,17 +21,14 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-/*
-    private final PasswordEncoder passwordEncoder;
-*/
 
     public List<User> getAllUsers() {
         try {
-            List<User> users = userRepository.findAll();
-            if (users.isEmpty()) {
+            List<User> userEntities = userRepository.findAll();
+            if (userEntities.isEmpty()) {
                 throw new EmptyListException("No users were found");
             }
-            return users;
+            return userEntities;
         } catch (DataAccessException e) {
             throw new DataRetrievalFailureException("Error while retrieving all users", e);
         }

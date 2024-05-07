@@ -1,12 +1,15 @@
 package com.ironhack.locmgmt.service;
 
+import com.ironhack.locmgmt.dto.TaskDTO;
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.BillingStatus;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.Status;
+import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.repository.TaskRepository;
 
+import com.ironhack.locmgmt.util.SecurityUtil;
 import com.ironhack.locmgmt.util.TaskUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +29,9 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    private SecurityUtil securityUtil;
+
     public List<Task> getAllTasks() {
         try {
             List<Task> rates = taskRepository.findAll();
@@ -34,6 +41,43 @@ public class TaskService {
             return rates;
         } catch (DataAccessException e) {
             throw new DataRetrievalFailureException("Error while retrieving all tasks", e);
+        }
+    }
+
+    public List<TaskDTO> getAllTasksDTO() {
+        try {
+            Linguist linguist = securityUtil.getCurrentLinguist(); //Get current linguist
+
+            List<Task> tasks = taskRepository.findByLinguist(linguist); //Filter tasks per current linguist - only current linguist can access its own tasks
+            if (tasks.isEmpty()) {
+                throw new EmptyListException("No tasks were found for the linguist");
+            }
+
+            List<TaskDTO> taskDTOs = new ArrayList<>();
+            for (Task task : tasks) {
+                TaskDTO taskDTO = new TaskDTO();
+                taskDTO.setId(task.getId());
+                taskDTO.setName(task.getName());
+                taskDTO.setDescription(task.getDescription());
+                taskDTO.setDeadline(task.getDeadline());
+                taskDTO.setTimeRemaining(task.getTimeRemaining());
+                taskDTO.setTaskStatus(task.getTaskStatus());
+                taskDTO.setProjectType(task.getProjectType());
+                taskDTO.setStartDate(task.getStartDate());
+                taskDTO.setEndDate(task.getEndDate());
+                taskDTO.setBillingStatus(task.getBillingStatus());
+                taskDTO.setSourceLanguage(task.getSourceLanguage());
+                taskDTO.setTargetLanguage(task.getTargetLanguage());
+                taskDTO.setLinguisticTechnology(task.getLinguisticTechnology());
+                taskDTO.setDtpTechnology(task.getDtpTechnology());
+                taskDTO.setLinguist(task.getLinguist());
+                taskDTO.setProjectManager(task.getProjectManager());
+                taskDTOs.add(taskDTO);
+            }
+
+            return taskDTOs;
+        } catch (DataAccessException e) {
+            throw new DataRetrievalFailureException("Error while retrieving tasks for the linguist", e);
         }
     }
 
@@ -49,9 +93,10 @@ public class TaskService {
         task.setTaskStatus(task.getTaskStatus() != null ? task.getTaskStatus() : Status.NOT_STARTED);
         task.setBillingStatus(task.getBillingStatus() != null ? task.getBillingStatus() : BillingStatus.NOT_INVOICED);
 
-        //Update task dates and time remaining
+        //Update task dates, time remaining and total time
         TaskUtil.updateTaskDates(task);
         TaskUtil.updateTimeRemaining(task);
+        TaskUtil.updateTotalTime(task);
 
         try {
             return taskRepository.save(task);
@@ -73,6 +118,7 @@ public class TaskService {
         if (taskDetails.getDeadline() != null) {
             existingTask.setDeadline(taskDetails.getDeadline());
             TaskUtil.updateTimeRemaining(existingTask);
+            TaskUtil.updateTotalTime(existingTask);
         }
         if (taskDetails.getTaskStatus() != null) {
             existingTask.setTaskStatus(taskDetails.getTaskStatus());

@@ -3,15 +3,21 @@ package com.ironhack.locmgmt.model.projects;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 
+import com.ironhack.locmgmt.model.enums.Status;
+import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ValidLinguisticTechnology
 public class LinguisticProject extends Project {
     @Builder.Default
     @Enumerated(EnumType.STRING)
@@ -29,13 +35,11 @@ public class LinguisticProject extends Project {
     private LinguisticTechnology linguisticTechnology;
 
 
-    /*//Constructor for testing
-    public LinguisticProject(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, TaskStatus projectStatus, ProjectType projectType, Integer newWords, Integer fuzzyWords, LinguisticTechnology linguisticTechnology, Languages sourceLanguage, List<Languages> targetLanguages) {
-        super(name, description, startDate, endDate, totalBudget, projectStatus, projectType);
+    //Constructor for testing
+    public LinguisticProject(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, Status projectStatus, Integer newWords, Integer fuzzyWords, LinguisticTechnology linguisticTechnology) {
+        super(name, description, startDate, endDate, totalBudget, projectStatus, ProjectType.LINGUISTIC);
         this.newWords = newWords;
         this.fuzzyWords = fuzzyWords;
         this.linguisticTechnology = linguisticTechnology;
-        this.sourceLanguage = sourceLanguage;
-        this.targetLanguages = targetLanguages;
-    }*/
+    }
 }

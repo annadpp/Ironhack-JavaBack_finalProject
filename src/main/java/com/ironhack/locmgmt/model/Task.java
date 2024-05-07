@@ -2,10 +2,13 @@ package com.ironhack.locmgmt.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.*;
+import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
+import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.users.ProjectManager;
 
+import com.ironhack.locmgmt.util.TaskUtil;
 import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
 import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
 
@@ -16,11 +19,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Duration;
 import java.util.Date;
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "tasks")
 @ValidLinguisticTechnology
 @ValidDTPTechnology
@@ -35,12 +40,17 @@ public class Task {
 
     private String description;
 
-    @Future(message = "The 'deadline' field must be a future date in the format 'yyyy-MM-dd'")
+    @FutureOrPresent(message = "The 'deadline' field must be a date from now in the format 'yyyy-MM-dd'")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deadline;
 
-    //Set with difference between startDate and deadline
+    //Sets with difference between now and deadline
     private Duration timeRemaining;
+
+    //Sets with difference between startDate and deadline
+    private Duration totalTime;
+
+    private BigDecimal taskCost;
 
     @Enumerated(EnumType.STRING)
     private Status taskStatus;
@@ -49,10 +59,10 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
-    //Set with date when taskStatus == started
+    //Sets with date when taskStatus == started
     private Date startDate;
 
-    //Set with date when taskStatus == finished
+    //Sets with date when taskStatus == finished
     private Date endDate;
 
     @Enumerated(EnumType.STRING)
@@ -75,12 +85,12 @@ public class Task {
     private DTPTechnology dtpTechnology;
 
     @ManyToOne
-    @JoinColumn(name = "linguist_id")
+    @JoinColumn(name = "linguist_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
     @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "rates"})
     private Linguist linguist;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
     @JsonIgnoreProperties({"tasks", "linguists", "client", "projectManager"})
     private Project project;
 
@@ -94,21 +104,36 @@ public class Task {
         return null;
     }
 
+    //Updates remaining time task is built
+    public static TaskBuilder builder() {
+        return new CustomTaskBuilder();
+    }
 
-    /*//Constructor for testing
-    public Task(String name, String description, Date deadline, Duration timeRemaining, TaskStatus taskStatus, Role role, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology) {
-        this.id = id;
+    private static class CustomTaskBuilder extends TaskBuilder {
+        @Override
+        public Task build() {
+            Task task = super.build();
+            TaskUtil.updateTimeRemaining(task); //Updates remaining time
+            return task;
+        }
+    }
+
+    //Constructor for testing
+    public Task(String name, String description, Date deadline, Duration timeRemaining, Status taskStatus, ProjectType projectType, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology, DTPTechnology dtpTechnology, Linguist linguist, Project project) {
         this.name = name;
         this.description = description;
         this.deadline = deadline;
         this.timeRemaining = timeRemaining;
         this.taskStatus = taskStatus;
-        this.role = role;
+        this.projectType = projectType;
         this.startDate = startDate;
         this.endDate = endDate;
         this.billingStatus = billingStatus;
         this.sourceLanguage = sourceLanguage;
         this.targetLanguage = targetLanguage;
         this.linguisticTechnology = linguisticTechnology;
-    }*/
+        this.dtpTechnology = dtpTechnology;
+        this.linguist = linguist;
+        this.project = project;
+    }
 }

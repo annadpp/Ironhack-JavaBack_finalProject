@@ -1,5 +1,6 @@
 package com.ironhack.locmgmt.service;
 
+import com.ironhack.locmgmt.dto.LinguistDTO;
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.enums.Languages;
@@ -7,6 +8,7 @@ import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.repository.LinguistRepository;
+import com.ironhack.locmgmt.util.SecurityUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.service.spi.ServiceException;
@@ -14,13 +16,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class LinguistService {
     @Autowired
     private LinguistRepository linguistRepository;
+
+    @Autowired
+    private SecurityUtil securityUtil;
 
     public List<Linguist> getAllLinguists() {
         try {
@@ -34,27 +39,60 @@ public class LinguistService {
         }
     }
 
+    public List<LinguistDTO> getAllLinguistsDTO() {
+        try {
+            Linguist linguist = securityUtil.getCurrentLinguist();
+
+            List<Linguist> returnedLinguists = linguistRepository.findByUsername(linguist.getUsername());
+
+            if (returnedLinguists.isEmpty()) {
+                throw new EmptyListException("No linguists were found for the current linguist");
+            }
+
+            List<LinguistDTO> linguistDTOs = new ArrayList<>();
+            for (Linguist returnedLinguist : returnedLinguists) {
+                LinguistDTO linguistDTO = new LinguistDTO();
+                linguistDTO.setId(returnedLinguist.getId());
+                linguistDTO.setName(returnedLinguist.getName());
+                linguistDTO.setEmail(returnedLinguist.getEmail());
+                linguistDTO.setUsername(returnedLinguist.getUsername());
+                linguistDTO.setSourceLanguages(returnedLinguist.getSourceLanguages());
+                linguistDTO.setTargetLanguages(returnedLinguist.getTargetLanguages());
+                linguistDTO.setProjectTypes(returnedLinguist.getProjectTypes());
+                linguistDTO.setDtpTechnologies(returnedLinguist.getDtpTechnologies());
+                linguistDTO.setLinguisticTechnologies(returnedLinguist.getLinguisticTechnologies());
+                linguistDTO.setRates(returnedLinguist.getRates());
+                linguistDTO.setTasks(returnedLinguist.getTasks());
+                linguistDTOs.add(linguistDTO);
+            }
+
+            return linguistDTOs;
+        } catch (DataAccessException e) {
+            throw new DataRetrievalFailureException("Error while retrieving linguists for the current linguist", e);
+        }
+    }
+
     public Linguist getLinguistById(Long id) {
         return linguistRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Linguist not found with id: " + id));
 
     }
 
-    public Linguist createLinguist(Linguist linguist) {
+    /*public Linguist createLinguist(Linguist linguist) {
         try {
             // Set rates, tasks and projects to empty lists
-/*
+*//*
             linguist.setProjects(Collections.emptyList());
-*/
+*//*
             linguist.setTasks(Collections.emptyList());
             linguist.setRates(Collections.emptyList());
 
-            /*Add "Linguists cannot be assigned to rates, tasks or projects directly" if we have time*/
+            *//*Add "Linguists cannot be assigned to rates, tasks or projects directly" if we have time*//*
 
             return linguistRepository.save(linguist);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error while creating the linguist", e);
         }
-    }
+    }*/
 
     public Linguist updateLinguist(Long id, Linguist linguistDetails) {
         Linguist existingLinguist = linguistRepository.findById(id)
@@ -82,7 +120,7 @@ public class LinguistService {
         }
 
         // Update the fields inherited from the User class -> not password (User only)
-        if (linguistDetails.getUsername() != null) {
+        /*if (linguistDetails.getUsername() != null) {
             existingLinguist.setUsername(linguistDetails.getUsername());
         }
         if (linguistDetails.getName() != null) {
@@ -90,7 +128,7 @@ public class LinguistService {
         }
         if (linguistDetails.getEmail() != null) {
             existingLinguist.setEmail(linguistDetails.getEmail());
-        }
+        }*/
 /*
         existingLinguist.setRates(linguistDetails.getRates());
 */

@@ -35,18 +35,18 @@ public class ProjectManagerService {
         return projectManagerRepository.findById(id) .orElseThrow(() -> new EntityNotFoundException("Projct manager not found with id: " + id));
     }
 
-    public ProjectManager createProjectManager(ProjectManager projectManager) {
+    /*public ProjectManager createProjectManager(ProjectManager projectManager) {
         try {
             //Sets projects to empty lists
             projectManager.setProjects(Collections.emptyList());
 
-            /*Add "Project managers cannot be assigned to tasks or projects directly" if we have time*/
+            *//*Add "Project managers cannot be assigned to tasks or projects directly" if we have time*//*
 
             return projectManagerRepository.save(projectManager);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error while creating the project manager", e);
         }
-    }
+    }*/
 
     public ProjectManager updateProjectManager(Long id, ProjectManager projectManagerDetails) {
         ProjectManager existingProjectManager = projectManagerRepository.findById(id)
