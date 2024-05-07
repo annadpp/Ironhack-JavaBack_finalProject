@@ -48,27 +48,36 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req->req.requestMatchers("/login/**","/register/**")
-                                .permitAll()
-                                .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
+                        req->req.requestMatchers("/auth/login/**").permitAll()
+                                .requestMatchers("/auth/register/**").hasAuthority("ADMIN")
+                                .requestMatchers("/users/**").hasAuthority("ADMIN")
+                                .requestMatchers("/clients/save", "/rates/save").hasAuthority("ADMIN")
+                                .requestMatchers("/tasks/save", "/dtp-projects/save", "/linguistic-projects/save").hasAuthority("PROJECT_MANAGER")
+                                .requestMatchers("/clients/update", "/rates/update").hasAuthority("ADMIN")
+                                .requestMatchers("/tasks/update", "/dtp-projects/update", "/linguistic-projects/update").hasAuthority("PROJECT_MANAGER")
+                                .requestMatchers("/clients/delete", "/rates/delete").hasAuthority("ADMIN")
+                                .requestMatchers("/tasks/delete", "/dtp-projects/delete", "/linguistic-projects/delete").hasAuthority("PROJECT_MANAGER")
+                                .requestMatchers("/clients/get/**", "/rates/get/**", "/linguists/get/**", "/project-managers/get/**").hasAnyAuthority("ADMIN", "PROJECT_MANAGER")
+                                .requestMatchers("/tasks/get/**", "/dtp-projects/get/**", "/linguistic-projects/get/**", "/projects/get").hasAuthority("PROJECT_MANAGER")
+                                .requestMatchers("/admins/get/**").hasAuthority("ADMIN")
+                                //Check and add getTasksLinguist/getTasksPM
                                 .anyRequest()
                                 .authenticated()
                 ).userDetailsService(userDetailsServiceImp)
                 .sessionManagement(session->session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                /*.exceptionHandling(
+                .exceptionHandling(
                         e->e.accessDeniedHandler(
-                                        (request, response, accessDeniedException)->response.setStatus(403)
+                                        (request, response, accessDeniedException)->response.setStatus(401)
                                 )
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .logout(l->l
+                /*.logout(l->l
                         .logoutUrl("/logout")
                         .addLogoutHandler(logoutHandler)
                         .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()
                         ))*/
                 .build();
-
     }
 
     @Bean
@@ -80,6 +89,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
-
 }

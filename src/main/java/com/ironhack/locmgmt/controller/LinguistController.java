@@ -36,12 +36,12 @@ public class LinguistController {
         return linguist;
     }
 
-    @PostMapping("/save")
+    /*@PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
     public Linguist createLinguist(@RequestBody Linguist linguist) {
         return linguistService.createLinguist(linguist);
     }
-
+*/
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Linguist updateLinguist(@PathVariable Long id, @RequestBody Linguist linguist) {

@@ -33,16 +33,16 @@ public class AdminService {
         return adminRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
     }
 
-    public Admin createAdmin(Admin admin) {
+    /*public Admin createAdmin(Admin admin) {
         try {
             return adminRepository.save(admin);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error while creating the admin", e);
         }
-    }
+    }*/
 
     /*Only Admin*/
-    /*public Admin updateAdmin(Long id, Admin adminDetails) {
+    public Admin updateAdmin(Long id, Admin adminDetails) {
         Admin existingAdmin = adminRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Admin not found with id: " + id));
 
@@ -63,7 +63,7 @@ public class AdminService {
         }
 
         return adminRepository.save(existingAdmin);
-    }*/
+    }
 
     public void deleteAdmin(Long id) {
         try {

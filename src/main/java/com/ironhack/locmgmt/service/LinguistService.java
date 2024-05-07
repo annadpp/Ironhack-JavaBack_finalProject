@@ -39,22 +39,22 @@ public class LinguistService {
 
     }
 
-    public Linguist createLinguist(Linguist linguist) {
+    /*public Linguist createLinguist(Linguist linguist) {
         try {
             // Set rates, tasks and projects to empty lists
-/*
+*//*
             linguist.setProjects(Collections.emptyList());
-*/
+*//*
             linguist.setTasks(Collections.emptyList());
             linguist.setRates(Collections.emptyList());
 
-            /*Add "Linguists cannot be assigned to rates, tasks or projects directly" if we have time*/
+            *//*Add "Linguists cannot be assigned to rates, tasks or projects directly" if we have time*//*
 
             return linguistRepository.save(linguist);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error while creating the linguist", e);
         }
-    }
+    }*/
 
     public Linguist updateLinguist(Long id, Linguist linguistDetails) {
         Linguist existingLinguist = linguistRepository.findById(id)

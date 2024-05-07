@@ -21,9 +21,6 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-/*
-    private final PasswordEncoder passwordEncoder;
-*/
 
     public List<User> getAllUsers() {
         try {

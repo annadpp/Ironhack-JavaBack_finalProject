@@ -32,6 +32,7 @@ public class UserController {
         return user;
     }
 
+    //PENSAR SI ELIMINARLO
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id) {

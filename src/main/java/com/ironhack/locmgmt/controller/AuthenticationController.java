@@ -8,12 +8,10 @@ import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.service.AuthenticationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthenticationController {
 
     private final AuthenticationService authService;
@@ -21,12 +19,6 @@ public class AuthenticationController {
     public AuthenticationController(AuthenticationService authService) {
         this.authService = authService;
     }
-
-    /*@PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public AuthenticationResponse register(@RequestBody User request) {
-        return authService.register(request);
-    }*/
 
     @PostMapping("/register/admin")
     @ResponseStatus(HttpStatus.CREATED)
