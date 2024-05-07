@@ -42,4 +42,3 @@ class UserRepositoryTest {
         assertEquals(2, userList.size());
     }
 }
-

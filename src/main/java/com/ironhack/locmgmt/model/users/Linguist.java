@@ -19,33 +19,33 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class Linguist extends User {
-/*
-    @NotNull(message = "Source languages cannot be empty")
-*/
+    /*
+        @NotNull(message = "Source languages cannot be empty")
+    */
     @Enumerated(EnumType.STRING)
     private List<Languages> sourceLanguages;
 
-/*
-    @NotNull(message = "Target languages cannot be empty")
-*/
+    /*
+        @NotNull(message = "Target languages cannot be empty")
+    */
     @Enumerated(EnumType.STRING)
     private List<Languages> targetLanguages;
 
-/*
-    @NotNull(message = "Project types cannot be empty")
-*/
+    /*
+        @NotNull(message = "Project types cannot be empty")
+    */
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
 
-/*
-    @NotNull(message = "DTP technologies cannot be empty")
-*/
+    /*
+        @NotNull(message = "DTP technologies cannot be empty")
+    */
     @Enumerated(EnumType.STRING)
     private List<DTPTechnology> dtpTechnologies;
 
-/*
-    @NotNull(message = "Linguistic technologies cannot be empty")
-*/
+    /*
+        @NotNull(message = "Linguistic technologies cannot be empty")
+    */
     @Enumerated(EnumType.STRING)
     private List<LinguisticTechnology> linguisticTechnologies;
 

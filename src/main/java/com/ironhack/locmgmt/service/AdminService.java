@@ -20,10 +20,10 @@ public class AdminService {
 
     public List<Admin> getAllAdmins() {
         try {List<Admin> admins = adminRepository.findAll();
-        if (admins.isEmpty()) {
-            throw new EmptyListException("No admins were found");
-        }
-        return admins;
+            if (admins.isEmpty()) {
+                throw new EmptyListException("No admins were found");
+            }
+            return admins;
         } catch (DataAccessException e) {
             throw new DataRetrievalFailureException("Error while retrieving all admins", e);
         }

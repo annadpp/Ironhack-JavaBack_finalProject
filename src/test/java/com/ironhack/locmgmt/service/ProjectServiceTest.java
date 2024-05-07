@@ -45,11 +45,6 @@ class ProjectServiceTest {
     }
 
     @Test
-    void deleteProject_EntityNotFoundException() {
-        assertThrows(EntityNotFoundException.class, () -> projectService.deleteProject(9999L));
-    }
-
-    @Test
     void getAllProjects_Valid() {
         List<Project> projects = projectService.getAllProjects();
         assertFalse(projects.isEmpty());

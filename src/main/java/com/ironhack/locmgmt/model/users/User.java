@@ -32,14 +32,14 @@ public class User implements UserDetails {
     @NotEmpty(message = "Password cannot be empty")
     private String password;
 
-/*
-    @NotEmpty(message = "Name cannot be empty")
-*/
+    /*
+        @NotEmpty(message = "Name cannot be empty")
+    */
     private String name;
 
-/*
-    @NotEmpty(message = "Email cannot be empty")
-*/
+    /*
+        @NotEmpty(message = "Email cannot be empty")
+    */
     @Email(message = "Invalid email address")
     private String email;
 
@@ -84,18 +84,12 @@ public class User implements UserDetails {
         this.tokens = tokens;
     }*/
 
-    /*public User(String username, String password, Role role) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }*/
-
     //Constructors/getters/setters for testing
-    /*public User(String username, String password, String name, String email, UserType userType) {
+    public User(String username, String password, String name, String email, Role role) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.userType = userType;
-    }*/
+        this.role = role;
+    }
 }
