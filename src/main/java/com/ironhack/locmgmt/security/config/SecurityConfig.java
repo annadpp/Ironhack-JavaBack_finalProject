@@ -58,9 +58,9 @@ public class SecurityConfig {
                                 .requestMatchers("/clients/delete", "/rates/delete").hasAuthority("ADMIN")
                                 .requestMatchers("/tasks/delete", "/dtp-projects/delete", "/linguistic-projects/delete").hasAuthority("PROJECT_MANAGER")
                                 .requestMatchers("/clients/get/**", "/rates/get/**", "/linguists/get/**", "/project-managers/get/**").hasAnyAuthority("ADMIN", "PROJECT_MANAGER")
-                                .requestMatchers("/tasks/get/**", "/dtp-projects/get/**", "/linguistic-projects/get/**", "/projects/get").hasAuthority("PROJECT_MANAGER")
+                                .requestMatchers("/tasks/get/project-manager", "/dtp-projects/get/**", "/linguistic-projects/get/**", "/projects/get").hasAuthority("PROJECT_MANAGER")
+                                .requestMatchers("/tasks/get/linguist/**").hasAuthority("LINGUIST")
                                 .requestMatchers("/admins/get/**").hasAuthority("ADMIN")
-                                //Check and add getTasksLinguist/getTasksPM
                                 .anyRequest()
                                 .authenticated()
                 ).userDetailsService(userDetailsServiceImp)

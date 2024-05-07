@@ -4,6 +4,7 @@ import com.ironhack.locmgmt.model.enums.DTPTechnology;
 
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.Status;
+import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
@@ -18,6 +19,7 @@ import java.util.Date;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Entity
+@ValidDTPTechnology
 public class DTPProject extends Project {
     @Builder.Default
     @Enumerated(EnumType.STRING)

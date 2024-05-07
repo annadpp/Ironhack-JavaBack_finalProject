@@ -1,5 +1,6 @@
 package com.ironhack.locmgmt.service;
 
+import com.ironhack.locmgmt.dto.TaskDTO;
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.BillingStatus;
@@ -14,6 +15,7 @@ import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +34,41 @@ public class TaskService {
                 throw new EmptyListException("No tasks were found");
             }
             return rates;
+        } catch (DataAccessException e) {
+            throw new DataRetrievalFailureException("Error while retrieving all tasks", e);
+        }
+    }
+
+    public List<TaskDTO> getAllTasksDTO() {
+        try {
+            List<Task> tasks = taskRepository.findAll();
+            if (tasks.isEmpty()) {
+                throw new EmptyListException("No tasks were found");
+            }
+
+            List<TaskDTO> taskDTOs = new ArrayList<>();
+            for (Task task : tasks) {
+                TaskDTO taskDTO = new TaskDTO();
+                taskDTO.setId(task.getId());
+                taskDTO.setName(task.getName());
+                taskDTO.setDescription(task.getDescription());
+                taskDTO.setDeadline(task.getDeadline());
+                taskDTO.setTimeRemaining(task.getTimeRemaining());
+                taskDTO.setTaskStatus(task.getTaskStatus());
+                taskDTO.setProjectType(task.getProjectType());
+                taskDTO.setStartDate(task.getStartDate());
+                taskDTO.setEndDate(task.getEndDate());
+                taskDTO.setBillingStatus(task.getBillingStatus());
+                taskDTO.setSourceLanguage(task.getSourceLanguage());
+                taskDTO.setTargetLanguage(task.getTargetLanguage());
+                taskDTO.setLinguisticTechnology(task.getLinguisticTechnology());
+                taskDTO.setDtpTechnology(task.getDtpTechnology());
+                taskDTO.setLinguist(task.getLinguist());
+                taskDTO.setProjectManager(task.getProjectManager());
+                taskDTOs.add(taskDTO);
+            }
+
+            return taskDTOs;
         } catch (DataAccessException e) {
             throw new DataRetrievalFailureException("Error while retrieving all tasks", e);
         }
