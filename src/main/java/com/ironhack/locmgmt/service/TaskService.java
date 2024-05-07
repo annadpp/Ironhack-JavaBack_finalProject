@@ -6,8 +6,10 @@ import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.BillingStatus;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.Status;
+import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.repository.TaskRepository;
 
+import com.ironhack.locmgmt.util.SecurityUtil;
 import com.ironhack.locmgmt.util.TaskUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    private SecurityUtil securityUtil;
+
     public List<Task> getAllTasks() {
         try {
             List<Task> rates = taskRepository.findAll();
@@ -41,14 +46,17 @@ public class TaskService {
 
     public List<TaskDTO> getAllTasksDTO() {
         try {
-            List<Task> tasks = taskRepository.findAll();
+            Linguist linguist = securityUtil.getCurrentLinguist(); //Get current linguist
+
+            List<Task> tasks = taskRepository.findByLinguist(linguist); //Filter tasks per current linguist - only current linguist can access its own tasks
             if (tasks.isEmpty()) {
-                throw new EmptyListException("No tasks were found");
+                throw new EmptyListException("No tasks were found for the linguist");
             }
 
             List<TaskDTO> taskDTOs = new ArrayList<>();
             for (Task task : tasks) {
                 TaskDTO taskDTO = new TaskDTO();
+                // Establecer atributos de TaskDTO
                 taskDTO.setId(task.getId());
                 taskDTO.setName(task.getName());
                 taskDTO.setDescription(task.getDescription());
@@ -70,7 +78,7 @@ public class TaskService {
 
             return taskDTOs;
         } catch (DataAccessException e) {
-            throw new DataRetrievalFailureException("Error while retrieving all tasks", e);
+            throw new DataRetrievalFailureException("Error while retrieving tasks for the linguist", e);
         }
     }
 

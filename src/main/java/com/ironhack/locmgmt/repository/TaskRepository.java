@@ -1,8 +1,8 @@
 package com.ironhack.locmgmt.repository;
 
 import com.ironhack.locmgmt.model.Task;
+import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.enums.BillingStatus;
-
 import com.ironhack.locmgmt.model.enums.ProjectType;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,6 +22,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByProjectType(ProjectType projectType);
 
     List<Task> findByBillingStatus(BillingStatus billingStatus);
+
+    List<Task> findByLinguist(Linguist linguist);
 
     //Add more repositories if we have time
 }
