@@ -17,7 +17,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@ValidLinguisticTechnology
 public class LinguisticProject extends Project {
     @Builder.Default
     @Enumerated(EnumType.STRING)

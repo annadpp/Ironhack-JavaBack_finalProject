@@ -4,6 +4,7 @@ import com.ironhack.locmgmt.model.enums.Role;
 import com.ironhack.locmgmt.model.users.Admin;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
+import com.ironhack.locmgmt.util.SecurityUtil;
 import com.ironhack.locmgmt.security.AuthenticationResponse;
 /*
 import com.ironhack.locmgmt.security.Token;
@@ -16,17 +17,29 @@ import com.ironhack.locmgmt.repository.UserRepository;
 /*
 import com.ironhack.locmgmt.security.Token;
 */
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
+import java.util.Optional;
+
 @Service
 public class AuthenticationService {
 
+    @Autowired
     private final UserRepository repository;
+
+    @Autowired
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
     private final JwtService jwtService;
+
+    @Autowired
+    private SecurityUtil securityUtil;
 
    /* private final TokenRepository tokenRepository;*/
 
@@ -141,4 +154,19 @@ public class AuthenticationService {
         token.setUser(user);
         tokenRepository.save(token);
     }*/
+
+    public void updateUserPassword(String username, String newPassword) throws AccessDeniedException {
+        // Obtener el usuario basado en el nombre de usuario
+        Optional<User> optionalUser = repository.findByUsername(username);
+
+        // Verificar si el usuario existe
+        if (optionalUser.isEmpty()) {
+            throw new AccessDeniedException("User not found");
+        }
+
+        // Actualizar la contraseña del usuario
+        User currentUser = optionalUser.get();
+        currentUser.setPassword(passwordEncoder.encode(newPassword));
+        repository.save(currentUser);
+    }
 }

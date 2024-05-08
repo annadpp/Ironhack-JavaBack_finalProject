@@ -19,16 +19,12 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class ProjectManager extends User {
-    /*
-        @NotNull(message = "Spoken languages cannot be empty")
-    */
+    @NotNull(message = "Spoken languages cannot be empty")
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Languages> spokenLanguages;
 
-    /*
-        @NotNull(message = "Project types cannot be empty")
-    */
+    @NotNull(message = "Project types cannot be empty")
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
@@ -52,5 +48,12 @@ public class ProjectManager extends User {
             }
         }
         return allTasks;
+    }
+
+    //Constructor for testing
+    public ProjectManager(String username, String password, String name, String email, Role role, List<Languages> spokenLanguages, List<ProjectType> projectTypes) {
+        super(username, password, name, email, role);
+        this.spokenLanguages = spokenLanguages;
+        this.projectTypes = projectTypes;
     }
 }

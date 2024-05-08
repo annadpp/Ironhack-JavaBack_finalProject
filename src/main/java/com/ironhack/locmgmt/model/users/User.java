@@ -32,14 +32,10 @@ public class User implements UserDetails {
     @NotEmpty(message = "Password cannot be empty")
     private String password;
 
-    /*
-        @NotEmpty(message = "Name cannot be empty")
-    */
+    @NotEmpty(message = "Name cannot be empty")
     private String name;
 
-    /*
-        @NotEmpty(message = "Email cannot be empty")
-    */
+    @NotEmpty(message = "Email cannot be empty")
     @Email(message = "Invalid email address")
     private String email;
 

@@ -15,6 +15,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
+
+import static net.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -74,15 +78,19 @@ public class UserControllerTest {
     //
     @Test
     void getAdminById_ExistingId_ReturnsAdmin() throws Exception {
+        // Perform the request to get the admin by ID
         MvcResult result = mockMvc.perform(get("/admins/get/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
+        // Extract the response body as a string
         String responseBody = result.getResponse().getContentAsString();
 
+        // Parse the JSON response into an Admin object
         Admin admin = objectMapper.readValue(responseBody, Admin.class);
 
+        // Validate that the returned admin has the correct name
         assertEquals("John Doe", admin.getName());
     }
 
@@ -100,14 +108,17 @@ public class UserControllerTest {
 
     @Test
     void updateAdmin_ExistingIdAndValidAdmin_ReturnsUpdatedAdmin() throws Exception {
+        // Create an updated Admin object with the desired changes
         Admin updatedAdmin = new Admin();
         updatedAdmin.setName("Jane Smith");
         updatedAdmin.setEmail("jane.smith@example.com");
         updatedAdmin.setPassword("newPassword");
         updatedAdmin.setDepartment(Department.ADMINISTRATION);
 
+        // Convert the updated Admin object to JSON
         String updatedAdminJson = objectMapper.writeValueAsString(updatedAdmin);
 
+        // Perform the update operation by calling the controller endpoint with the updated JSON payload
         mockMvc.perform(put("/admins/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedAdminJson))

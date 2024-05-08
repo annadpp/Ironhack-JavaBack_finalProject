@@ -19,13 +19,12 @@ import java.util.Date;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Entity
-@ValidDTPTechnology
 public class DTPProject extends Project {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private ProjectType projectType = ProjectType.DTP;
 
-    @NotNull
+    @NotNull(message = "DTP technology cannot be empty")
     @Enumerated(EnumType.STRING)
     private DTPTechnology dtpTechnology;
 
