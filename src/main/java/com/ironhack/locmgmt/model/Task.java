@@ -86,7 +86,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "linguist_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
-    @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "rates"})
+    @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "rates", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
     private Linguist linguist;
 
     @ManyToOne
