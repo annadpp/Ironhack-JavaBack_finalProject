@@ -35,19 +35,6 @@ public class ProjectManagerService {
         return projectManagerRepository.findById(id) .orElseThrow(() -> new EntityNotFoundException("Projct manager not found with id: " + id));
     }
 
-    /*public ProjectManager createProjectManager(ProjectManager projectManager) {
-        try {
-            //Sets projects to empty lists
-            projectManager.setProjects(Collections.emptyList());
-
-            *//*Add "Project managers cannot be assigned to tasks or projects directly" if we have time*//*
-
-            return projectManagerRepository.save(projectManager);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Error while creating the project manager", e);
-        }
-    }*/
-
     public ProjectManager updateProjectManager(Long id, ProjectManager projectManagerDetails) {
         ProjectManager existingProjectManager = projectManagerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Project manager not found with id: " + id));
@@ -57,6 +44,11 @@ public class ProjectManagerService {
         existingProjectManager.setSpokenLanguages(projectManagerDetails.getSpokenLanguages());
         }
         if (projectManagerDetails.getProjectTypes() != null) {
+            for (ProjectType projectType : projectManagerDetails.getProjectTypes()) {
+                if (projectType != ProjectType.LINGUISTIC && projectType != ProjectType.DTP) {
+                    throw new IllegalArgumentException("Invalid project type. Project type can only be LINGUISTIC or DTP.");
+                }
+            }
             existingProjectManager.setProjectTypes(projectManagerDetails.getProjectTypes());
         }
 
@@ -74,7 +66,6 @@ public class ProjectManagerService {
         return projectManagerRepository.save(existingProjectManager);
     }
 
-    /*Fix error*/
     public void deleteProjectManager(Long id) {
         try {
             projectManagerRepository.deleteById(id);

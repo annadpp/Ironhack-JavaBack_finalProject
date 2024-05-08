@@ -86,7 +86,14 @@ public class TaskService {
     }
 
     public Task createTask(Task task) {
-     
+        //Validate task type
+        if (task.getProjectType() == ProjectType.LINGUISTIC) {
+            throw new IllegalArgumentException("Invalid task type. Task type cannot be LINGUISTIC.");
+        }
+        if (taskRepository.existsByName(task.getName())) {
+            throw new IllegalArgumentException("A task with the same name already exists.");
+        }
+
         /*Add "Project managers cannot be assigned directly to tasks. They depend on the project the task is assigned to." if we have time*/
 
         //Sets taskStatus and billingStatus to NOT if info not passed by the user when creating task
@@ -101,16 +108,19 @@ public class TaskService {
         try {
             return taskRepository.save(task);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Error while creating the task", e);
-        }
+            throw new DataIntegrityViolationException("Error while creating the task", e);}
     }
 
     public Task updateTask(Long id, Task taskDetails) {
         Task existingTask = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
 
-        if (taskDetails.getName() != null) {
-            existingTask.setName(taskDetails.getName());
+        if (taskDetails.getName() != null && !taskDetails.getName().equals(existingTask.getName())) {
+            if (taskRepository.existsByName(taskDetails.getName())) {
+                throw new IllegalArgumentException("A task with the same name already exists.");
+            } else {
+                existingTask.setName(taskDetails.getName());
+            }
         }
         if (taskDetails.getDescription() != null) {
             existingTask.setDescription(taskDetails.getDescription());
@@ -125,7 +135,11 @@ public class TaskService {
             updateTaskDates(existingTask);
         }
         if (taskDetails.getProjectType() != null) {
-            existingTask.setProjectType(taskDetails.getProjectType());
+            if (taskDetails.getProjectType() == ProjectType.LINGUISTIC) {
+                throw new IllegalArgumentException("Invalid task type. Task type cannot be LINGUISTIC.");
+            } else {
+                existingTask.setProjectType(taskDetails.getProjectType());
+            }
         }
         if (taskDetails.getBillingStatus() != null) {
             existingTask.setBillingStatus(taskDetails.getBillingStatus());

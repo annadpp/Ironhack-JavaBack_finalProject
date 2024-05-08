@@ -19,11 +19,15 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByTimeRemainingLessThan(Duration duration);
 
-    List<Task> findByProjectType(ProjectType projectType);
+    List<Task> findByProjectType(ProjectType taskType);
 
     List<Task> findByBillingStatus(BillingStatus billingStatus);
 
     List<Task> findByLinguist(Linguist linguist);
+
+    boolean existsByName(String name);
+
+    boolean existsByNameAndIdNot(String name, Long id);
 
     //Add more repositories if we have time
 }

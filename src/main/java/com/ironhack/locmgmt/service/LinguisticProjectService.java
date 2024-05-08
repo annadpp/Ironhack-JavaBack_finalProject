@@ -3,6 +3,7 @@ package com.ironhack.locmgmt.service;
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.Status;
+import com.ironhack.locmgmt.model.projects.DTPProject;
 import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.repository.LinguisticProjectRepository;
 import com.ironhack.locmgmt.util.ProjectUtil;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ironhack.locmgmt.util.ProjectUtil.updateProjectDates;
 
@@ -42,6 +44,12 @@ public class LinguisticProjectService {
     }
 
     public LinguisticProject createLinguisticProject(LinguisticProject linguisticProject) {
+        //Checks if there is already a project with the same name
+        Optional<LinguisticProject> existingProject = linguisticProjectRepository.findByName(linguisticProject.getName());
+        if (existingProject.isPresent()) {
+            throw new DataIntegrityViolationException("A project with the same name already exists");
+        }
+
         //Sets tasks to empty lists
         linguisticProject.setTasks(Collections.emptyList());
 
@@ -82,6 +90,10 @@ public class LinguisticProjectService {
 
         //Update the fields inherited from the Project class
         if (linguisticProjectDetails.getName() != null) {
+            Optional<LinguisticProject> existingProjectWithSameName = linguisticProjectRepository.findByName(linguisticProjectDetails.getName());
+            if (existingProjectWithSameName.isPresent()) {
+                throw new DataIntegrityViolationException("A project with the same name already exists");
+            }
             existingLinguisticProject.setName(linguisticProjectDetails.getName());
         }
         if (linguisticProjectDetails.getDescription() != null) {

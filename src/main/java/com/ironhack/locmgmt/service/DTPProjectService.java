@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ironhack.locmgmt.util.ProjectUtil.updateProjectDates;
 
@@ -27,11 +28,11 @@ public class DTPProjectService {
     private DTPProjectRepository dtpProjectRepository;
 
     public List<DTPProject> getAllDTPProjects() {
-        try {List<DTPProject> admins = dtpProjectRepository.findAll();
-            if (admins.isEmpty()) {
+        try {List<DTPProject> dtpProjects = dtpProjectRepository.findAll();
+            if (dtpProjects.isEmpty()) {
                 throw new EmptyListException("No DTP projects were found");
             }
-            return admins;
+            return dtpProjects;
         } catch (DataAccessException e) {
             throw new DataRetrievalFailureException("Error while retrieving all DTP projects", e);
         }
@@ -41,20 +42,26 @@ public class DTPProjectService {
         return dtpProjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("DTP project not found with id: " + id));
     }
 
-    public DTPProject createDTPProject(DTPProject DTPProject) {
-        // Set tasks to empty lists
-        DTPProject.setTasks(Collections.emptyList());
+    public DTPProject createDTPProject(DTPProject dtpProject) {
+        //Checks if there is already a project with the same name
+        Optional<DTPProject> existingProject = dtpProjectRepository.findByName(dtpProject.getName());
+        if (existingProject.isPresent()) {
+            throw new DataIntegrityViolationException("A project with the same name already exists");
+        }
 
-        /*Add "Projects cannot be assigned directly to tasks or linguists" if we have time*/
+        //Set tasks to empty lists
+        dtpProject.setTasks(Collections.emptyList());
 
-        //Sets projectStatus to NOT if info not passed by the user when creating project
-        DTPProject.setProjectStatus(DTPProject.getProjectStatus() != null ? DTPProject.getProjectStatus() : Status.NOT_STARTED);
+        // Add "Projects cannot be assigned directly to tasks or linguists" if we have time
 
-        //Update project dates and time remaining
-        ProjectUtil.updateProjectDates(DTPProject);
+        // Sets projectStatus to NOT if info not passed by the user when creating project
+        dtpProject.setProjectStatus(dtpProject.getProjectStatus() != null ? dtpProject.getProjectStatus() : Status.NOT_STARTED);
+
+        // Update project dates and time remaining
+        ProjectUtil.updateProjectDates(dtpProject);
 
         try {
-            return dtpProjectRepository.save(DTPProject);
+            return dtpProjectRepository.save(dtpProject);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error while creating the DTP project", e);
         }
@@ -73,7 +80,11 @@ public class DTPProjectService {
         }
 
         //Update the fields inherited from the Project class
-        if (dtpProjectDetails.getName() != null) {
+        if (dtpProjectDetails.getName() != null && !dtpProjectDetails.getName().equals(existingDTPProject.getName())) {
+            Optional<DTPProject> existingProjectWithSameName = dtpProjectRepository.findByName(dtpProjectDetails.getName());
+            if (existingProjectWithSameName.isPresent()) {
+                throw new DataIntegrityViolationException("A project with the same name already exists");
+            }
             existingDTPProject.setName(dtpProjectDetails.getName());
         }
         if (dtpProjectDetails.getDescription() != null) {

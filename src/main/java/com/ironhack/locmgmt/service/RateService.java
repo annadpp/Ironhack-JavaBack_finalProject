@@ -39,6 +39,10 @@ public class RateService {
     }
 
     public Rate createRate(Rate rate) {
+        ProjectType projectType = rate.getProjectType();
+        if (projectType != ProjectType.LINGUISTIC && projectType != ProjectType.DTP) {
+            throw new IllegalArgumentException("Invalid project type. Project type can only be LINGUISTIC or DTP.");
+        }
         try {
             return rateRepository.save(rate);
         } catch (DataIntegrityViolationException e) {
@@ -61,7 +65,9 @@ public class RateService {
             existingRate.setTargetLanguage(rateDetails.getTargetLanguage());
         }
         if (rateDetails.getProjectType() != null) {
-            existingRate.setProjectType(rateDetails.getProjectType());
+                if (rateDetails.getProjectType() != ProjectType.LINGUISTIC && rateDetails.getProjectType() != ProjectType.DTP) {
+            throw new IllegalArgumentException("Invalid project type. Project type can only be LINGUISTIC or DTP.");
+        } else existingRate.setProjectType(rateDetails.getProjectType());
         }
         //Add linguist when creating rate
         if (rateDetails.getLinguist() != null) {

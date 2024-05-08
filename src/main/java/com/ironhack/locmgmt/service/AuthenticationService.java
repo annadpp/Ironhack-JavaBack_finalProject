@@ -1,5 +1,6 @@
 package com.ironhack.locmgmt.service;
 
+import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.Role;
 import com.ironhack.locmgmt.model.users.Admin;
 import com.ironhack.locmgmt.model.users.Linguist;
@@ -24,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -82,6 +84,12 @@ public class AuthenticationService {
         } else if (request instanceof ProjectManager) {
             ProjectManager pmRequest = (ProjectManager) request;
             ProjectManager projectManager = new ProjectManager();
+            List<ProjectType> projectTypes = pmRequest.getProjectTypes();
+            for (ProjectType projectType : projectTypes) {
+                if (projectType != ProjectType.LINGUISTIC && projectType != ProjectType.DTP) {
+                    return new AuthenticationResponse(null, "Invalid project type. Project type can only be LINGUISTIC or DTP");
+                }
+            }
             projectManager.setSpokenLanguages(pmRequest.getSpokenLanguages());
             projectManager.setProjectTypes(pmRequest.getProjectTypes());
             user = projectManager;
