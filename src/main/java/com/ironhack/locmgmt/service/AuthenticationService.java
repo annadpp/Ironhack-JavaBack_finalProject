@@ -164,15 +164,15 @@ public class AuthenticationService {
     }*/
 
     public void updateUserPassword(String username, String newPassword) throws AccessDeniedException {
-        // Obtener el usuario basado en el nombre de usuario
+        //Get user based in username
         Optional<User> optionalUser = repository.findByUsername(username);
 
-        // Verificar si el usuario existe
+        //Verify if user exists
         if (optionalUser.isEmpty()) {
             throw new AccessDeniedException("User not found");
         }
 
-        // Actualizar la contraseña del usuario
+        //Update user password
         User currentUser = optionalUser.get();
         currentUser.setPassword(passwordEncoder.encode(newPassword));
         repository.save(currentUser);

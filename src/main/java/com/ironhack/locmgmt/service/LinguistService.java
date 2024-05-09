@@ -77,50 +77,29 @@ public class LinguistService {
 
     }
 
-    /*public Linguist createLinguist(Linguist linguist) {
-        try {
-            // Set rates, tasks and projects to empty lists
-*//*
-            linguist.setProjects(Collections.emptyList());
-*//*
-            linguist.setTasks(Collections.emptyList());
-            linguist.setRates(Collections.emptyList());
-
-            *//*Add "Linguists cannot be assigned to rates, tasks or projects directly" if we have time*//*
-
-            return linguistRepository.save(linguist);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Error while creating the linguist", e);
-        }
-    }*/
-
     public Linguist updateLinguist(Long id, Linguist linguistDetails) {
         Linguist existingLinguist = linguistRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Linguist not found with id: " + id));
 
-        // Update the inherent Admin fields passed
+        //Update the inherent Admin fields passed
         if (linguistDetails.getSourceLanguages() != null) {
             existingLinguist.setSourceLanguages(linguistDetails.getSourceLanguages());
         }
-
         if (linguistDetails.getTargetLanguages() != null) {
             existingLinguist.setTargetLanguages(linguistDetails.getTargetLanguages());
         }
-
         if (linguistDetails.getProjectTypes() != null) {
             existingLinguist.setProjectTypes(linguistDetails.getProjectTypes());
         }
-
         if (linguistDetails.getDtpTechnologies() != null) {
             existingLinguist.setDtpTechnologies(linguistDetails.getDtpTechnologies());
         }
-
         if (linguistDetails.getLinguisticTechnologies() != null) {
             existingLinguist.setLinguisticTechnologies(linguistDetails.getLinguisticTechnologies());
         }
 
         // Update the fields inherited from the User class -> not password (User only)
-        /*if (linguistDetails.getUsername() != null) {
+        if (linguistDetails.getUsername() != null) {
             existingLinguist.setUsername(linguistDetails.getUsername());
         }
         if (linguistDetails.getName() != null) {
@@ -128,15 +107,11 @@ public class LinguistService {
         }
         if (linguistDetails.getEmail() != null) {
             existingLinguist.setEmail(linguistDetails.getEmail());
-        }*/
-/*
-        existingLinguist.setRates(linguistDetails.getRates());
-*/
+        }
 
         return linguistRepository.save(existingLinguist);
     }
 
-    /*Fix error*/
     public void deleteLinguist(Long id) {
         try {
             linguistRepository.deleteById(id);
@@ -267,15 +242,4 @@ public class LinguistService {
         }
     }
 
-    public List<Linguist> findByDtpTechnologiesAndProjectTypes(DTPTechnology dtpTechnology, ProjectType projectType) {
-        try {
-            List<Linguist> linguists = linguistRepository.findByDtpTechnologiesAndProjectTypes(dtpTechnology, projectType);
-            if (linguists.isEmpty()) {
-                throw new EmptyListException("No linguists were found");
-            }
-            return linguists;
-        } catch (Exception e) {
-            throw new ServiceException("Error occurred while fetching linguists by DTP technology and project type", e);
-        }
-    }
 }

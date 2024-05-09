@@ -56,7 +56,7 @@ public class SecurityConfig {
                                 .requestMatchers("/clients/update/**", "/rates/update/**").hasAuthority("ADMIN")
                                 .requestMatchers("/tasks/update/**", "/dtp-projects/update/**", "/linguistic-projects/update/**").hasAuthority("PROJECT_MANAGER")
                                 .requestMatchers("/clients/delete/**", "/rates/delete/**").hasAuthority("ADMIN")
-                                .requestMatchers("/tasks/delete/**", "/dtp-projects/delete/**", "/linguistic-projects/delete/**").hasAuthority("PROJECT_MANAGER")
+                                .requestMatchers("/tasks/delete/**", "/dtp-projects/delete/**", "/linguistic-projects/delete/**", "/projects/delete/**").hasAuthority("PROJECT_MANAGER")
                                 .requestMatchers("/tasks/get/linguist", "/linguists/get/linguist").hasAuthority("LINGUIST")
                                 .requestMatchers("/clients/get/**", "/rates/get/**", "/linguists/get/{id}", "/project-managers/get/**").hasAnyAuthority("ADMIN", "PROJECT_MANAGER")
                                 .requestMatchers("/tasks/get/project-manager", "/dtp-projects/get/**", "/linguistic-projects/get/**", "/projects/get").hasAuthority("PROJECT_MANAGER")

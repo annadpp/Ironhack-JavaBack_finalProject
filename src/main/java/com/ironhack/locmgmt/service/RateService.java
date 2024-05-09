@@ -54,7 +54,6 @@ public class RateService {
         Rate existingRate = rateRepository.findById(rateId)
                 .orElseThrow(() -> new EntityNotFoundException("Rate not found with id: " + rateId));
 
-        //Only updates fields provided in rateDetails
         if (rateDetails.getWordPrice() != null) {
             existingRate.setWordPrice(rateDetails.getWordPrice());
         }

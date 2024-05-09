@@ -94,8 +94,6 @@ public class TaskService {
             throw new IllegalArgumentException("A task with the same name already exists.");
         }
 
-        /*Add "Project managers cannot be assigned directly to tasks. They depend on the project the task is assigned to." if we have time*/
-
         //Sets taskStatus and billingStatus to NOT if info not passed by the user when creating task
         task.setTaskStatus(task.getTaskStatus() != null ? task.getTaskStatus() : Status.NOT_STARTED);
         task.setBillingStatus(task.getBillingStatus() != null ? task.getBillingStatus() : BillingStatus.NOT_INVOICED);

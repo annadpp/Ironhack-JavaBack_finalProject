@@ -19,7 +19,9 @@ public class AdminService {
     private AdminRepository adminRepository;
 
     public List<Admin> getAllAdmins() {
-        try {List<Admin> admins = adminRepository.findAll();
+        try {
+            List<Admin> admins = adminRepository.findAll();
+            // If no admins found
             if (admins.isEmpty()) {
                 throw new EmptyListException("No admins were found");
             }
@@ -33,25 +35,16 @@ public class AdminService {
         return adminRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
     }
 
-    /*public Admin createAdmin(Admin admin) {
-        try {
-            return adminRepository.save(admin);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Error while creating the admin", e);
-        }
-    }*/
-
-    /*Only Admin*/
     public Admin updateAdmin(Long id, Admin adminDetails) {
         Admin existingAdmin = adminRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Admin not found with id: " + id));
 
-        // Update the inherent Admin fields passed
+        //Update the inherent Admin fields passed
         if (adminDetails.getDepartment() != null) {
             existingAdmin.setDepartment(adminDetails.getDepartment());
         }
 
-        // Update the fields inherited from the User class -> not password (User only)
+        //Update the fields inherited from the User class -> not password (User only)
         if (adminDetails.getUsername() != null) {
             existingAdmin.setUsername(adminDetails.getUsername());
         }
@@ -77,6 +70,7 @@ public class AdminService {
 
     public List<Admin> findAdminsByDepartment(Department department) {
         List<Admin> admins = adminRepository.findByDepartment(department);
+        // If no admins found for the department given
         if (admins.isEmpty()) {
             throw new EmptyListException("No admins were found");
         }

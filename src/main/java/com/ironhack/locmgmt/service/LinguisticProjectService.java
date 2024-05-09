@@ -3,7 +3,6 @@ package com.ironhack.locmgmt.service;
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.Status;
-import com.ironhack.locmgmt.model.projects.DTPProject;
 import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.repository.LinguisticProjectRepository;
 import com.ironhack.locmgmt.util.ProjectUtil;
@@ -19,11 +18,15 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.ironhack.locmgmt.util.ProjectUtil.updateProjectDates;
 
 @Service
 public class LinguisticProjectService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DTPProjectService.class);
 
     @Autowired
     private LinguisticProjectRepository linguisticProjectRepository;
@@ -50,10 +53,13 @@ public class LinguisticProjectService {
             throw new DataIntegrityViolationException("A project with the same name already exists");
         }
 
+        //Check if tasks are being set directly
+        if (!linguisticProject.getTasks().isEmpty()) {
+            LOGGER.info("Tasks cannot be assigned directly to projects. Add the project information in the task itself.");
+        }
+
         //Sets tasks to empty lists
         linguisticProject.setTasks(Collections.emptyList());
-
-        /*Add "Projects cannot be assigned directly to tasks or linguists" if we have time*/
 
         //Sets projectStatus to NOT if info not passed by the user when creating project
         linguisticProject.setProjectStatus(linguisticProject.getProjectStatus() != null ? linguisticProject.getProjectStatus() : Status.NOT_STARTED);
@@ -122,11 +128,9 @@ public class LinguisticProjectService {
             existingLinguisticProject.setProjectManager(linguisticProjectDetails.getProjectManager());
         }
 
-
         return linguisticProjectRepository.save(existingLinguisticProject);
     }
 
-    /*Fix error*/
     public void deleteLinguisticProject(Long id) {
         try {
             linguisticProjectRepository.deleteById(id);

@@ -18,11 +18,15 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.ironhack.locmgmt.util.ProjectUtil.updateProjectDates;
 
 @Service
 public class DTPProjectService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DTPProjectService.class);
 
     @Autowired
     private DTPProjectRepository dtpProjectRepository;
@@ -47,6 +51,11 @@ public class DTPProjectService {
         Optional<DTPProject> existingProject = dtpProjectRepository.findByName(dtpProject.getName());
         if (existingProject.isPresent()) {
             throw new DataIntegrityViolationException("A project with the same name already exists");
+        }
+
+        //Check if tasks are being set directly
+        if (!dtpProject.getTasks().isEmpty()) {
+            LOGGER.info("Tasks cannot be assigned directly to projects. Add the project information in the task itself.");
         }
 
         //Set tasks to empty lists
