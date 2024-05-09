@@ -58,16 +58,16 @@ public class DTPProjectController {
         return dtpProjectService.findByDtpTechnology(dtpTechnology);
     }
 
-    @GetMapping("/get/byPagesGreaterThan/{pages}")
+   /* @GetMapping("/get/byPagesGreaterThan/{pages}")
     @ResponseStatus(HttpStatus.OK)
     public List<DTPProject> getProjectsByPagesGreaterThan(@PathVariable Integer pages) {
         return dtpProjectService.findByPagesGreaterThan(pages);
-    }
+    }*/
 
-    @GetMapping("/get/byPagesLessThan/{pages}")
+    /*@GetMapping("/get/byPagesLessThan/{pages}")
     @ResponseStatus(HttpStatus.OK)
     public List<DTPProject> getProjectsByPagesLessThan(@PathVariable Integer pages) {
         return dtpProjectService.findByPagesLessThan(pages);
-    }
+    }*/
 }
 

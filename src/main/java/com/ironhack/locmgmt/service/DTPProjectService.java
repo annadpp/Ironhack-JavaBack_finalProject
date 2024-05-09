@@ -54,9 +54,9 @@ public class DTPProjectService {
         }
 
         //Check if tasks are being set directly
-        if (!dtpProject.getTasks().isEmpty()) {
+        /*if (!dtpProject.getTasks().isEmpty()) {
             LOGGER.info("Tasks cannot be assigned directly to projects. Add the project information in the task itself.");
-        }
+        }*/
 
         //Set tasks to empty lists
         dtpProject.setTasks(Collections.emptyList());
@@ -84,9 +84,9 @@ public class DTPProjectService {
         if (dtpProjectDetails.getDtpTechnology() != null) {
             existingDTPProject.setDtpTechnology(dtpProjectDetails.getDtpTechnology());
         }
-        if (dtpProjectDetails.getPages() != null) {
+        /*if (dtpProjectDetails.getPages() != null) {
             existingDTPProject.setPages(dtpProjectDetails.getPages());
-        }
+        }*/
 
         //Update the fields inherited from the Project class
         if (dtpProjectDetails.getName() != null && !dtpProjectDetails.getName().equals(existingDTPProject.getName())) {
@@ -144,19 +144,19 @@ public class DTPProjectService {
         return projects;
     }
 
-    public List<DTPProject> findByPagesGreaterThan(Integer pages) {
+    /*public List<DTPProject> findByPagesGreaterThan(Integer pages) {
         List<DTPProject> projects = dtpProjectRepository.findByPagesGreaterThan(pages);
         if (projects.isEmpty()) {
             throw new EmptyListException("No DTP projects found with pages greater than: " + pages);
         }
         return projects;
-    }
+    }*/
 
-    public List<DTPProject> findByPagesLessThan(Integer pages) {
+    /*public List<DTPProject> findByPagesLessThan(Integer pages) {
         List<DTPProject> projects = dtpProjectRepository.findByPagesLessThan(pages);
         if (projects.isEmpty()) {
             throw new EmptyListException("No DTP projects found with pages less than: " + pages);
         }
         return projects;
-    }
+    }*/
 }

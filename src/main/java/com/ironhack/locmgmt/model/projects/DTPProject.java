@@ -28,14 +28,14 @@ public class DTPProject extends Project {
     @Enumerated(EnumType.STRING)
     private DTPTechnology dtpTechnology;
 
-    @Positive(message = "Pages must be positive")
-    private Integer pages;
+/*    @Positive(message = "Pages must be positive")
+    private Integer pages;*/
 
     //Constructor for testing
     public DTPProject(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, Status projectStatus, DTPTechnology dtpTechnology, Integer pages) {
         super(name, description, startDate, endDate, totalBudget, projectStatus, ProjectType.DTP);
         this.dtpTechnology = dtpTechnology;
-        this.pages = pages;
+/*        this.pages = pages;*/
     }
 }
 

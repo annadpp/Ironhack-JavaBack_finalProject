@@ -54,9 +54,9 @@ public class LinguisticProjectService {
         }
 
         //Check if tasks are being set directly
-        if (!linguisticProject.getTasks().isEmpty()) {
+      /*  if (!linguisticProject.getTasks().isEmpty()) {
             LOGGER.info("Tasks cannot be assigned directly to projects. Add the project information in the task itself.");
-        }
+        }*/
 
         //Sets tasks to empty lists
         linguisticProject.setTasks(Collections.emptyList());
@@ -67,8 +67,8 @@ public class LinguisticProjectService {
         //Update project dates and time remaining
         ProjectUtil.updateProjectDates(linguisticProject);
 
-        // Calculate total words
-        ProjectUtil.calculateTotalWords(linguisticProject);
+        /*// Calculate total words
+        ProjectUtil.calculateTotalWords(linguisticProject);*/
 
         try {
             return linguisticProjectRepository.save(linguisticProject);
@@ -82,14 +82,14 @@ public class LinguisticProjectService {
                 .orElseThrow(() -> new RuntimeException("Linguistic project not found with id: " + linguisticProjectId));
 
         //Update the inherent DTP Project fields passed
-        if (linguisticProjectDetails.getNewWords() != null) {
+        /*if (linguisticProjectDetails.getNewWords() != null) {
             existingLinguisticProject.setNewWords(linguisticProjectDetails.getNewWords());
             ProjectUtil.calculateTotalWords(existingLinguisticProject);
         }
         if (linguisticProjectDetails.getFuzzyWords() != null) {
             existingLinguisticProject.setFuzzyWords(linguisticProjectDetails.getFuzzyWords());
             ProjectUtil.calculateTotalWords(existingLinguisticProject);
-        }
+        }*/
         if (linguisticProjectDetails.getLinguisticTechnology() != null) {
             existingLinguisticProject.setLinguisticTechnology(linguisticProjectDetails.getLinguisticTechnology());
         }
@@ -141,7 +141,7 @@ public class LinguisticProjectService {
         }
     }
 
-    public List<LinguisticProject> findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(Integer newWords, Integer fuzzyWords) {
+    /*public List<LinguisticProject> findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(Integer newWords, Integer fuzzyWords) {
         if (newWords == null || fuzzyWords == null) {
             throw new IllegalArgumentException("NewWords and FuzzyWords must be provided.");
         }
@@ -205,7 +205,7 @@ public class LinguisticProjectService {
             throw new EmptyListException("No linguistic projects found with provided criteria.");
         }
         return projects;
-    }
+    }*/
 
     public List<LinguisticProject> findByLinguisticTechnology(LinguisticTechnology linguisticTechnology) {
         if (linguisticTechnology == null) {

@@ -2,10 +2,8 @@ package com.ironhack.locmgmt.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.*;
-import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
-import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.users.ProjectManager;
 
 import com.ironhack.locmgmt.util.TaskUtil;
@@ -14,6 +12,8 @@ import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
+import lombok.Builder.Default;
+
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -50,6 +50,7 @@ public class Task {
     //Sets with difference between startDate and deadline
     private Duration totalTime;
 
+    //Sets automatically when linguist with rates which match task languages + totalWords are assigned
     private BigDecimal taskCost;
 
     @Enumerated(EnumType.STRING)
@@ -76,6 +77,18 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Languages targetLanguage;
 
+    @Positive(message = "New words must be positive")
+    private Integer newWords;
+
+    @Positive(message = "Fuzzy words must be positive")
+    private Integer fuzzyWords;
+
+    //Sets automatically from newWords and fuzzyWords
+    private Integer totalWords;
+
+    @Positive(message = "Fuzzy words must be positive")
+    private Integer pages;
+
     //ValidLinguisticTechnology validation depending on projectType
     @Enumerated(EnumType.STRING)
     private LinguisticTechnology linguisticTechnology;
@@ -86,7 +99,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "linguist_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
-    @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "rates", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
+    @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
     private Linguist linguist;
 
     @ManyToOne

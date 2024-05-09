@@ -9,6 +9,7 @@ import com.ironhack.locmgmt.model.enums.Status;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.repository.TaskRepository;
 
+import com.ironhack.locmgmt.util.ProjectUtil;
 import com.ironhack.locmgmt.util.SecurityUtil;
 import com.ironhack.locmgmt.util.TaskUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -34,11 +35,18 @@ public class TaskService {
 
     public List<Task> getAllTasks() {
         try {
-            List<Task> rates = taskRepository.findAll();
-            if (rates.isEmpty()) {
+            List<Task> tasks = taskRepository.findAll();
+            if (tasks.isEmpty()) {
                 throw new EmptyListException("No tasks were found");
             }
-            return rates;
+
+            for (Task task : tasks) {
+                if (task.getLinguist() != null && task.getProject() != null && task.getTaskCost() == null) {
+                    if (task.getTaskCost() == null) {
+                        TaskUtil.calculateTaskCost(task);
+                    }                }
+            }
+            return tasks;
         } catch (DataAccessException e) {
             throw new DataRetrievalFailureException("Error while retrieving all tasks", e);
         }
@@ -102,6 +110,8 @@ public class TaskService {
         TaskUtil.updateTaskDates(task);
         TaskUtil.updateTimeRemaining(task);
         TaskUtil.updateTotalTime(task);
+        // Calculate total words
+        TaskUtil.calculateTotalWords(task);
 
         try {
             return taskRepository.save(task);
@@ -147,6 +157,17 @@ public class TaskService {
         }
         if (taskDetails.getTargetLanguage() != null) {
             existingTask.setTargetLanguage(taskDetails.getTargetLanguage());
+        }
+        if (taskDetails.getNewWords() != null) {
+            existingTask.setNewWords(taskDetails.getNewWords());
+            TaskUtil.calculateTotalWords(existingTask);
+        }
+        if (taskDetails.getFuzzyWords() != null) {
+            existingTask.setFuzzyWords(taskDetails.getFuzzyWords());
+            TaskUtil.calculateTotalWords(existingTask);
+        }
+        if (taskDetails.getPages() != null) {
+            existingTask.setPages(taskDetails.getPages());
         }
         if (taskDetails.getLinguisticTechnology() != null) {
             existingTask.setLinguisticTechnology(taskDetails.getLinguisticTechnology());

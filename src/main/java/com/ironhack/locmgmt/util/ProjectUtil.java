@@ -36,9 +36,9 @@ public class ProjectUtil {
         }
     }
 
-    public static void calculateTotalWords(LinguisticProject linguisticProject) {
+    /*public static void calculateTotalWords(LinguisticProject linguisticProject) {
         Integer newWords = linguisticProject.getNewWords() != null ? linguisticProject.getNewWords() : 0;
         Integer fuzzyWords = linguisticProject.getFuzzyWords() != null ? linguisticProject.getFuzzyWords() : 0;
         linguisticProject.setTotalWords(newWords + fuzzyWords);
-    }
+    }*/
 }

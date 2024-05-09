@@ -12,17 +12,17 @@ import java.util.Optional;
 
 @Repository
 public interface LinguisticProjectRepository extends JpaRepository<LinguisticProject, Long> {
-    List<LinguisticProject> findByNewWordsLessThanAndFuzzyWordsLessThan(Integer newWords, Integer fuzzyWords);
+   /* List<LinguisticProject> findByNewWordsLessThanAndFuzzyWordsLessThan(Integer newWords, Integer fuzzyWords);
 
     List<LinguisticProject> findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(Integer newWords, Integer fuzzyWords);
+*/
+ /*   List<LinguisticProject> findByTotalWordsGreaterThan(Integer totalWords);
 
-    List<LinguisticProject> findByTotalWordsGreaterThan(Integer totalWords);
+    List<LinguisticProject> findByTotalWordsLessThan(Integer totalWords);*/
 
-    List<LinguisticProject> findByTotalWordsLessThan(Integer totalWords);
+/*    List<LinguisticProject> findByTotalBudgetGreaterThan(BigDecimal totalBudget);
 
-    List<LinguisticProject> findByTotalBudgetGreaterThan(BigDecimal totalBudget);
-
-    List<LinguisticProject> findByTotalBudgetLessThan(BigDecimal totalBudget);
+    List<LinguisticProject> findByTotalBudgetLessThan(BigDecimal totalBudget);*/
 
     List<LinguisticProject> findByLinguisticTechnology(LinguisticTechnology linguisticTechnology);
 

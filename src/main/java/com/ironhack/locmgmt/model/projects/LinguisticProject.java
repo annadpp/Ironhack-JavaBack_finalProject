@@ -22,13 +22,13 @@ public class LinguisticProject extends Project {
     @Enumerated(EnumType.STRING)
     private ProjectType projectType = ProjectType.LINGUISTIC;
 
-    @Positive(message = "New words must be positive")
+    /*@Positive(message = "New words must be positive")
     private Integer newWords;
 
     @Positive(message = "Fuzzy words must be positive")
     private Integer fuzzyWords;
 
-    private Integer totalWords;
+    private Integer totalWords;*/
 
     @Enumerated(EnumType.STRING)
     private LinguisticTechnology linguisticTechnology;
@@ -37,8 +37,8 @@ public class LinguisticProject extends Project {
     //Constructor for testing
     public LinguisticProject(String name, String description, Date startDate, Date endDate, BigDecimal totalBudget, Status projectStatus, Integer newWords, Integer fuzzyWords, LinguisticTechnology linguisticTechnology) {
         super(name, description, startDate, endDate, totalBudget, projectStatus, ProjectType.LINGUISTIC);
-        this.newWords = newWords;
-        this.fuzzyWords = fuzzyWords;
+/*        this.newWords = newWords;
+        this.fuzzyWords = fuzzyWords;*/
         this.linguisticTechnology = linguisticTechnology;
     }
 }

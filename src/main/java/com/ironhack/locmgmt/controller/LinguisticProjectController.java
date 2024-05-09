@@ -51,7 +51,7 @@ public class LinguisticProjectController {
         linguisticProjectService.deleteLinguisticProject(id);
     }
 
-    @GetMapping("/get/byNWGT-FWGT")
+    /*@GetMapping("/get/byNWGT-FWGT")
     @ResponseStatus(HttpStatus.OK)
     public List<LinguisticProject> findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(@RequestParam Integer newWords, @RequestParam Integer fuzzyWords) {
         return linguisticProjectService.findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(newWords, fuzzyWords);
@@ -86,7 +86,7 @@ public class LinguisticProjectController {
     public List<LinguisticProject> findByTotalBudgetLessThan(@PathVariable BigDecimal totalBudget) {
         return linguisticProjectService.findByTotalBudgetLessThan(totalBudget);
     }
-
+*/
     @GetMapping("/get/byLinguisticTechnology/{linguisticTechnology}")
     @ResponseStatus(HttpStatus.OK)
     public List<LinguisticProject> findByLinguisticTechnology(@PathVariable LinguisticTechnology linguisticTechnology) {
