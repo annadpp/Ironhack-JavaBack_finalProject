@@ -4,6 +4,7 @@ import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.repository.ProjectRepository;
+import com.ironhack.locmgmt.util.ProjectUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -25,6 +26,11 @@ public class ProjectService {
             if (projects.isEmpty()) {
                 throw new EmptyListException("No projects were found");
             }
+            for (Project project : projects) {
+                ProjectUtil.calculateMargin(project);
+                ProjectUtil.calculateMarginPercentage(project);
+            }
+
             return projects;
         } catch (DataAccessException e) {
             throw new DataRetrievalFailureException("Error while retrieving all projects", e);

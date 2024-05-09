@@ -54,7 +54,11 @@ public class Project {
     @Positive(message = "Budget must be positive")
     private BigDecimal totalBudget;
 
-    /*ADD MARGIN -> CALCULATE WITH TASKS PRICE*/
+    //Sets by adding all costs from tasks and getting the difference to totalBudget
+    private BigDecimal margin;
+
+    //Sets by dividing margin / totalBudget * 100
+    private BigDecimal marginPercentage;
 
     @Enumerated(EnumType.STRING)
     private Status projectStatus;

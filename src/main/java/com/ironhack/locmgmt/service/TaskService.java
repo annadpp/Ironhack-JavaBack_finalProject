@@ -44,6 +44,7 @@ public class TaskService {
                 if (task.getLinguist() != null && task.getProject() != null && task.getTaskCost() == null) {
                     if (task.getTaskCost() == null) {
                         TaskUtil.calculateTaskCost(task);
+                        taskRepository.save(task);
                     }                }
             }
             return tasks;
@@ -93,6 +94,7 @@ public class TaskService {
         return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Task not found with id: " + id));
     }
 
+    /*ADD TaskUtil.calculateTaskCost(task);*/
     public Task createTask(Task task) {
         //Validate task type
         if (task.getProjectType() == ProjectType.LINGUISTIC) {
@@ -119,6 +121,7 @@ public class TaskService {
             throw new DataIntegrityViolationException("Error while creating the task", e);}
     }
 
+    /*ADD TaskUtil.calculateTaskCost(task);*/
     public Task updateTask(Long id, Task taskDetails) {
         Task existingTask = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
