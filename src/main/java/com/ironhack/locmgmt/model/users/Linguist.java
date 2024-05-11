@@ -44,12 +44,12 @@ public class Linguist extends User {
     private List<Rate> rates;
 
     @OneToMany(mappedBy = "linguist", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JsonIgnoreProperties({"linguist", "tasks", "projectManager", "project"})
+    @JsonIgnoreProperties({"linguist", "tasks", "projectManager", "project", "description", "deadline", "timeRemaining", "taskStatus", "startDate", "endDate", "newWords", "fuzzyWords", "totalWords", "pages"})
     private List<Task> tasks;
 
     //GETS PROJECTS FROM TASKS ASSIGNED TO THE PROJECT
     @Transient
-    @JsonIgnoreProperties({"projectManager", "linguists", "tasks", "client", "totalBudget", "projectType", "dtpTechnolgoy", "pages", "targetLanguages", "sourceLanguage"})
+    @JsonIgnoreProperties({"projectManager", "linguists", "tasks", "client", "startDate", "endDate", "deadline", "timeRemaining", "margin", "marginPercentage", "dtpTechnology", "totalBudget", "projectType", "dtpTechnolgoy", "pages", "targetLanguages", "sourceLanguage"})
     public List<Project> getProjects() {
         if (tasks == null || tasks.isEmpty()) {
             return Collections.emptyList();

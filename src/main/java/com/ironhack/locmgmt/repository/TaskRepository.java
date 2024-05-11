@@ -6,6 +6,8 @@ import com.ironhack.locmgmt.model.enums.BillingStatus;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +29,15 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     boolean existsByName(String name);
 
-    boolean existsByNameAndIdNot(String name, Long id);
+    List<Task> findByPagesGreaterThan(Integer pages);
+    List<Task> findByPagesLessThan(Integer pages);
 
-    //Add more repositories if we have time
+    List<Task> findByNewWordsLessThanAndFuzzyWordsLessThan(Integer newWords, Integer fuzzyWords);
+
+    List<Task> findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(Integer newWords, Integer fuzzyWords);
+
+  List<Task> findByTotalWordsGreaterThan(Integer totalWords);
+
+  List<Task> findByTotalWordsLessThan(Integer totalWords);
+
 }

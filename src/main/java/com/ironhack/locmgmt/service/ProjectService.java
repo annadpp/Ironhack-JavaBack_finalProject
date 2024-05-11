@@ -1,6 +1,7 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
+import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.repository.ProjectRepository;
@@ -13,6 +14,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -29,6 +31,7 @@ public class ProjectService {
             for (Project project : projects) {
                 ProjectUtil.calculateMargin(project);
                 ProjectUtil.calculateMarginPercentage(project);
+                projectRepository.save(project);
             }
 
             return projects;
@@ -38,7 +41,14 @@ public class ProjectService {
     }
 
     public Project getProjectById(Long id) {
-        return projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + id));
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + id));
+
+        ProjectUtil.calculateMargin(project);
+        ProjectUtil.calculateMarginPercentage(project);
+        projectRepository.save(project);
+
+        return project;
     }
 
     public void deleteProject(Long id) {
@@ -49,6 +59,28 @@ public class ProjectService {
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error deleting rate with id: " + id);
         }
+    }
+
+    public List<Project> findByTotalBudgetGreaterThan(BigDecimal totalBudget) {
+        if (totalBudget == null) {
+            throw new IllegalArgumentException("TotalBudget must be provided.");
+        }
+        List<Project> projects = projectRepository.findByTotalBudgetGreaterThan(totalBudget);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
+    }
+
+    public List<Project> findByTotalBudgetLessThan(BigDecimal totalBudget) {
+        if (totalBudget == null) {
+            throw new IllegalArgumentException("TotalBudget must be provided.");
+        }
+        List<Project> projects = projectRepository.findByTotalBudgetLessThan(totalBudget);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
     }
 
 }

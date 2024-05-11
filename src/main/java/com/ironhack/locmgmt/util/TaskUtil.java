@@ -57,7 +57,7 @@ public class TaskUtil {
     }
 
     public static void calculateTaskCost(Task task) {
-        if (!task.getProjectType().equals(ProjectType.DTP)) {
+        if (!task.getProjectType().equals(ProjectType.DTP) && task.getTotalWords() != null) {
             Linguist linguist = task.getLinguist();
             BigDecimal wordPrice = null;
             for (Rate rate : linguist.getRates()) {
@@ -74,7 +74,7 @@ public class TaskUtil {
                 System.out.println("No se encontró una tarifa para el par de idiomas correspondiente");
             }
         } else {
-            if (task.getProjectType().equals(ProjectType.DTP)) {
+            if (task.getProjectType().equals(ProjectType.DTP) && task.getPages() != null) {
                 Linguist linguist = task.getLinguist();
                 BigDecimal pagePrice = null;
                 for (Rate rate : linguist.getRates()) {

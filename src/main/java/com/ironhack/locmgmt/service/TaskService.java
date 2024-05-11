@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,13 +40,11 @@ public class TaskService {
             if (tasks.isEmpty()) {
                 throw new EmptyListException("No tasks were found");
             }
-
             for (Task task : tasks) {
-                if (task.getLinguist() != null && task.getProject() != null && task.getTaskCost() == null) {
-                    if (task.getTaskCost() == null) {
-                        TaskUtil.calculateTaskCost(task);
-                        taskRepository.save(task);
-                    }                }
+                if (task.getLinguist() != null && task.getProject() != null) {
+                    TaskUtil.calculateTaskCost(task);
+                    taskRepository.save(task);
+                }
             }
             return tasks;
         } catch (DataAccessException e) {
@@ -60,6 +59,12 @@ public class TaskService {
             List<Task> tasks = taskRepository.findByLinguist(linguist); //Filter tasks per current linguist - only current linguist can access its own tasks
             if (tasks.isEmpty()) {
                 throw new EmptyListException("No tasks were found for the linguist");
+            }
+            for (Task task : tasks) {
+                if (task.getLinguist() != null && task.getProject() != null) {
+                    TaskUtil.calculateTaskCost(task);
+                    taskRepository.save(task);
+                }
             }
 
             List<TaskDTO> taskDTOs = new ArrayList<>();
@@ -91,10 +96,17 @@ public class TaskService {
     }
 
     public Task getTaskById(Long id) {
-        return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Task not found with id: " + id));
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with id: " + id));
+
+        if (task.getLinguist() != null && task.getProject() != null) {
+            TaskUtil.calculateTaskCost(task);
+            taskRepository.save(task);
+        }
+
+        return task;
     }
 
-    /*ADD TaskUtil.calculateTaskCost(task);*/
     public Task createTask(Task task) {
         //Validate task type
         if (task.getProjectType() == ProjectType.LINGUISTIC) {
@@ -112,8 +124,10 @@ public class TaskService {
         TaskUtil.updateTaskDates(task);
         TaskUtil.updateTimeRemaining(task);
         TaskUtil.updateTotalTime(task);
-        // Calculate total words
         TaskUtil.calculateTotalWords(task);
+        /*if (task.getLinguist() != null && task.getProject() != null) {
+            TaskUtil.calculateTaskCost(task);
+        }*/
 
         try {
             return taskRepository.save(task);
@@ -121,10 +135,13 @@ public class TaskService {
             throw new DataIntegrityViolationException("Error while creating the task", e);}
     }
 
-    /*ADD TaskUtil.calculateTaskCost(task);*/
     public Task updateTask(Long id, Task taskDetails) {
         Task existingTask = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+
+        if (taskDetails.getLinguist() != null && taskDetails.getProject() != null) {
+            TaskUtil.calculateTaskCost(existingTask);
+        }
 
         if (taskDetails.getName() != null && !taskDetails.getName().equals(existingTask.getName())) {
             if (taskRepository.existsByName(taskDetails.getName())) {
@@ -230,5 +247,65 @@ public class TaskService {
             throw new EmptyListException("No tasks found for the given billing status");
         }
         return tasks;
+    }
+
+    public List<Task> findByPagesGreaterThan(Integer pages) {
+        List<Task> projects = taskRepository.findByPagesGreaterThan(pages);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No DTP projects found with pages greater than: " + pages);
+        }
+        return projects;
+    }
+
+    public List<Task> findByPagesLessThan(Integer pages) {
+        List<Task> projects = taskRepository.findByPagesLessThan(pages);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No DTP projects found with pages less than: " + pages);
+        }
+        return projects;
+    }
+
+    public List<Task> findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(Integer newWords, Integer fuzzyWords) {
+        if (newWords == null || fuzzyWords == null) {
+            throw new IllegalArgumentException("NewWords and FuzzyWords must be provided.");
+        }
+        List<Task> projects = taskRepository.findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(newWords, fuzzyWords);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
+    }
+
+    public List<Task> findByNewWordsLessThanAndFuzzyWordsLessThan(Integer newWords, Integer fuzzyWords) {
+        if (newWords == null || fuzzyWords == null) {
+            throw new IllegalArgumentException("NewWords and FuzzyWords must be provided.");
+        }
+        List<Task> projects = taskRepository.findByNewWordsLessThanAndFuzzyWordsLessThan(newWords, fuzzyWords);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
+    }
+
+    public List<Task> findByTotalWordsGreaterThan(Integer totalWords) {
+        if (totalWords == null) {
+            throw new IllegalArgumentException("TotalWords must be provided.");
+        }
+        List<Task> projects = taskRepository.findByTotalWordsGreaterThan(totalWords);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
+    }
+
+    public List<Task> findByTotalWordsLessThan(Integer totalWords) {
+        if (totalWords == null) {
+            throw new IllegalArgumentException("TotalWords must be provided.");
+        }
+        List<Task> projects = taskRepository.findByTotalWordsLessThan(totalWords);
+        if (projects.isEmpty()) {
+            throw new EmptyListException("No linguistic projects found with provided criteria.");
+        }
+        return projects;
     }
 }

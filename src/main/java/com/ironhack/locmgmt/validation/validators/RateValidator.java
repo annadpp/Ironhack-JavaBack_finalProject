@@ -15,7 +15,8 @@ public class RateValidator implements ConstraintValidator<ValidRate, Rate> {
     public boolean isValid(Rate rate, ConstraintValidatorContext context) {
         if (rate.getProjectType() == ProjectType.DTP) {
             return rate.getPagePrice() != null && rate.getWordPrice() == null;
-        } else if (rate.getProjectType() == ProjectType.LINGUISTIC) {
+        } else if (rate.getProjectType() == ProjectType.TRANSLATION || rate.getProjectType() == ProjectType.REVIEW || rate.getProjectType() == ProjectType.POSTEDITING
+        ) {
             return rate.getWordPrice() != null && rate.getPagePrice() == null;
         }
 

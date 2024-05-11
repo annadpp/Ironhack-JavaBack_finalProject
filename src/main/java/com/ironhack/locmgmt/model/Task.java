@@ -99,17 +99,17 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "linguist_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
-    @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
+    @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "rates", "role", "sourceLanguages", "targetLanguages", "projectTypes", "dtpTechnologies", "linguisticTechnologies", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
     private Linguist linguist;
 
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
-    @JsonIgnoreProperties({"tasks", "linguists", "client", "projectManager"})
+    @JsonIgnoreProperties({"tasks", "linguists", "client", "projectManager", "timeRemaining", })
     private Project project;
 
     //GETS PROJECT MANAGER FROM PROJECT ASSIGNED TO THE TASK
     @Transient
-    @JsonIgnoreProperties({"projects", "tasks"})
+    @JsonIgnoreProperties({"projects", "tasks", "password", "role", "spokenLanguages", "projectTypes", "role", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
     public ProjectManager getProjectManager() {
         if (project != null) {
             return project.getProjectManager();
