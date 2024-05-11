@@ -4,6 +4,7 @@ import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.Status;
+import com.ironhack.locmgmt.model.projects.DTPProject;
 import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.model.users.ProjectManager;
 import com.ironhack.locmgmt.repository.ClientRepository;
@@ -46,6 +47,9 @@ public class LinguisticProjectService {
         try {List<LinguisticProject> linguisticProjects = linguisticProjectRepository.findAll();
             if (linguisticProjects.isEmpty()) {
                 throw new EmptyListException("No Linguistic projects were found");
+            }
+            for (LinguisticProject linguisticProject : linguisticProjects) {
+                ProjectUtil.updateTimeRemaining(linguisticProject);
             }
             return linguisticProjects;
         } catch (DataAccessException e) {
@@ -90,8 +94,10 @@ public class LinguisticProjectService {
         //Sets projectStatus to NOT if info not passed by the user when creating project
         linguisticProject.setProjectStatus(linguisticProject.getProjectStatus() != null ? linguisticProject.getProjectStatus() : Status.NOT_STARTED);
 
-        //Update project dates and time remaining
+        //Update project dates and margins
         ProjectUtil.updateProjectDates(linguisticProject);
+        ProjectUtil.calculateMargin(linguisticProject);
+        ProjectUtil.calculateMarginPercentage(linguisticProject);
 
         try {
             return linguisticProjectRepository.save(linguisticProject);
@@ -131,6 +137,8 @@ public class LinguisticProjectService {
         }
         if (linguisticProjectDetails.getTotalBudget() != null) {
             existingLinguisticProject.setTotalBudget(linguisticProjectDetails.getTotalBudget());
+            ProjectUtil.calculateMargin(existingLinguisticProject);
+            ProjectUtil.calculateMarginPercentage(existingLinguisticProject);
         }
         if (linguisticProjectDetails.getProjectStatus() != null) {
             existingLinguisticProject.setProjectStatus(linguisticProjectDetails.getProjectStatus());

@@ -43,9 +43,13 @@ public class DTPProjectService {
     private ProjectManagerRepository projectManagerRepository;
 
     public List<DTPProject> getAllDTPProjects() {
-        try {List<DTPProject> dtpProjects = dtpProjectRepository.findAll();
+        try {
+            List<DTPProject> dtpProjects = dtpProjectRepository.findAll();
             if (dtpProjects.isEmpty()) {
                 throw new EmptyListException("No DTP projects were found");
+            }
+            for (DTPProject dtpProject : dtpProjects) {
+                ProjectUtil.updateTimeRemaining(dtpProject);
             }
             return dtpProjects;
         } catch (DataAccessException e) {
@@ -90,8 +94,10 @@ public class DTPProjectService {
         // Sets projectStatus to NOT if info not passed by the user when creating project
         dtpProject.setProjectStatus(dtpProject.getProjectStatus() != null ? dtpProject.getProjectStatus() : Status.NOT_STARTED);
 
-        // Update project dates and time remaining
+        // Update project dates and margins
         ProjectUtil.updateProjectDates(dtpProject);
+        ProjectUtil.calculateMargin(dtpProject);
+        ProjectUtil.calculateMarginPercentage(dtpProject);
 
         try {
             return dtpProjectRepository.save(dtpProject);
@@ -134,6 +140,8 @@ public class DTPProjectService {
         }
         if (dtpProjectDetails.getTotalBudget() != null) {
             existingDTPProject.setTotalBudget(dtpProjectDetails.getTotalBudget());
+            ProjectUtil.calculateMargin(existingDTPProject);
+            ProjectUtil.calculateMarginPercentage(existingDTPProject);
         }
         if (dtpProjectDetails.getProjectStatus() != null) {
             existingDTPProject.setProjectStatus(dtpProjectDetails.getProjectStatus());
@@ -145,6 +153,7 @@ public class DTPProjectService {
                     .orElseThrow(() -> new EntityNotFoundException("Client not found with id: " + dtpProjectDetails.getClient().getId()));
             existingDTPProject.setClient(client);
         }
+
         //Add project manager when updating DTP project
         if (dtpProjectDetails.getProjectManager() != null) {
             ProjectManager projectManager = projectManagerRepository.findById(dtpProjectDetails.getProjectManager().getId())

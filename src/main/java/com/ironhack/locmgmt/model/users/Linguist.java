@@ -6,6 +6,7 @@ import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.*;
 
 import com.ironhack.locmgmt.model.projects.Project;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import jakarta.persistence.*;
@@ -20,22 +21,23 @@ import java.util.List;
 @Entity
 public class Linguist extends User {
     @NotNull(message = "Source languages cannot be empty")
+    @NotEmpty(message = "Source languages cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<Languages> sourceLanguages;
 
     @NotNull(message = "Target languages cannot be empty")
+    @NotEmpty(message = "Target languages cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<Languages> targetLanguages;
 
     @NotNull(message = "Project types cannot be empty")
+    @NotEmpty(message = "Project types cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
 
-    @NotNull(message = "DTP technologies cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<DTPTechnology> dtpTechnologies;
 
-    @NotNull(message = "Linguistic technologies cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<LinguisticTechnology> linguisticTechnologies;
 

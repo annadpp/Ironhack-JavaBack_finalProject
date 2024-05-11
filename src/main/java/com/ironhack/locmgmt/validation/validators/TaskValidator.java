@@ -14,25 +14,24 @@ public class TaskValidator implements ConstraintValidator<ValidTask, Task> {
 
     @Override
     public boolean isValid(Task task, ConstraintValidatorContext context) {
-        if (task.getLinguist() != null) {
-            if (!task.getLinguist().getProjectTypes().contains(task.getProjectType())) {
-                context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate("Invalid task assignment for the project type").addConstraintViolation();
-                return false;
-            }
+        // Verifica si el tipo de proyecto de la tarea es compatible con el tipo de proyecto del linguista
+        if (task.getLinguist() != null && !task.getLinguist().getProjectTypes().contains(task.getProjectType())) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("Linguist cannot take care of this task's project type").addConstraintViolation();
+            return false;
         }
 
         // Si el tipo de proyecto de la tarea es DTP pero el tipo de proyecto del proyecto no es DTP
         if (task.getProjectType() == ProjectType.DTP && task.getProject().getProjectType() != ProjectType.DTP) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("Cannot assign DTP project type to non-DTP task").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate("Cannot assign DTP project type to non-DTP task.").addConstraintViolation();
             return false;
         }
 
         // Si el tipo de proyecto de la tarea no es DTP pero el tipo de proyecto del proyecto es DTP
         if (task.getProjectType() != ProjectType.DTP && task.getProject().getProjectType() == ProjectType.DTP) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("Cannot assign non-DTP project type to DTP task").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate("Cannot assign non-DTP project type to DTP task.").addConstraintViolation();
             return false;
         }
 

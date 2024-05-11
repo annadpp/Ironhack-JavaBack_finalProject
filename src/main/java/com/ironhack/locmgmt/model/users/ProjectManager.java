@@ -19,12 +19,12 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class ProjectManager extends User {
-    @NotNull(message = "Spoken languages cannot be empty")
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Languages> spokenLanguages;
 
     @NotNull(message = "Project types cannot be empty")
+    @NotEmpty(message = "Project types cannot be empty")
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
