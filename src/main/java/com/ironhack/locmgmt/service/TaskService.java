@@ -7,12 +7,15 @@ import com.ironhack.locmgmt.model.enums.BillingStatus;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.Status;
 import com.ironhack.locmgmt.model.users.Linguist;
+import com.ironhack.locmgmt.model.projects.Project;
+import com.ironhack.locmgmt.repository.LinguistRepository;
+import com.ironhack.locmgmt.repository.ProjectRepository;
 import com.ironhack.locmgmt.repository.TaskRepository;
 
-import com.ironhack.locmgmt.util.ProjectUtil;
 import com.ironhack.locmgmt.util.SecurityUtil;
 import com.ironhack.locmgmt.util.TaskUtil;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,12 @@ public class TaskService {
 
     @Autowired
     private SecurityUtil securityUtil;
+
+    @Autowired
+    private ProjectRepository projectRepository;
+
+    @Autowired
+    private LinguistRepository linguistRepository;
 
     public List<Task> getAllTasks() {
         try {
@@ -107,6 +116,7 @@ public class TaskService {
         return task;
     }
 
+    @Transactional
     public Task createTask(Task task) {
         //Validate task type
         if (task.getProjectType() == ProjectType.LINGUISTIC) {
@@ -125,6 +135,21 @@ public class TaskService {
         TaskUtil.updateTimeRemaining(task);
         TaskUtil.updateTotalTime(task);
         TaskUtil.calculateTotalWords(task);
+
+        // Si se proporciona el lingüista, carga explícitamente toda la información del lingüista
+        if (task.getLinguist() != null) {
+            Linguist linguist = linguistRepository.findById(task.getLinguist().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Linguist not found with id: " + task.getLinguist().getId()));
+            task.setLinguist(linguist);
+        }
+
+        // Si se proporciona el proyecto, carga explícitamente toda la información del proyecto
+        if (task.getProject() != null) {
+            Project project = projectRepository.findById(task.getProject().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + task.getProject().getId()));
+            task.setProject(project);
+        }
+
         /*if (task.getLinguist() != null && task.getProject() != null) {
             TaskUtil.calculateTaskCost(task);
         }*/
@@ -135,6 +160,7 @@ public class TaskService {
             throw new DataIntegrityViolationException("Error while creating the task", e);}
     }
 
+    @Transactional
     public Task updateTask(Long id, Task taskDetails) {
         Task existingTask = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
@@ -197,11 +223,15 @@ public class TaskService {
         }
         //Add project when updating task
         if (taskDetails.getProject() != null) {
-            existingTask.setProject(taskDetails.getProject());
+            Project project = projectRepository.findById(taskDetails.getProject().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + taskDetails.getProject().getId()));
+            existingTask.setProject(project);
         }
         //Add linguist when updating task
         if (taskDetails.getLinguist() != null) {
-            existingTask.setLinguist(taskDetails.getLinguist());
+            Linguist linguist = linguistRepository.findById(taskDetails.getLinguist().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Linguist not found with id: " + taskDetails.getLinguist().getId()));
+            existingTask.setLinguist(linguist);
         }
 
         return taskRepository.save(existingTask);
