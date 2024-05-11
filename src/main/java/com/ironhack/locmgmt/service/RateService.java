@@ -4,8 +4,11 @@ import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.Rate;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
+import com.ironhack.locmgmt.model.users.Linguist;
+import com.ironhack.locmgmt.repository.LinguistRepository;
 import com.ironhack.locmgmt.repository.RateRepository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,6 +23,9 @@ import java.util.List;
 public class RateService {
     @Autowired
     private RateRepository rateRepository;
+
+    @Autowired
+    private LinguistRepository linguistRepository;
 
     public List<Rate> getAllRates() {
         try {
@@ -38,18 +44,30 @@ public class RateService {
                 .orElseThrow(() -> new EntityNotFoundException("Rate not found with id: " + id));
     }
 
+    @Transactional
     public Rate createRate(Rate rate) {
         ProjectType projectType = rate.getProjectType();
+
         if (projectType == ProjectType.LINGUISTIC) {
             throw new IllegalArgumentException("Invalid project type. Project type can only be TRANSLATION, REVIEW, POSTEDITING or DTP.");
         }
+
         try {
+            // Carga explícitamente toda la información del lingüista
+            Linguist linguist = linguistRepository.findById(rate.getLinguist().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Linguist not found with id: " + rate.getLinguist().getId()));
+
+            // Asigna el lingüista cargado a la tasa
+            rate.setLinguist(linguist);
+
+            // Guarda la tasa en el repositorio
             return rateRepository.save(rate);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Error while creating the rate", e);
         }
     }
 
+    @Transactional
     public Rate updateRate(Long rateId, Rate rateDetails) {
         Rate existingRate = rateRepository.findById(rateId)
                 .orElseThrow(() -> new EntityNotFoundException("Rate not found with id: " + rateId));
@@ -75,6 +93,12 @@ public class RateService {
         if (rateDetails.getLinguist() != null) {
             existingRate.setLinguist(rateDetails.getLinguist());
         }
+
+        Linguist linguist = linguistRepository.findById(rateDetails.getLinguist().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Linguist not found with id: " + rateDetails.getLinguist().getId()));
+
+        // Asigna el lingüista actualizado a la tasa
+        existingRate.setLinguist(linguist);
 
         return rateRepository.save(existingRate);
     }

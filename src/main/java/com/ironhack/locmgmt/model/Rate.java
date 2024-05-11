@@ -1,6 +1,5 @@
 package com.ironhack.locmgmt.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.ProjectType;
