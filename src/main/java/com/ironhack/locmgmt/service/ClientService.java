@@ -44,9 +44,9 @@ public class ClientService {
     public Client createClient(Client client) {
         try {
             //Check if projects are being set directly
-            if (!client.getProjects().isEmpty()) {
+            /*if (!client.getProjects().isEmpty()) {
                 LOGGER.warn("Clients cannot be assigned to projects directly. Add the information in the project itself.");
-            }
+            }*/
 
             //Set projects to empty lists -> can only be assigned through projects
             client.setProjects(Collections.emptyList());

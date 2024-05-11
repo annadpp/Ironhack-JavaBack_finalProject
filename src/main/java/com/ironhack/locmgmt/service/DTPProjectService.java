@@ -1,13 +1,18 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
+import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.enums.Status;
 import com.ironhack.locmgmt.model.projects.DTPProject;
+import com.ironhack.locmgmt.model.users.ProjectManager;
+import com.ironhack.locmgmt.repository.ClientRepository;
 import com.ironhack.locmgmt.repository.DTPProjectRepository;
+import com.ironhack.locmgmt.repository.ProjectManagerRepository;
 import com.ironhack.locmgmt.util.ProjectUtil;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -31,6 +36,12 @@ public class DTPProjectService {
     @Autowired
     private DTPProjectRepository dtpProjectRepository;
 
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
+    private ProjectManagerRepository projectManagerRepository;
+
     public List<DTPProject> getAllDTPProjects() {
         try {List<DTPProject> dtpProjects = dtpProjectRepository.findAll();
             if (dtpProjects.isEmpty()) {
@@ -46,6 +57,7 @@ public class DTPProjectService {
         return dtpProjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("DTP project not found with id: " + id));
     }
 
+    @Transactional
     public DTPProject createDTPProject(DTPProject dtpProject) {
         //Checks if there is already a project with the same name
         Optional<DTPProject> existingProject = dtpProjectRepository.findByName(dtpProject.getName());
@@ -61,7 +73,19 @@ public class DTPProjectService {
         //Set tasks to empty lists
         dtpProject.setTasks(Collections.emptyList());
 
-        // Add "Projects cannot be assigned directly to tasks or linguists" if we have time
+        // Si el cliente se proporciona, carga explícitamente toda la información del cliente
+        if (dtpProject.getClient() != null) {
+            Client client = clientRepository.findById(dtpProject.getClient().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Client not found with id: " + dtpProject.getClient().getId()));
+            dtpProject.setClient(client);
+        }
+
+        // Si el ProjectManager se proporciona, carga explícitamente toda la información del ProjectManager
+        if (dtpProject.getProjectManager() != null) {
+            ProjectManager projectManager = projectManagerRepository.findById(dtpProject.getProjectManager().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("ProjectManager not found with id: " + dtpProject.getProjectManager().getId()));
+            dtpProject.setProjectManager(projectManager);
+        }
 
         // Sets projectStatus to NOT if info not passed by the user when creating project
         dtpProject.setProjectStatus(dtpProject.getProjectStatus() != null ? dtpProject.getProjectStatus() : Status.NOT_STARTED);
@@ -76,6 +100,7 @@ public class DTPProjectService {
         }
     }
 
+    @Transactional
     public DTPProject updateDTPProject(Long DTPProjectId, DTPProject dtpProjectDetails) {
         DTPProject existingDTPProject = dtpProjectRepository.findById(DTPProjectId)
                 .orElseThrow(() -> new RuntimeException("DTP project not found with id: " + DTPProjectId));
@@ -116,11 +141,15 @@ public class DTPProjectService {
 
         //Add client when updating DTP project
         if (dtpProjectDetails.getClient() != null) {
-            existingDTPProject.setClient(dtpProjectDetails.getClient());
+            Client client = clientRepository.findById(dtpProjectDetails.getClient().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Client not found with id: " + dtpProjectDetails.getClient().getId()));
+            existingDTPProject.setClient(client);
         }
         //Add project manager when updating DTP project
         if (dtpProjectDetails.getProjectManager() != null) {
-            existingDTPProject.setProjectManager(dtpProjectDetails.getProjectManager());
+            ProjectManager projectManager = projectManagerRepository.findById(dtpProjectDetails.getProjectManager().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("ProjectManager not found with id: " + dtpProjectDetails.getProjectManager().getId()));
+            existingDTPProject.setProjectManager(projectManager);
         }
 
         return dtpProjectRepository.save(existingDTPProject);
@@ -143,20 +172,4 @@ public class DTPProjectService {
         }
         return projects;
     }
-
-    /*public List<DTPProject> findByPagesGreaterThan(Integer pages) {
-        List<DTPProject> projects = dtpProjectRepository.findByPagesGreaterThan(pages);
-        if (projects.isEmpty()) {
-            throw new EmptyListException("No DTP projects found with pages greater than: " + pages);
-        }
-        return projects;
-    }*/
-
-    /*public List<DTPProject> findByPagesLessThan(Integer pages) {
-        List<DTPProject> projects = dtpProjectRepository.findByPagesLessThan(pages);
-        if (projects.isEmpty()) {
-            throw new EmptyListException("No DTP projects found with pages less than: " + pages);
-        }
-        return projects;
-    }*/
 }

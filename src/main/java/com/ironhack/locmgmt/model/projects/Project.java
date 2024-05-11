@@ -112,7 +112,7 @@ public class Project {
 
     @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
-    @JsonIgnoreProperties("projects")
+    @JsonIgnoreProperties({"projects", "address", "vatnumber"})
     private Client client;
 
     //Constructor/getters/setters for testing

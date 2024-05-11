@@ -1,12 +1,17 @@
 package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
+import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.Status;
 import com.ironhack.locmgmt.model.projects.LinguisticProject;
+import com.ironhack.locmgmt.model.users.ProjectManager;
+import com.ironhack.locmgmt.repository.ClientRepository;
 import com.ironhack.locmgmt.repository.LinguisticProjectRepository;
+import com.ironhack.locmgmt.repository.ProjectManagerRepository;
 import com.ironhack.locmgmt.util.ProjectUtil;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -31,6 +36,12 @@ public class LinguisticProjectService {
     @Autowired
     private LinguisticProjectRepository linguisticProjectRepository;
 
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
+    private ProjectManagerRepository projectManagerRepository;
+
     public List<LinguisticProject> getAllLinguisticProjects() {
         try {List<LinguisticProject> linguisticProjects = linguisticProjectRepository.findAll();
             if (linguisticProjects.isEmpty()) {
@@ -46,6 +57,7 @@ public class LinguisticProjectService {
         return linguisticProjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
     }
 
+    @Transactional
     public LinguisticProject createLinguisticProject(LinguisticProject linguisticProject) {
         //Checks if there is already a project with the same name
         Optional<LinguisticProject> existingProject = linguisticProjectRepository.findByName(linguisticProject.getName());
@@ -58,6 +70,20 @@ public class LinguisticProjectService {
             LOGGER.info("Tasks cannot be assigned directly to projects. Add the project information in the task itself.");
         }*/
 
+        // Si el cliente se proporciona, carga explícitamente toda la información del cliente
+        if (linguisticProject.getClient() != null) {
+            Client client = clientRepository.findById(linguisticProject.getClient().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Client not found with id: " + linguisticProject.getClient().getId()));
+            linguisticProject.setClient(client);
+        }
+
+        // Si el ProjectManager se proporciona, carga explícitamente toda la información del ProjectManager
+        if (linguisticProject.getProjectManager() != null) {
+            ProjectManager projectManager = projectManagerRepository.findById(linguisticProject.getProjectManager().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("ProjectManager not found with id: " + linguisticProject.getProjectManager().getId()));
+            linguisticProject.setProjectManager(projectManager);
+        }
+
         //Sets tasks to empty lists
         linguisticProject.setTasks(Collections.emptyList());
 
@@ -67,9 +93,6 @@ public class LinguisticProjectService {
         //Update project dates and time remaining
         ProjectUtil.updateProjectDates(linguisticProject);
 
-        /*// Calculate total words
-        ProjectUtil.calculateTotalWords(linguisticProject);*/
-
         try {
             return linguisticProjectRepository.save(linguisticProject);
         } catch (DataIntegrityViolationException e) {
@@ -77,19 +100,12 @@ public class LinguisticProjectService {
         }
     }
 
+    @Transactional
     public LinguisticProject updateLinguisticProject(Long linguisticProjectId, LinguisticProject linguisticProjectDetails) {
         LinguisticProject existingLinguisticProject = linguisticProjectRepository.findById(linguisticProjectId)
                 .orElseThrow(() -> new RuntimeException("Linguistic project not found with id: " + linguisticProjectId));
 
         //Update the inherent DTP Project fields passed
-        /*if (linguisticProjectDetails.getNewWords() != null) {
-            existingLinguisticProject.setNewWords(linguisticProjectDetails.getNewWords());
-            ProjectUtil.calculateTotalWords(existingLinguisticProject);
-        }
-        if (linguisticProjectDetails.getFuzzyWords() != null) {
-            existingLinguisticProject.setFuzzyWords(linguisticProjectDetails.getFuzzyWords());
-            ProjectUtil.calculateTotalWords(existingLinguisticProject);
-        }*/
         if (linguisticProjectDetails.getLinguisticTechnology() != null) {
             existingLinguisticProject.setLinguisticTechnology(linguisticProjectDetails.getLinguisticTechnology());
         }
@@ -121,11 +137,15 @@ public class LinguisticProjectService {
         }
         //Add client when updating project
         if (linguisticProjectDetails.getClient() != null) {
-            existingLinguisticProject.setClient(linguisticProjectDetails.getClient());
+            Client client = clientRepository.findById(linguisticProjectDetails.getClient().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Client not found with id: " + linguisticProjectDetails.getClient().getId()));
+            existingLinguisticProject.setClient(client);
         }
         //Add project manager when updating DTP project
         if (linguisticProjectDetails.getProjectManager() != null) {
-            existingLinguisticProject.setProjectManager(linguisticProjectDetails.getProjectManager());
+            ProjectManager projectManager = projectManagerRepository.findById(linguisticProjectDetails.getProjectManager().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("ProjectManager not found with id: " + linguisticProjectDetails.getProjectManager().getId()));
+            existingLinguisticProject.setProjectManager(projectManager);
         }
 
         return linguisticProjectRepository.save(existingLinguisticProject);
@@ -140,72 +160,6 @@ public class LinguisticProjectService {
             throw new DataIntegrityViolationException("Error deleting Linguistic project with id: " + id);
         }
     }
-
-    /*public List<LinguisticProject> findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(Integer newWords, Integer fuzzyWords) {
-        if (newWords == null || fuzzyWords == null) {
-            throw new IllegalArgumentException("NewWords and FuzzyWords must be provided.");
-        }
-        List<LinguisticProject> projects = linguisticProjectRepository.findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(newWords, fuzzyWords);
-        if (projects.isEmpty()) {
-            throw new EmptyListException("No linguistic projects found with provided criteria.");
-        }
-        return projects;
-    }
-
-    public List<LinguisticProject> findByNewWordsLessThanAndFuzzyWordsLessThan(Integer newWords, Integer fuzzyWords) {
-        if (newWords == null || fuzzyWords == null) {
-            throw new IllegalArgumentException("NewWords and FuzzyWords must be provided.");
-        }
-        List<LinguisticProject> projects = linguisticProjectRepository.findByNewWordsLessThanAndFuzzyWordsLessThan(newWords, fuzzyWords);
-        if (projects.isEmpty()) {
-            throw new EmptyListException("No linguistic projects found with provided criteria.");
-        }
-        return projects;
-    }
-
-    public List<LinguisticProject> findByTotalWordsGreaterThan(Integer totalWords) {
-        if (totalWords == null) {
-            throw new IllegalArgumentException("TotalWords must be provided.");
-        }
-        List<LinguisticProject> projects = linguisticProjectRepository.findByTotalWordsGreaterThan(totalWords);
-        if (projects.isEmpty()) {
-            throw new EmptyListException("No linguistic projects found with provided criteria.");
-        }
-        return projects;
-    }
-
-    public List<LinguisticProject> findByTotalWordsLessThan(Integer totalWords) {
-        if (totalWords == null) {
-            throw new IllegalArgumentException("TotalWords must be provided.");
-        }
-        List<LinguisticProject> projects = linguisticProjectRepository.findByTotalWordsLessThan(totalWords);
-        if (projects.isEmpty()) {
-            throw new EmptyListException("No linguistic projects found with provided criteria.");
-        }
-        return projects;
-    }
-
-    public List<LinguisticProject> findByTotalBudgetGreaterThan(BigDecimal totalBudget) {
-        if (totalBudget == null) {
-            throw new IllegalArgumentException("TotalBudget must be provided.");
-        }
-        List<LinguisticProject> projects = linguisticProjectRepository.findByTotalBudgetGreaterThan(totalBudget);
-        if (projects.isEmpty()) {
-            throw new EmptyListException("No linguistic projects found with provided criteria.");
-        }
-        return projects;
-    }
-
-    public List<LinguisticProject> findByTotalBudgetLessThan(BigDecimal totalBudget) {
-        if (totalBudget == null) {
-            throw new IllegalArgumentException("TotalBudget must be provided.");
-        }
-        List<LinguisticProject> projects = linguisticProjectRepository.findByTotalBudgetLessThan(totalBudget);
-        if (projects.isEmpty()) {
-            throw new EmptyListException("No linguistic projects found with provided criteria.");
-        }
-        return projects;
-    }*/
 
     public List<LinguisticProject> findByLinguisticTechnology(LinguisticTechnology linguisticTechnology) {
         if (linguisticTechnology == null) {
