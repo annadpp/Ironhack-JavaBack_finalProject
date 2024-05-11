@@ -50,7 +50,7 @@ public class TaskService {
                 throw new EmptyListException("No tasks were found");
             }
             for (Task task : tasks) {
-                if (task.getLinguist() != null && task.getProject() != null) {
+                if (task.getProject() != null) {
                     TaskUtil.calculateTaskCost(task);
                     taskRepository.save(task);
                 }
@@ -136,6 +136,7 @@ public class TaskService {
         TaskUtil.updateTotalTime(task);
         TaskUtil.calculateTotalWords(task);
 
+
         // Si se proporciona el lingüista, carga explícitamente toda la información del lingüista
         if (task.getLinguist() != null) {
             Linguist linguist = linguistRepository.findById(task.getLinguist().getId())
@@ -150,9 +151,10 @@ public class TaskService {
             task.setProject(project);
         }
 
-        /*if (task.getLinguist() != null && task.getProject() != null) {
+        /*OJO POR SI DA ERROR*/
+        if (task.getLinguist() != null) {
             TaskUtil.calculateTaskCost(task);
-        }*/
+        }
 
         try {
             return taskRepository.save(task);
@@ -232,6 +234,7 @@ public class TaskService {
             Linguist linguist = linguistRepository.findById(taskDetails.getLinguist().getId())
                     .orElseThrow(() -> new EntityNotFoundException("Linguist not found with id: " + taskDetails.getLinguist().getId()));
             existingTask.setLinguist(linguist);
+            TaskUtil.calculateTaskCost(existingTask);
         }
 
         return taskRepository.save(existingTask);

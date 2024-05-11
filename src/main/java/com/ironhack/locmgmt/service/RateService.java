@@ -102,6 +102,14 @@ public class RateService {
         // Asigna el lingüista actualizado a la tasa
         existingRate.setLinguist(linguist);*/
 
+        if (rateDetails.getLinguist() != null) {
+            Linguist linguist = linguistRepository.findById(rateDetails.getLinguist().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Linguist not found with id: " + rateDetails.getLinguist().getId()));
+
+            // Asigna el lingüista cargado a la tasa
+            existingRate.setLinguist(linguist);
+        }
+
         return rateRepository.save(existingRate);
     }
 

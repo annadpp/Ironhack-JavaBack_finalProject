@@ -57,6 +57,11 @@ public class TaskUtil {
     }
 
     public static void calculateTaskCost(Task task) {
+        if (task.getLinguist() == null) {
+            task.setTaskCost(null);
+            return;
+        }
+
         if (!task.getProjectType().equals(ProjectType.DTP) && task.getTotalWords() != null) {
             Linguist linguist = task.getLinguist();
             BigDecimal wordPrice = null;
