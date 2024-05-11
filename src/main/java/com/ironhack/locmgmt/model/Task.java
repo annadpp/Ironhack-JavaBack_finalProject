@@ -10,9 +10,9 @@ import com.ironhack.locmgmt.util.TaskUtil;
 import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
 import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
 
+import com.ironhack.locmgmt.validation.annotations.ValidTask;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import lombok.Builder.Default;
 
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 @Table(name = "tasks")
 @ValidLinguisticTechnology
 @ValidDTPTechnology
+@ValidTask
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
