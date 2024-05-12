@@ -116,6 +116,13 @@ public class LinguisticProjectService {
         LinguisticProject existingLinguisticProject = linguisticProjectRepository.findById(linguisticProjectId)
                 .orElseThrow(() -> new RuntimeException("Linguistic project not found with id: " + linguisticProjectId));
 
+        if (existingLinguisticProject.getProjectStatus() == Status.FINISHED) {
+            //If linguistic project status is FINISHED, only project status can be changed.
+            if (linguisticProjectDetails.getProjectStatus() != Status.FINISHED) {
+                throw new IllegalArgumentException("Cannot update fields other than project status when the project is FINISHED.");
+            }
+        }
+
         //Update the inherent DTP Project fields passed
         if (linguisticProjectDetails.getLinguisticTechnology() != null) {
             existingLinguisticProject.setLinguisticTechnology(linguisticProjectDetails.getLinguisticTechnology());

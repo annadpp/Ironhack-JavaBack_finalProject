@@ -116,13 +116,17 @@ public class DTPProjectService {
         DTPProject existingDTPProject = dtpProjectRepository.findById(DTPProjectId)
                 .orElseThrow(() -> new RuntimeException("DTP project not found with id: " + DTPProjectId));
 
+        if (existingDTPProject.getProjectStatus() == Status.FINISHED) {
+            //If DTP project status is FINISHED, only project status can be changed.
+            if (dtpProjectDetails.getProjectStatus() != Status.FINISHED) {
+                throw new IllegalArgumentException("Cannot update fields other than project status when the project is FINISHED.");
+            }
+        }
+
         //Update the inherent DTP Project fields passed
         if (dtpProjectDetails.getDtpTechnology() != null) {
             existingDTPProject.setDtpTechnology(dtpProjectDetails.getDtpTechnology());
         }
-        /*if (dtpProjectDetails.getPages() != null) {
-            existingDTPProject.setPages(dtpProjectDetails.getPages());
-        }*/
 
         //Update the fields inherited from the Project class
         if (dtpProjectDetails.getName() != null && !dtpProjectDetails.getName().equals(existingDTPProject.getName())) {

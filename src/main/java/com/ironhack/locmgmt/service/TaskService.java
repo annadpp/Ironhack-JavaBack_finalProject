@@ -171,6 +171,13 @@ public class TaskService {
             TaskUtil.calculateTaskCost(existingTask);
         }
 
+        if (existingTask.getTaskStatus() == Status.FINISHED) {
+            //If task status is FINISHED, only task status can be changed.
+            if (taskDetails.getTaskStatus() != null && taskDetails.getTaskStatus() != Status.FINISHED) {
+                throw new IllegalArgumentException("Cannot update fields other than task status when the task is FINISHED.");
+            }
+        }
+
         if (taskDetails.getName() != null && !taskDetails.getName().equals(existingTask.getName())) {
             if (taskRepository.existsByName(taskDetails.getName())) {
                 throw new IllegalArgumentException("A task with the same name already exists.");
