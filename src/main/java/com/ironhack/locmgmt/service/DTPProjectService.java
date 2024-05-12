@@ -2,6 +2,7 @@ package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.Client;
+import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.enums.Status;
 import com.ironhack.locmgmt.model.projects.DTPProject;
@@ -9,6 +10,7 @@ import com.ironhack.locmgmt.model.users.ProjectManager;
 import com.ironhack.locmgmt.repository.ClientRepository;
 import com.ironhack.locmgmt.repository.DTPProjectRepository;
 import com.ironhack.locmgmt.repository.ProjectManagerRepository;
+import com.ironhack.locmgmt.repository.TaskRepository;
 import com.ironhack.locmgmt.util.ProjectUtil;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -41,6 +43,9 @@ public class DTPProjectService {
 
     @Autowired
     private ProjectManagerRepository projectManagerRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     public List<DTPProject> getAllDTPProjects() {
         try {
@@ -164,13 +169,23 @@ public class DTPProjectService {
         return dtpProjectRepository.save(existingDTPProject);
     }
 
+    @Transactional
     public void deleteDTPProject(Long id) {
         try {
+            //Get all tasks assigned to the project we are going to delete
+            List<Task> tasks = taskRepository.findByProjectId(id);
+
+            //Delete all tasks assigned to the project
+            for (Task task : tasks) {
+                taskRepository.delete(task);
+            }
+
+            //Delete the project
             dtpProjectRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundException("DTP project not found with id: " + id);
+            throw new EntityNotFoundException("Project not found with id: " + id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Error deleting DTP project with id: " + id);
+            throw new DataIntegrityViolationException("Error deleting project with id: " + id);
         }
     }
 

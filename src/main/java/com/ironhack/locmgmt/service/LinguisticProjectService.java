@@ -2,6 +2,7 @@ package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.Client;
+import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.Status;
 import com.ironhack.locmgmt.model.projects.DTPProject;
@@ -10,6 +11,7 @@ import com.ironhack.locmgmt.model.users.ProjectManager;
 import com.ironhack.locmgmt.repository.ClientRepository;
 import com.ironhack.locmgmt.repository.LinguisticProjectRepository;
 import com.ironhack.locmgmt.repository.ProjectManagerRepository;
+import com.ironhack.locmgmt.repository.TaskRepository;
 import com.ironhack.locmgmt.util.ProjectUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -42,6 +44,9 @@ public class LinguisticProjectService {
 
     @Autowired
     private ProjectManagerRepository projectManagerRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     public List<LinguisticProject> getAllLinguisticProjects() {
         try {List<LinguisticProject> linguisticProjects = linguisticProjectRepository.findAll();
@@ -159,8 +164,18 @@ public class LinguisticProjectService {
         return linguisticProjectRepository.save(existingLinguisticProject);
     }
 
+    @Transactional
     public void deleteLinguisticProject(Long id) {
         try {
+            //Get all tasks assigned to the project we are going to delete
+            List<Task> tasks = taskRepository.findByProjectId(id);
+
+            //Delete all tasks assigned to the project
+            for (Task task : tasks) {
+                taskRepository.delete(task);
+            }
+
+            //Delete the project
             linguisticProjectRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException("Linguistic project not found with id: " + id);

@@ -40,4 +40,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
   List<Task> findByTotalWordsLessThan(Integer totalWords);
 
+    List<Task> findByProjectId(Long projectId);
+
+
 }
