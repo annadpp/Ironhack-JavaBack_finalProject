@@ -6,6 +6,7 @@ import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.*;
 
 import com.ironhack.locmgmt.model.projects.Project;
+import com.ironhack.locmgmt.validation.annotations.ValidLinguist;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -19,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ValidLinguist
 public class Linguist extends User {
     @NotNull(message = "Source languages cannot be empty")
     @NotEmpty(message = "Source languages cannot be empty")
