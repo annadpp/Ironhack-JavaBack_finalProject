@@ -3,9 +3,9 @@ package com.ironhack.locmgmt.controller;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.projects.DTPProject;
 import com.ironhack.locmgmt.service.DTPProjectService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -57,17 +57,5 @@ public class DTPProjectController {
     public List<DTPProject> getProjectsByDTPTechnology(@PathVariable DTPTechnology dtpTechnology) {
         return dtpProjectService.findByDtpTechnology(dtpTechnology);
     }
-
-   /* @GetMapping("/get/byPagesGreaterThan/{pages}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<DTPProject> getProjectsByPagesGreaterThan(@PathVariable Integer pages) {
-        return dtpProjectService.findByPagesGreaterThan(pages);
-    }*/
-
-    /*@GetMapping("/get/byPagesLessThan/{pages}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<DTPProject> getProjectsByPagesLessThan(@PathVariable Integer pages) {
-        return dtpProjectService.findByPagesLessThan(pages);
-    }*/
 }
 

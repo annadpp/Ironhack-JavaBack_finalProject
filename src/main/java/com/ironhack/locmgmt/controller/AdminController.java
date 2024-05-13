@@ -3,9 +3,9 @@ package com.ironhack.locmgmt.controller;
 import com.ironhack.locmgmt.model.enums.Department;
 import com.ironhack.locmgmt.model.users.Admin;
 import com.ironhack.locmgmt.service.AdminService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -32,12 +32,6 @@ public class AdminController {
         }
         return admin;
     }
-
-    /*@PostMapping("/save")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Admin createAdmin(@RequestBody Admin admin) {
-        return adminService.createAdmin(admin);
-    }*/
 
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)

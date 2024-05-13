@@ -10,7 +10,6 @@ import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityNotFoundException;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,7 +20,6 @@ public class AdminService {
     public List<Admin> getAllAdmins() {
         try {
             List<Admin> admins = adminRepository.findAll();
-            // If no admins found
             if (admins.isEmpty()) {
                 throw new EmptyListException("No admins were found");
             }
@@ -70,7 +68,6 @@ public class AdminService {
 
     public List<Admin> findAdminsByDepartment(Department department) {
         List<Admin> admins = adminRepository.findByDepartment(department);
-        // If no admins found for the department given
         if (admins.isEmpty()) {
             throw new EmptyListException("No admins were found");
         }

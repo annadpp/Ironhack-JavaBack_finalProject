@@ -3,6 +3,7 @@ package com.ironhack.locmgmt.dto;
 import com.ironhack.locmgmt.model.enums.*;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
+
 import lombok.*;
 
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.time.Duration;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+//Used for tasks/get/linguist route
 public class TaskDTO {
     private Long id;
     private String name;

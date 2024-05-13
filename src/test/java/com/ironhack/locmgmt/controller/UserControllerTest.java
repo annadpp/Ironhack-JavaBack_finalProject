@@ -1,131 +1,84 @@
 package com.ironhack.locmgmt.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ironhack.locmgmt.model.enums.Department;
-import com.ironhack.locmgmt.model.enums.Role;
-import com.ironhack.locmgmt.model.users.Admin;
 import com.ironhack.locmgmt.model.users.User;
-import com.ironhack.locmgmt.repository.UserRepository;
-import org.junit.jupiter.api.*;
+import com.ironhack.locmgmt.service.UserService;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.List;
-
-import static net.bytebuddy.matcher.ElementMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 public class UserControllerTest {
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
+    private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
-    private MockMvc mockMvc;
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @BeforeEach
-    public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        User user = new User("john", "password", "John Doe", "john@example.com", Role.ADMIN);
-        userRepository.save(user);
-    }
-
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
-    }
-
+    /*DOESN'T WORK WITH SECURITY ENABLED*/
     @Test
-    void getUserById_ExistingId_ReturnsUser() throws Exception {
-        MvcResult result = mockMvc.perform(get("/users/get/1"))
+    void getAllUsers_Success() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/get"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        String responseBody = result.getResponse().getContentAsString();
-
-        User user = objectMapper.readValue(responseBody, User.class);
-
-        assertEquals("John Doe", user.getName());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
-    void deleteUser_ExistingId_UserDeleted() throws Exception {
-        mockMvc.perform(delete("/users/delete/1"))
-                .andExpect(status().isNoContent());
+    void getUserById_Success() throws Exception {
+        User user = new User();
+        user.setName("John Doe");
+        user.setEmail("john.doe@example.com");
 
-        assertFalse(userRepository.existsById(1L));
-    }
-
-    @Test
-    void getUserById_NonExistingId_ReturnsNotFound() throws Exception {
-        mockMvc.perform(get("/users/get/100"))
-                .andExpect(status().isNotFound());
-    }
-
-    //
-    @Test
-    void getAdminById_ExistingId_ReturnsAdmin() throws Exception {
-        // Perform the request to get the admin by ID
-        MvcResult result = mockMvc.perform(get("/admins/get/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        // Extract the response body as a string
-        String responseBody = result.getResponse().getContentAsString();
-
-        // Parse the JSON response into an Admin object
-        Admin admin = objectMapper.readValue(responseBody, Admin.class);
-
-        // Validate that the returned admin has the correct name
-        assertEquals("John Doe", admin.getName());
-    }
-
-    @Test
-    void createAdmin_ValidAdmin_ReturnsCreatedAdmin() throws Exception {
-        Admin admin = new Admin("Jane", "password", "Jane Smith", "jane@example.com", Role.ADMIN, Department.ADMINISTRATION);
-        String body = objectMapper.writeValueAsString(admin);
-        mockMvc.perform(post("/admins/save")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/users/save")
+                        .content(asJsonString(user))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Jane Smith")));
+                .andReturn();
+
+        String responseBody = result.getResponse().getContentAsString();
+        Long userId = Long.valueOf(responseBody.split(":")[1].split(",")[0]);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/get/{id}", userId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(user.getName()))
+                .andExpect(jsonPath("$.email").value(user.getEmail()));
     }
 
     @Test
-    void updateAdmin_ExistingIdAndValidAdmin_ReturnsUpdatedAdmin() throws Exception {
-        // Create an updated Admin object with the desired changes
-        Admin updatedAdmin = new Admin();
-        updatedAdmin.setName("Jane Smith");
-        updatedAdmin.setEmail("jane.smith@example.com");
-        updatedAdmin.setPassword("newPassword");
-        updatedAdmin.setDepartment(Department.ADMINISTRATION);
+    void deleteUser_Success() throws Exception {
+        User user = new User();
+        user.setName("Jane Smith");
+        user.setEmail("jane.smith@example.com");
 
-        // Convert the updated Admin object to JSON
-        String updatedAdminJson = objectMapper.writeValueAsString(updatedAdmin);
-
-        // Perform the update operation by calling the controller endpoint with the updated JSON payload
-        mockMvc.perform(put("/admins/update/1")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/users/save")
+                        .content(asJsonString(user))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(updatedAdminJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Jane Smith")) // Validate the updated name
-                .andExpect(jsonPath("$.email").value("jane.smith@example.com")) // Validate the updated email
-                .andExpect(jsonPath("$.department").value("ADMINISTRATION")); // Validate the updated department
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String responseBody = result.getResponse().getContentAsString();
+        Long userId = Long.valueOf(responseBody.split(":")[1].split(",")[0]);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/users/delete/{id}", userId))
+                .andExpect(status().isNoContent());
     }
 
+    private String asJsonString(Object object) {
+        try {
+            return new ObjectMapper().writeValueAsString(object);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

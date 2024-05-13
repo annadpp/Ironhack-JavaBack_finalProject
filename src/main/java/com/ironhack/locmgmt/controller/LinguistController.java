@@ -1,7 +1,6 @@
 package com.ironhack.locmgmt.controller;
 
 import com.ironhack.locmgmt.dto.LinguistDTO;
-import com.ironhack.locmgmt.dto.TaskDTO;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
@@ -50,7 +49,6 @@ public class LinguistController {
         return linguistService.updateLinguist(id, linguist);
     }
 
-    /*Fix error*/
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteLinguist(@PathVariable Long id) {

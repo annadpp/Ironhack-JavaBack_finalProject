@@ -1,8 +1,7 @@
 package com.ironhack.locmgmt.repository;
 
-import com.ironhack.locmgmt.model.Task;
-import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.projects.Project;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

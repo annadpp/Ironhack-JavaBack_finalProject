@@ -6,6 +6,7 @@ import com.ironhack.locmgmt.model.users.ProjectManager;
 import com.ironhack.locmgmt.security.AuthenticationResponse;
 import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.service.AuthenticationService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

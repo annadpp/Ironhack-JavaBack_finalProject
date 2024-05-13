@@ -6,13 +6,11 @@ import com.ironhack.locmgmt.model.enums.BillingStatus;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.math.BigDecimal;
-import java.util.Date;
 import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Date;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
@@ -36,11 +34,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(Integer newWords, Integer fuzzyWords);
 
-  List<Task> findByTotalWordsGreaterThan(Integer totalWords);
+    List<Task> findByTotalWordsGreaterThan(Integer totalWords);
 
-  List<Task> findByTotalWordsLessThan(Integer totalWords);
+    List<Task> findByTotalWordsLessThan(Integer totalWords);
 
     List<Task> findByProjectId(Long projectId);
-
-
 }

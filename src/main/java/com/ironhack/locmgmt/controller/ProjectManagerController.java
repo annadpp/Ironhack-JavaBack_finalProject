@@ -34,19 +34,12 @@ public class ProjectManagerController {
         return projectManager;
     }
 
-    /*@PostMapping("/save")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ProjectManager createProjectManager(@RequestBody ProjectManager projectManager) {
-        return projectManagerService.createProjectManager(projectManager);
-    }*/
-
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProjectManager updateProjectManager(@PathVariable Long id, @RequestBody ProjectManager projectManager) {
         return projectManagerService.updateProjectManager(id, projectManager);
     }
 
-    /*Fix error*/
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProjectManager(@PathVariable Long id) {

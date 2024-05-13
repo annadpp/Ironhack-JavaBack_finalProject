@@ -5,7 +5,6 @@ import com.ironhack.locmgmt.model.Client;
 import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.Status;
-import com.ironhack.locmgmt.model.projects.DTPProject;
 import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.model.users.ProjectManager;
 import com.ironhack.locmgmt.repository.ClientRepository;
@@ -13,6 +12,7 @@ import com.ironhack.locmgmt.repository.LinguisticProjectRepository;
 import com.ironhack.locmgmt.repository.ProjectManagerRepository;
 import com.ironhack.locmgmt.repository.TaskRepository;
 import com.ironhack.locmgmt.util.ProjectUtil;
+
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,6 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;

@@ -1,64 +1,93 @@
 package com.ironhack.locmgmt.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.service.ProjectService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ProjectControllerTest {
+public class ProjectControllerTest {
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
+    private MockMvc mockMvc;
 
     @Autowired
     private ProjectService projectService;
 
-    private MockMvc mockMvc;
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @BeforeEach
-    public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    /*DOESN'T WORK WITH SECURITY ENABLED*/
+    @Test
+    void getAllProjects_Success() throws Exception {
+        //Perform GET request to fetch all projects
+        mockMvc.perform(MockMvcRequestBuilders.get("/projects/get"))
+                .andExpect(status().isOk()) // Expect HTTP status 200
+                .andExpect(jsonPath("$").isArray()); // Expect response to be an array
     }
 
     @Test
-    void getAllProjects_ReturnsListOfProjects() throws Exception {
-        // Create sample projects directly
-        List<Project> projects = new ArrayList<>();
-        projects.add(new Project("Project 1", "Description 1", null, null, BigDecimal.valueOf(1000), null, ProjectType.TRANSLATION));
-        projects.add(new Project("Project 2", "Description 2", null, null, BigDecimal.valueOf(2000), null, ProjectType.REVIEW));
-
-        // Perform the GET request to retrieve all projects and validate the response
-        mockMvc.perform(get("/projects/get")
+    void getProjectById_Success() throws Exception {
+        // Create a project
+        Project project = new Project();
+        project.setName("Project A");
+        project.setTotalBudget(new BigDecimal("10000.00"));
+        //Save the project
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/projects/create")
+                        .content(asJsonString(project))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(projects))) // Pass projects as request content
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].name").value("Project 1"))
-                .andExpect(jsonPath("$[1].name").value("Project 2"));
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+        //Extract project id from the response
+        String responseBody = result.getResponse().getContentAsString();
+        Long projectId = Long.valueOf(responseBody.split(":")[1].split(",")[0]);
+
+        //Perform GET request to fetch the project by id
+        mockMvc.perform(MockMvcRequestBuilders.get("/projects/get/{id}", projectId))
+                .andExpect(status().isOk()) // Expect HTTP status 200
+                .andExpect(jsonPath("$.name").value(project.getName())) // Expect the correct name in the response
+                .andExpect(jsonPath("$.totalBudget").value(project.getTotalBudget())); // Expect the correct total budget in the response
     }
 
     @Test
-    void deleteProject_ExistingId_ReturnsNoContent() throws Exception {
-        mockMvc.perform(delete("/projects/delete/1"))
-                .andExpect(status().isNoContent());
+    void deleteProject_Success() throws Exception {
+        //Create a project
+        Project project = new Project();
+        project.setName("Project B");
+        project.setTotalBudget(new BigDecimal("20000.00"));
+        //Save the project
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/projects/create")
+                        .content(asJsonString(project))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+        //Extract project id from the response
+        String responseBody = result.getResponse().getContentAsString();
+        Long projectId = Long.valueOf(responseBody.split(":")[1].split(",")[0]);
+
+        //Perform DELETE request to delete the project
+        mockMvc.perform(MockMvcRequestBuilders.delete("/projects/delete/{id}", projectId))
+                .andExpect(status().isNoContent()); // Expect HTTP status 204
+    }
+
+    //Helper method to convert object to JSON string
+    private String asJsonString(Object object) {
+        try {
+            return new ObjectMapper().writeValueAsString(object);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

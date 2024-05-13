@@ -11,9 +11,6 @@ import java.util.Optional;
 @Repository
 public interface DTPProjectRepository extends JpaRepository<DTPProject, Long> {
     List<DTPProject> findByDtpTechnology(DTPTechnology dtpTechnology);
-/*    List<DTPProject> findByPagesGreaterThan(Integer pages);*/
-/*
-    List<DTPProject> findByPagesLessThan(Integer pages);
-*/
+
     Optional<DTPProject> findByName(String name);
 }

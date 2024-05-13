@@ -18,6 +18,7 @@ import com.ironhack.locmgmt.repository.UserRepository;
 /*
 import com.ironhack.locmgmt.security.Token;
 */
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -126,6 +127,7 @@ public class AuthenticationService {
         return registerUser(request, Role.PROJECT_MANAGER);
     }
 
+    //For Login
     public AuthenticationResponse authenticate(User request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

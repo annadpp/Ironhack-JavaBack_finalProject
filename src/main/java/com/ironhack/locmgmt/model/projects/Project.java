@@ -44,17 +44,17 @@ public class Project {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deadline;
 
-    //Set with difference between startDate and deadline
+    //Set with difference between startDate and deadline (calculateTimeRemaining() in ProjectUtil)
     private Duration timeRemaining;
 
     @NotNull(message = "Budget cannot be empty")
     @Positive(message = "Budget must be positive")
     private BigDecimal totalBudget;
 
-    //Sets by adding all costs from tasks and getting the difference to totalBudget
+    //Sets by adding all costs from tasks and getting the difference to totalBudget (calculateMargin() in ProjectUtil)
     private BigDecimal margin;
 
-    //Sets by dividing margin / totalBudget * 100
+    //Sets by dividing margin / totalBudget * 100 (calculateMarginPercentage() in ProjectUtil)
     private BigDecimal marginPercentage;
 
     @Enumerated(EnumType.STRING)
@@ -105,7 +105,6 @@ public class Project {
         }
         return linguists;
     }
-
     @OneToMany(mappedBy = "project", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JsonIgnoreProperties({"project", "projectManager", "linguist", "timeRemaining", "totalTime", "startDate", "endDate", "billingStatus", "newWords", "fuzzyWords"})
     private List<Task> tasks;

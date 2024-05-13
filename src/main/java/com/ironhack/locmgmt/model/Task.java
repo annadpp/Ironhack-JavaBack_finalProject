@@ -1,19 +1,17 @@
 package com.ironhack.locmgmt.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.*;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
-
 import com.ironhack.locmgmt.util.TaskUtil;
+
 import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
 import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
-
 import com.ironhack.locmgmt.validation.annotations.ValidTask;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.*;
 import lombok.*;
-
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -109,7 +107,7 @@ public class Task {
     @NotNull(message = "Project cannot be empty")
     private Project project;
 
-    //GETS PROJECT MANAGER FROM PROJECT ASSIGNED TO THE TASK
+    //Gets project manager from project assigned to the task
     @Transient
     @JsonIgnoreProperties({"projects", "tasks", "password", "role", "spokenLanguages", "projectTypes", "role", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
     public ProjectManager getProjectManager() {
@@ -119,7 +117,7 @@ public class Task {
         return null;
     }
 
-    //Updates remaining time task is built
+    //Updates remaining time task is built -> updateTimeRemaining() in TaskUtil
     public static TaskBuilder builder() {
         return new CustomTaskBuilder();
     }
@@ -128,27 +126,24 @@ public class Task {
         @Override
         public Task build() {
             Task task = super.build();
-            TaskUtil.updateTimeRemaining(task); //Updates remaining time
+            TaskUtil.updateTimeRemaining(task);
             return task;
         }
     }
 
     //Constructor for testing
-    public Task(String name, String description, Date deadline, Duration timeRemaining, Status taskStatus, ProjectType projectType, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology, DTPTechnology dtpTechnology, Linguist linguist, Project project) {
+    public Task(String name, String description, Date deadline, Status taskStatus, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, Integer newWords, Integer fuzzyWords, Integer pages, LinguisticTechnology linguisticTechnology, DTPTechnology dtpTechnology) {
         this.name = name;
         this.description = description;
         this.deadline = deadline;
-        this.timeRemaining = timeRemaining;
         this.taskStatus = taskStatus;
-        this.projectType = projectType;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.billingStatus = billingStatus;
         this.sourceLanguage = sourceLanguage;
         this.targetLanguage = targetLanguage;
+        this.newWords = newWords;
+        this.fuzzyWords = fuzzyWords;
+        this.pages = pages;
         this.linguisticTechnology = linguisticTechnology;
         this.dtpTechnology = dtpTechnology;
-        this.linguist = linguist;
-        this.project = project;
     }
 }

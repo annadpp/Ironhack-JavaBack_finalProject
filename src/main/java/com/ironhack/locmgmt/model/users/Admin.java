@@ -1,9 +1,8 @@
 package com.ironhack.locmgmt.model.users;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.Department;
-
 import com.ironhack.locmgmt.model.enums.Role;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import jakarta.persistence.*;

@@ -1,13 +1,10 @@
 package com.ironhack.locmgmt.controller;
 
-import com.ironhack.locmgmt.exception.EmptyListException;
-import com.ironhack.locmgmt.model.Task;
-import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.service.ProjectService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 

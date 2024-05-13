@@ -1,11 +1,7 @@
 package com.ironhack.locmgmt.util;
 
-/*
-import com.ironhack.locmgmt.model.Task;
-*/
 import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.Status;
-import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.model.projects.Project;
 
 import java.math.BigDecimal;
