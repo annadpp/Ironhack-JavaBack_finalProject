@@ -25,6 +25,7 @@ Here's a step-by-step guide to use the API by cloning the repository:
 - Update the application.properties file with your MySQL database credentials.
 - Build the project using Maven: `mvn clean install`.
 - Run the application: `mvn spring-boot:run`.
+- **If you don't own an Admin token, you will need to change this line of code in SecurityConfig from `.requestMatchers("/auth/register/**").hasAuthority("ADMIN")` to `.requestMatchers("/auth/register/**").permitAll()` to create your first Admin. Once it's done, please, revert the change and run the API again.
 
 ---
 
