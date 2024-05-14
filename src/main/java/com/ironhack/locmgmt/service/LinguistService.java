@@ -2,15 +2,20 @@ package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.dto.LinguistDTO;
 import com.ironhack.locmgmt.exception.EmptyListException;
+import com.ironhack.locmgmt.model.Rate;
+import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.repository.LinguistRepository;
+import com.ironhack.locmgmt.repository.RateRepository;
+import com.ironhack.locmgmt.repository.TaskRepository;
 import com.ironhack.locmgmt.util.SecurityUtil;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.*;
@@ -23,6 +28,9 @@ import java.util.List;
 public class LinguistService {
     @Autowired
     private LinguistRepository linguistRepository;
+
+    @Autowired
+    private RateRepository rateRepository;
 
     @Autowired
     private SecurityUtil securityUtil;
@@ -112,13 +120,23 @@ public class LinguistService {
         return linguistRepository.save(existingLinguist);
     }
 
+    @Transactional
     public void deleteLinguist(Long id) {
         try {
+            //Get all rates assigned to the linguist we are going to delete
+            List<Rate> rates = rateRepository.findByLinguistId(id);
+
+            //Delete all rates assigned to the linguist
+            for (Rate rate : rates) {
+                rateRepository.delete(rate);
+            }
+
+            //Delete the linguist
             linguistRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException("Linguist not found with id: " + id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Linguist deleting rate with id: " + id);
+            throw new DataIntegrityViolationException("Error deleting linguist with id: " + id);
         }
     }
 
