@@ -1,9 +1,11 @@
 package com.ironhack.locmgmt.service;
 
+import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.Role;
 import com.ironhack.locmgmt.model.users.Admin;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.model.users.ProjectManager;
+import com.ironhack.locmgmt.util.SecurityUtil;
 import com.ironhack.locmgmt.security.AuthenticationResponse;
 /*
 import com.ironhack.locmgmt.security.Token;
@@ -16,17 +18,31 @@ import com.ironhack.locmgmt.repository.UserRepository;
 /*
 import com.ironhack.locmgmt.security.Token;
 */
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class AuthenticationService {
 
+    @Autowired
     private final UserRepository repository;
+
+    @Autowired
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
     private final JwtService jwtService;
+
+    @Autowired
+    private SecurityUtil securityUtil;
 
    /* private final TokenRepository tokenRepository;*/
 
@@ -69,6 +85,12 @@ public class AuthenticationService {
         } else if (request instanceof ProjectManager) {
             ProjectManager pmRequest = (ProjectManager) request;
             ProjectManager projectManager = new ProjectManager();
+            List<ProjectType> projectTypes = pmRequest.getProjectTypes();
+            for (ProjectType projectType : projectTypes) {
+                if (projectType != ProjectType.LINGUISTIC && projectType != ProjectType.DTP) {
+                    return new AuthenticationResponse(null, "Invalid project type. Project type can only be LINGUISTIC or DTP");
+                }
+            }
             projectManager.setSpokenLanguages(pmRequest.getSpokenLanguages());
             projectManager.setProjectTypes(pmRequest.getProjectTypes());
             user = projectManager;
@@ -105,6 +127,7 @@ public class AuthenticationService {
         return registerUser(request, Role.PROJECT_MANAGER);
     }
 
+    //For Login
     public AuthenticationResponse authenticate(User request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -141,4 +164,19 @@ public class AuthenticationService {
         token.setUser(user);
         tokenRepository.save(token);
     }*/
+
+    public void updateUserPassword(String username, String newPassword) throws AccessDeniedException {
+        //Get user based in username
+        Optional<User> optionalUser = repository.findByUsername(username);
+
+        //Verify if user exists
+        if (optionalUser.isEmpty()) {
+            throw new AccessDeniedException("User not found");
+        }
+
+        //Update user password
+        User currentUser = optionalUser.get();
+        currentUser.setPassword(passwordEncoder.encode(newPassword));
+        repository.save(currentUser);
+    }
 }

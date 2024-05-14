@@ -1,17 +1,15 @@
 package com.ironhack.locmgmt.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.*;
-import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.model.projects.Project;
 import com.ironhack.locmgmt.model.users.Linguist;
-import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.users.ProjectManager;
-
 import com.ironhack.locmgmt.util.TaskUtil;
+
 import com.ironhack.locmgmt.validation.annotations.ValidDTPTechnology;
 import com.ironhack.locmgmt.validation.annotations.ValidLinguisticTechnology;
-
+import com.ironhack.locmgmt.validation.annotations.ValidTask;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import jakarta.persistence.*;
@@ -29,6 +27,7 @@ import java.math.BigDecimal;
 @Table(name = "tasks")
 @ValidLinguisticTechnology
 @ValidDTPTechnology
+@ValidTask
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +49,7 @@ public class Task {
     //Sets with difference between startDate and deadline
     private Duration totalTime;
 
+    //Sets automatically when linguist with rates which match task languages + totalWords are assigned
     private BigDecimal taskCost;
 
     @Enumerated(EnumType.STRING)
@@ -76,6 +76,18 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Languages targetLanguage;
 
+    @Positive(message = "New words must be positive")
+    private Integer newWords;
+
+    @Positive(message = "Fuzzy words must be positive")
+    private Integer fuzzyWords;
+
+    //Sets automatically from newWords and fuzzyWords
+    private Integer totalWords;
+
+    @Positive(message = "Fuzzy words must be positive")
+    private Integer pages;
+
     //ValidLinguisticTechnology validation depending on projectType
     @Enumerated(EnumType.STRING)
     private LinguisticTechnology linguisticTechnology;
@@ -86,17 +98,18 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "linguist_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
-    @JsonIgnoreProperties({"tasks", "password", "userType", "projects", "rates"})
+    @JsonIgnoreProperties({"tasks", "rates", "password", "userType", "projects", "role", "sourceLanguages", "targetLanguages", "projectTypes", "dtpTechnologies", "linguisticTechnologies", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
     private Linguist linguist;
 
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
-    @JsonIgnoreProperties({"tasks", "linguists", "client", "projectManager"})
+    @JsonIgnoreProperties({"tasks", "linguists", "client", "projectManager", "timeRemaining", })
+    @NotNull(message = "Project cannot be empty")
     private Project project;
 
-    //GETS PROJECT MANAGER FROM PROJECT ASSIGNED TO THE TASK
+    //Gets project manager from project assigned to the task
     @Transient
-    @JsonIgnoreProperties({"projects", "tasks"})
+    @JsonIgnoreProperties({"projects", "tasks", "password", "role", "spokenLanguages", "projectTypes", "role", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
     public ProjectManager getProjectManager() {
         if (project != null) {
             return project.getProjectManager();
@@ -104,7 +117,7 @@ public class Task {
         return null;
     }
 
-    //Updates remaining time task is built
+    //Updates remaining time task is built -> updateTimeRemaining() in TaskUtil
     public static TaskBuilder builder() {
         return new CustomTaskBuilder();
     }
@@ -113,27 +126,24 @@ public class Task {
         @Override
         public Task build() {
             Task task = super.build();
-            TaskUtil.updateTimeRemaining(task); //Updates remaining time
+            TaskUtil.updateTimeRemaining(task);
             return task;
         }
     }
 
     //Constructor for testing
-    public Task(String name, String description, Date deadline, Duration timeRemaining, Status taskStatus, ProjectType projectType, Date startDate, Date endDate, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, LinguisticTechnology linguisticTechnology, DTPTechnology dtpTechnology, Linguist linguist, Project project) {
+    public Task(String name, String description, Date deadline, Status taskStatus, BillingStatus billingStatus, Languages sourceLanguage, Languages targetLanguage, Integer newWords, Integer fuzzyWords, Integer pages, LinguisticTechnology linguisticTechnology, DTPTechnology dtpTechnology) {
         this.name = name;
         this.description = description;
         this.deadline = deadline;
-        this.timeRemaining = timeRemaining;
         this.taskStatus = taskStatus;
-        this.projectType = projectType;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.billingStatus = billingStatus;
         this.sourceLanguage = sourceLanguage;
         this.targetLanguage = targetLanguage;
+        this.newWords = newWords;
+        this.fuzzyWords = fuzzyWords;
+        this.pages = pages;
         this.linguisticTechnology = linguisticTechnology;
         this.dtpTechnology = dtpTechnology;
-        this.linguist = linguist;
-        this.project = project;
     }
 }

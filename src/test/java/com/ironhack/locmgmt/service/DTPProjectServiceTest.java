@@ -30,7 +30,7 @@ class DTPProjectServiceTest {
 
     @Test
     void createDTPProject_ValidProject_Success() {
-        DTPProject dtpProject = new DTPProject("Test Project", "Description", null, null, BigDecimal.TEN, Status.NOT_STARTED, DTPTechnology.WORD, 100);
+        DTPProject dtpProject = new DTPProject("Test Project", "Description", null, null, BigDecimal.TEN, Status.NOT_STARTED, DTPTechnology.WORD);
 
         DTPProject createdProject = dtpProjectService.createDTPProject(dtpProject);
 
@@ -40,12 +40,11 @@ class DTPProjectServiceTest {
         assertEquals(BigDecimal.TEN, createdProject.getTotalBudget());
         assertEquals(Status.NOT_STARTED, createdProject.getProjectStatus());
         assertEquals(DTPTechnology.WORD, createdProject.getDtpTechnology());
-        assertEquals(100, createdProject.getPages());
     }
 
     @Test
     void deleteDTPProject_ExistingId_Success() {
-        DTPProject dtpProject = new DTPProject("Test Project", "Description", null, null, BigDecimal.TEN, Status.NOT_STARTED, DTPTechnology.WORD, 100);
+        DTPProject dtpProject = new DTPProject("Test Project", "Description", null, null, BigDecimal.TEN, Status.NOT_STARTED, DTPTechnology.WORD);
         DTPProject savedProject = dtpProjectRepository.save(dtpProject);
 
         dtpProjectService.deleteDTPProject(savedProject.getId());
@@ -55,7 +54,7 @@ class DTPProjectServiceTest {
 
     @Test
     void getAllDTPProjects_NotEmptyList_Success() {
-        DTPProject dtpProject = new DTPProject("Test Project", "Description", null, null, BigDecimal.TEN, Status.NOT_STARTED, DTPTechnology.WORD, 100);
+        DTPProject dtpProject = new DTPProject("Test Project", "Description", null, null, BigDecimal.TEN, Status.NOT_STARTED, DTPTechnology.WORD);
         dtpProjectRepository.save(dtpProject);
 
         List<DTPProject> dtpProjects = dtpProjectService.getAllDTPProjects();
@@ -66,7 +65,7 @@ class DTPProjectServiceTest {
 
     @Test
     void getDTPProjectById_ExistingId_Success() {
-        DTPProject dtpProject = new DTPProject("Test Project", "Description", null, null, BigDecimal.TEN, Status.NOT_STARTED, DTPTechnology.WORD, 100);
+        DTPProject dtpProject = new DTPProject("Test Project", "Description", null, null, BigDecimal.TEN, Status.NOT_STARTED, DTPTechnology.WORD);
         DTPProject savedProject = dtpProjectRepository.save(dtpProject);
 
         DTPProject retrievedProject = dtpProjectService.getDTPProjectById(savedProject.getId());
@@ -83,7 +82,7 @@ class DTPProjectServiceTest {
 
     @Test
     void findByDtpTechnology_ValidTechnology_NotEmptyList() {
-        DTPProject dtpProject = new DTPProject("Test Project", "Description", null, null, BigDecimal.TEN, Status.NOT_STARTED, DTPTechnology.WORD, 100);
+        DTPProject dtpProject = new DTPProject("Test Project", "Description", null, null, BigDecimal.TEN, Status.NOT_STARTED, DTPTechnology.WORD);
         dtpProjectRepository.save(dtpProject);
 
         List<DTPProject> projects = dtpProjectService.findByDtpTechnology(DTPTechnology.WORD);

@@ -11,22 +11,21 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TaskTest {
     static Task taskTest;
 
     @BeforeEach
     void setUp() {
-        taskTest = new Task("Task Name", "Task Description", new Date(), Duration.ofHours(2), Status.STARTED, ProjectType.LINGUISTIC, new Date(), new Date(), BillingStatus.INVOICED, Languages.ENGLISH, Languages.SPANISH, LinguisticTechnology.TRADOS_STUDIO, DTPTechnology.FIGMA, new Linguist(), new Project());
+        taskTest = new Task("Task Name", "Task Description", new Date(), Status.STARTED, BillingStatus.INVOICED, Languages.ENGLISH, Languages.SPANISH, null, null, null, LinguisticTechnology.TRADOS_STUDIO, DTPTechnology.FIGMA);
     }
 
     @Test
     public void createEmptyTask() {
         Task emptyTask = new Task();
         assertNotNull(emptyTask);
-        assertEquals(null, emptyTask.getName());
+        assertNull(emptyTask.getName());
     }
 
     @Test

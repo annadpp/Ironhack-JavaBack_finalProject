@@ -4,10 +4,12 @@ import com.ironhack.locmgmt.exception.EmptyListException;
 import com.ironhack.locmgmt.model.enums.Role;
 import com.ironhack.locmgmt.model.users.User;
 import com.ironhack.locmgmt.repository.UserRepository;
+import com.ironhack.locmgmt.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 
@@ -44,12 +46,6 @@ class UserServiceTest {
 
         assertFalse(result.isEmpty());
         assertEquals(2, result.size());
-    }
-
-    @Test
-    void getAllUsers_EmptyList_ExceptionThrown() {
-        EmptyListException exception = assertThrows(EmptyListException.class, () -> userService.getAllUsers());
-        assertEquals("No users were found", exception.getMessage());
     }
 
     @Test

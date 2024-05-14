@@ -23,7 +23,7 @@ class UserTest {
         assertEquals("testPassword", user.getPassword());
         assertEquals("Test User", user.getName());
         assertEquals("test@example.com", user.getEmail());
-        assertEquals(Role.ADMIN, user.getUserType());
+        assertEquals(Role.ADMIN, user.getRole());
     }
 
     @Test
@@ -52,7 +52,7 @@ class UserTest {
 
     @Test
     void testUserTypeSetter() {
-        user.setUserType(Role.ADMIN);
-        assertEquals(Role.ADMIN, user.getUserType());
+        user.setRole(Role.ADMIN);
+        assertEquals(Role.ADMIN, user.getRole());
     }
 }

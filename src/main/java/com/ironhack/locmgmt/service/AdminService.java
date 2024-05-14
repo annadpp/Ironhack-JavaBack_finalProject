@@ -10,7 +10,6 @@ import org.springframework.dao.*;
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityNotFoundException;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -19,11 +18,12 @@ public class AdminService {
     private AdminRepository adminRepository;
 
     public List<Admin> getAllAdmins() {
-        try {List<Admin> admins = adminRepository.findAll();
-        if (admins.isEmpty()) {
-            throw new EmptyListException("No admins were found");
-        }
-        return admins;
+        try {
+            List<Admin> admins = adminRepository.findAll();
+            if (admins.isEmpty()) {
+                throw new EmptyListException("No admins were found");
+            }
+            return admins;
         } catch (DataAccessException e) {
             throw new DataRetrievalFailureException("Error while retrieving all admins", e);
         }
@@ -33,25 +33,16 @@ public class AdminService {
         return adminRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
     }
 
-    /*public Admin createAdmin(Admin admin) {
-        try {
-            return adminRepository.save(admin);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Error while creating the admin", e);
-        }
-    }*/
-
-    /*Only Admin*/
     public Admin updateAdmin(Long id, Admin adminDetails) {
         Admin existingAdmin = adminRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Admin not found with id: " + id));
 
-        // Update the inherent Admin fields passed
+        //Update the inherent Admin fields passed
         if (adminDetails.getDepartment() != null) {
             existingAdmin.setDepartment(adminDetails.getDepartment());
         }
 
-        // Update the fields inherited from the User class -> not password (User only)
+        //Update the fields inherited from the User class -> not password (User only)
         if (adminDetails.getUsername() != null) {
             existingAdmin.setUsername(adminDetails.getUsername());
         }

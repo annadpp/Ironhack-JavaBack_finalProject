@@ -26,8 +26,6 @@ public class LinguisticProjectTest {
                 new Date(),
                 BigDecimal.TEN,
                 Status.STARTED,
-                200,
-                100,
                 LinguisticTechnology.TRADOS_STUDIO
         );
     }

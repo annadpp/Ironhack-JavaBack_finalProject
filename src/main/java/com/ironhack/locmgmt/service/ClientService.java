@@ -14,9 +14,14 @@ import org.springframework.dao.DataRetrievalFailureException;
 
 import java.util.Collections;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class ClientService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
+
     @Autowired
     private ClientRepository clientRepository;
 
@@ -38,10 +43,13 @@ public class ClientService {
 
     public Client createClient(Client client) {
         try {
-            // Set projects to empty lists
-            client.setProjects(Collections.emptyList());
+            //Check if projects are being set directly
+            /*if (!client.getProjects().isEmpty()) {
+                LOGGER.warn("Clients cannot be assigned to projects directly. Add the information in the project itself.");
+            }*/
 
-            /*Add "Clients cannot be assigned to projects directly. Add the information in the project itself." if we have time*/
+            //Set projects to empty lists -> can only be assigned through projects
+            client.setProjects(Collections.emptyList());
 
             return clientRepository.save(client);
         } catch (DataIntegrityViolationException e) {
@@ -67,12 +75,9 @@ public class ClientService {
             existingClient.setAddress(clientDetails.getAddress());
         }
 
-        /*Add project update*/
-
         return clientRepository.save(existingClient);
     }
 
-    /*FIX ERROR WHEN ID BEING USED*/
     public void deleteClient(Long clientId) {
         try {clientRepository.deleteById(clientId);}
         catch (EmptyResultDataAccessException e) {

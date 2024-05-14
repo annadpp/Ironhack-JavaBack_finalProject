@@ -6,6 +6,8 @@ import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.*;
 
 import com.ironhack.locmgmt.model.projects.Project;
+import com.ironhack.locmgmt.validation.annotations.ValidLinguist;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import jakarta.persistence.*;
@@ -18,34 +20,26 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ValidLinguist
 public class Linguist extends User {
-/*
     @NotNull(message = "Source languages cannot be empty")
-*/
+    @NotEmpty(message = "Source languages cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<Languages> sourceLanguages;
 
-/*
     @NotNull(message = "Target languages cannot be empty")
-*/
+    @NotEmpty(message = "Target languages cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<Languages> targetLanguages;
 
-/*
     @NotNull(message = "Project types cannot be empty")
-*/
+    @NotEmpty(message = "Project types cannot be empty")
     @Enumerated(EnumType.STRING)
     private List<ProjectType> projectTypes;
 
-/*
-    @NotNull(message = "DTP technologies cannot be empty")
-*/
     @Enumerated(EnumType.STRING)
     private List<DTPTechnology> dtpTechnologies;
 
-/*
-    @NotNull(message = "Linguistic technologies cannot be empty")
-*/
     @Enumerated(EnumType.STRING)
     private List<LinguisticTechnology> linguisticTechnologies;
 
@@ -54,12 +48,12 @@ public class Linguist extends User {
     private List<Rate> rates;
 
     @OneToMany(mappedBy = "linguist", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JsonIgnoreProperties({"linguist", "tasks", "projectManager", "project"})
+    @JsonIgnoreProperties({"linguist", "tasks", "projectManager", "project", "description", "deadline", "timeRemaining", "taskStatus", "startDate", "endDate", "newWords", "fuzzyWords", "totalWords", "pages"})
     private List<Task> tasks;
 
     //GETS PROJECTS FROM TASKS ASSIGNED TO THE PROJECT
     @Transient
-    @JsonIgnoreProperties({"projectManager", "linguists", "tasks", "client", "totalBudget", "projectType", "dtpTechnolgoy", "pages", "targetLanguages", "sourceLanguage"})
+    @JsonIgnoreProperties({"projectManager", "linguists", "tasks", "client", "startDate", "endDate", "deadline", "timeRemaining", "margin", "marginPercentage", "dtpTechnology", "totalBudget", "projectType", "dtpTechnolgoy", "pages", "targetLanguages", "sourceLanguage"})
     public List<Project> getProjects() {
         if (tasks == null || tasks.isEmpty()) {
             return Collections.emptyList();
@@ -79,12 +73,12 @@ public class Linguist extends User {
     }
 
     //Constructor for testing
-   /* public Linguist(String username, String password, String name, String email, UserType userType, List<Languages> sourceLanguages, List<Languages> targetLanguages, List<ProjectType> projectTypes, List<DTPTechnology> dtpTechnologies, List<LinguisticTechnology> linguisticTechnologies) {
-        super(username, password, name, email, userType);
+    public Linguist(String username, String password, String name, String email, Role role, List<Languages> sourceLanguages, List<Languages> targetLanguages, List<ProjectType> projectTypes, List<DTPTechnology> dtpTechnologies, List<LinguisticTechnology> linguisticTechnologies) {
+        super(username, password, name, email, role);
         this.sourceLanguages = sourceLanguages;
         this.targetLanguages = targetLanguages;
         this.projectTypes = projectTypes;
         this.dtpTechnologies = dtpTechnologies;
         this.linguisticTechnologies = linguisticTechnologies;
-    }*/
+    }
 }

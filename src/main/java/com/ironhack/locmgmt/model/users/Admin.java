@@ -1,9 +1,8 @@
 package com.ironhack.locmgmt.model.users;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.locmgmt.model.enums.Department;
-
 import com.ironhack.locmgmt.model.enums.Role;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import jakarta.persistence.*;
@@ -18,8 +17,8 @@ public class Admin extends User {
     private Department department;
 
     //Constructor for testing
-    /*public Admin(String username, String password, String name, String email, UserType userType, Role role, Department department) {
-        super(username, password, name, email, userType, role);
+    public Admin(String username, String password, String name, String email, Role role, Department department) {
+        super(username, password, name, email, role);
         this.department = department;
-    }*/
+    }
 }

@@ -16,10 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -47,14 +44,18 @@ public class Project {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deadline;
 
-    //Set with difference between startDate and deadline
+    //Set with difference between startDate and deadline (calculateTimeRemaining() in ProjectUtil)
     private Duration timeRemaining;
 
     @NotNull(message = "Budget cannot be empty")
     @Positive(message = "Budget must be positive")
     private BigDecimal totalBudget;
 
-    /*ADD MARGIN -> CALCULATE WITH TASKS PRICE*/
+    //Sets by adding all costs from tasks and getting the difference to totalBudget (calculateMargin() in ProjectUtil)
+    private BigDecimal margin;
+
+    //Sets by dividing margin / totalBudget * 100 (calculateMarginPercentage() in ProjectUtil)
+    private BigDecimal marginPercentage;
 
     @Enumerated(EnumType.STRING)
     private Status projectStatus;
@@ -62,7 +63,7 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
-    //GETS SOURCE LANGUAGE FROM TASKS ASSIGNED TO THE PROJECT
+    //Gets source language from tasks assigned to the project
     @Transient
     public Languages getSourceLanguage() {
         if (tasks == null || tasks.isEmpty()) {
@@ -71,14 +72,14 @@ public class Project {
         return tasks.get(0).getSourceLanguage();
     }
 
-    //GETS TARGET LANGUAGES FROM TASKS ASSIGNED TO THE PROJECT
+    //Gets target languages from tasks assigned to the project -> Set so no duplicate records
     @Transient
-    public List<Languages> getTargetLanguages() {
+    public Set<Languages> getTargetLanguages() {
         if (tasks == null || tasks.isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
 
-        List<Languages> targetLanguages = new ArrayList<>();
+        Set<Languages> targetLanguages = new HashSet<>();
         for (Task task : tasks) {
             targetLanguages.add(task.getTargetLanguage());
         }
@@ -87,31 +88,30 @@ public class Project {
 
     @ManyToOne
     @JoinColumn(name = "project_manager_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
-    @JsonIgnoreProperties({"projects", "password", "tasks"})
+    @JsonIgnoreProperties({"projects", "password", "tasks", "role", "spokenLanguages", "projectTypes", "enabled", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "authorities"})
     private ProjectManager projectManager;
 
-    //GETS LINGUISTS FROM TASKS ASSIGNED TO THE PROJECT
+    //Gets linguists from tasks assigned to the project -> Set so there are no duplicate records
     @Transient
-    @JsonIgnoreProperties({"projects", "rates", "tasks", "sourceLanguages", "targetLanguages", "projectTypes", "dtpTechnologies", "linguisticTechnologies"})
-    public List<Linguist> getLinguists() {
+    @JsonIgnoreProperties({"password", "projects", "rates", "tasks", "sourceLanguages", "targetLanguages", "projectTypes", "dtpTechnologies", "linguisticTechnologies", "role", "enabled", "accountNonLocked", "accountNonExpired", "credentialsNonExpired", "authorities"})
+    public Set<Linguist> getLinguists() {
         if (tasks == null || tasks.isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
 
-        List<Linguist> linguists = new ArrayList<>();
+        Set<Linguist> linguists = new HashSet<>();
         for (Task task : tasks) {
             linguists.add(task.getLinguist());
         }
         return linguists;
     }
-
     @OneToMany(mappedBy = "project", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JsonIgnoreProperties({"project", "projectManager", "linguist"})
+    @JsonIgnoreProperties({"project", "projectManager", "linguist", "timeRemaining", "totalTime", "startDate", "endDate", "billingStatus", "newWords", "fuzzyWords"})
     private List<Task> tasks;
 
     @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
-    @JsonIgnoreProperties("projects")
+    @JsonIgnoreProperties({"projects", "address", "vatnumber"})
     private Client client;
 
     //Constructor/getters/setters for testing

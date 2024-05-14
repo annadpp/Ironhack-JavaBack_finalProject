@@ -8,11 +8,10 @@ import com.ironhack.locmgmt.repository.AdminRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ConstraintViolationException;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,42 +27,9 @@ class AdminServiceTest {
 
     private Admin referenceAdmin;
 
-    @Test
     void setUp() {
         referenceAdmin = new Admin("admin1", "password", "Admin One", "admin1@example.com", Role.ADMIN, Department.IT);
         adminRepository.save(referenceAdmin);
-    }
-
-    @Test
-    void createAdmin_Success() {
-        Admin newAdmin = new Admin("admin2", "password", "Admin Two", "admin2@example.com", Role.ADMIN, Department.ADMINISTRATION);
-
-        Admin createdAdmin = adminService.createAdmin(newAdmin);
-
-        assertNotNull(createdAdmin);
-        assertNotNull(createdAdmin.getId());
-        assertEquals(newAdmin.getUsername(), createdAdmin.getUsername());
-    }
-
-    @Test
-    void createAdmin_NullDepartment_ExceptionThrown() {
-        Admin newAdmin = new Admin("admin2", "password", "Admin Two", "admin2@example.com", Role.ADMIN, null);
-
-        assertThrows(ConstraintViolationException.class, () -> adminService.createAdmin(newAdmin));
-    }
-
-    @Test
-    void updateAdmin_Success() {
-        referenceAdmin = adminService.createAdmin(new Admin("admin1", "password", "Admin One", "admin1@example.com", Role.ADMIN, Department.IT));
-        Admin updatedAdmin = new Admin("admin1_updated", "password_updated", "Admin One Updated", "admin1_updated@example.com", Role.ADMIN, Department.ADMINISTRATION);
-
-        Admin result = adminService.updateAdmin(referenceAdmin.getId(), updatedAdmin);
-
-        assertNotNull(result);
-        assertEquals(updatedAdmin.getUsername(), result.getUsername());
-        assertEquals(updatedAdmin.getEmail(), result.getEmail());
-        assertEquals(updatedAdmin.getName(), result.getName());
-        assertEquals(updatedAdmin.getDepartment(), result.getDepartment());
     }
 
     @Test
@@ -77,26 +43,21 @@ class AdminServiceTest {
     }
 
     @Test
-    void deleteAdmin_EntityNotFoundException() {
-        Long nonExistingAdminId = Long.MAX_VALUE;
-
-        assertThrows(EntityNotFoundException.class, () -> adminService.deleteAdmin(nonExistingAdminId));
-    }
-
-    @Test
-    void getAllAdmins_Success() {
-        Admin newAdmin = new Admin("newAdmin", "password", "New Admin", "newAdmin@example.com", Role.ADMIN, Department.ADMINISTRATION);
-        adminService.createAdmin(newAdmin);
-
-        assertDoesNotThrow(() -> {
-            List<Admin> adminsAfterCreation = adminService.getAllAdmins();
-            assertEquals(1, adminsAfterCreation.size());
-        });
-    }
-
-    @Test
     void getAllAdmins_EmptyListException() {
         assertThrows(EmptyListException.class, () -> adminService.getAllAdmins());
+    }
+
+
+    @Test
+    void testGetAllAdmins_WhenNoAdminsExist() {
+        assertThrows(EmptyListException.class, () -> adminService.getAllAdmins());
+    }
+
+
+    @Test
+    void testGetAdminById_NonExistingId() {
+        Long nonExistingAdminId = 100L;
+        assertThrows(EntityNotFoundException.class, () -> adminService.getAdminById(nonExistingAdminId));
     }
 
 }

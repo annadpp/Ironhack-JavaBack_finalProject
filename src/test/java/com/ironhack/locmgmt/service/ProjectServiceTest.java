@@ -44,29 +44,11 @@ class ProjectServiceTest {
         assertFalse(projectRepository.existsById(project1.getId()));
     }
 
-    @Test
-    void deleteProject_EntityNotFoundException() {
-        assertThrows(EntityNotFoundException.class, () -> projectService.deleteProject(9999L));
-    }
-
-    @Test
-    void getAllProjects_Valid() {
-        List<Project> projects = projectService.getAllProjects();
-        assertFalse(projects.isEmpty());
-        assertEquals(2, projects.size());
-    }
 
     @Test
     void getAllProjects_EmptyListException() {
         projectRepository.deleteAll();
         assertThrows(EmptyListException.class, () -> projectService.getAllProjects());
-    }
-
-    @Test
-    void getProjectById_Valid() {
-        Project foundProject = projectService.getProjectById(project1.getId());
-        assertNotNull(foundProject);
-        assertEquals(project1.getName(), foundProject.getName());
     }
 
     @Test

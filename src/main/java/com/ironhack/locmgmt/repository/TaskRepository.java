@@ -6,11 +6,11 @@ import com.ironhack.locmgmt.model.enums.BillingStatus;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.Date;
 import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Date;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
@@ -19,11 +19,24 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByTimeRemainingLessThan(Duration duration);
 
-    List<Task> findByProjectType(ProjectType projectType);
+    List<Task> findByProjectType(ProjectType taskType);
 
     List<Task> findByBillingStatus(BillingStatus billingStatus);
 
     List<Task> findByLinguist(Linguist linguist);
 
-    //Add more repositories if we have time
+    boolean existsByName(String name);
+
+    List<Task> findByPagesGreaterThan(Integer pages);
+    List<Task> findByPagesLessThan(Integer pages);
+
+    List<Task> findByNewWordsLessThanAndFuzzyWordsLessThan(Integer newWords, Integer fuzzyWords);
+
+    List<Task> findByNewWordsGreaterThanAndFuzzyWordsGreaterThan(Integer newWords, Integer fuzzyWords);
+
+    List<Task> findByTotalWordsGreaterThan(Integer totalWords);
+
+    List<Task> findByTotalWordsLessThan(Integer totalWords);
+
+    List<Task> findByProjectId(Long projectId);
 }

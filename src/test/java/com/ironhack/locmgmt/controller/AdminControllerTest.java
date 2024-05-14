@@ -1,122 +1,92 @@
 package com.ironhack.locmgmt.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ironhack.locmgmt.model.enums.Department;
 import com.ironhack.locmgmt.model.enums.Role;
 import com.ironhack.locmgmt.model.users.Admin;
-import com.ironhack.locmgmt.service.AdminService;
-import org.junit.jupiter.api.*;
+import com.ironhack.locmgmt.service.AuthenticationService;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/*DOESN'T WORK WITH SECURITY ENABLED*/
 @SpringBootTest
 @AutoConfigureMockMvc
-class AdminControllerTest {
+public class AdminControllerTest {
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Autowired
-    private AdminService adminService;
-
     private MockMvc mockMvc;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @BeforeEach
-    public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        Admin admin = new Admin("John", "password", "John Doe", "john@example.com", Role.ADMIN, Department.IT);
-        adminService.createAdmin(admin);
-    }
-
-    @AfterEach
-    void tearDown() {
-        adminService.getAllAdmins().forEach(admin -> adminService.deleteAdmin(admin.getId()));
-    }
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Test
-    void getAllClients_ValidRequest_ReturnsAdmins() throws Exception {
-        mockMvc.perform(get("/admins/get"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("John Doe")));
-    }
+    void createAdmin_Success() throws Exception {
+        Admin admin = new Admin();
+        admin.setName("John Doe");
+        admin.setEmail("john.doe@example.com");
+        admin.setUsername("johndoe");
+        admin.setPassword("password");
+        admin.setRole(Role.ADMIN);
 
-    @Test
-    void getAdminById_ExistingId_ReturnsAdmin() throws Exception {
-        // Perform the request to get the admin by ID
-        MvcResult result = mockMvc.perform(get("/admins/get/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/admins/create")
+                        .content(asJsonString(admin))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
                 .andReturn();
 
-        // Extract the response body as a string
-        String responseBody = result.getResponse().getContentAsString();
-
-        // Parse the JSON response into an Admin object
-        Admin admin = objectMapper.readValue(responseBody, Admin.class);
-
-        // Validate that the returned admin has the correct name
-        assertEquals("John Doe", admin.getName());
+        String responseBody = mvcResult.getResponse().getContentAsString();
+        assert (responseBody.contains("John Doe"));
     }
 
     @Test
-    void createAdmin_ValidAdmin_ReturnsCreatedAdmin() throws Exception {
-        Admin admin = new Admin("Jane", "password", "Jane Smith", "jane@example.com", Role.ADMIN, Department.ADMINISTRATION);
-        String body = objectMapper.writeValueAsString(admin);
-        mockMvc.perform(post("/admins/save")
+    void getAdminById_Success() throws Exception {
+        //Create an admin
+        Admin admin = new Admin();
+        admin.setName("Jane Doe");
+        admin.setEmail("jane.doe@example.com");
+        admin.setUsername("janedoe");
+        admin.setPassword("password");
+        admin.setRole(Role.ADMIN);
+        //Save the admin
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/admins/create")
+                        .content(asJsonString(admin))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Jane Smith")));
+                .andReturn();
+        //Extract admin id from the response
+        String responseBody = result.getResponse().getContentAsString();
+        Long adminId = Long.valueOf(responseBody.split(":")[1].split(",")[0]);
+
+        //Perform GET request to fetch the admin by id
+        mockMvc.perform(MockMvcRequestBuilders.get("/admins/get/{id}", adminId))
+                .andExpect(status().isOk()) // Expect HTTP status 200
+                .andExpect(jsonPath("$.name").value(admin.getName())) // Expect the correct name in the response
+                .andExpect(jsonPath("$.email").value(admin.getEmail())); // Expect the correct email in the response
     }
 
     @Test
-    void updateAdmin_ExistingIdAndValidAdmin_ReturnsUpdatedAdmin() throws Exception {
-        // Create an updated Admin object with the desired changes
-        Admin updatedAdmin = new Admin();
-        updatedAdmin.setName("Jane Smith");
-        updatedAdmin.setEmail("jane.smith@example.com");
-        updatedAdmin.setPassword("newPassword");
-        updatedAdmin.setDepartment(Department.ADMINISTRATION);
-
-        // Convert the updated Admin object to JSON
-        String updatedAdminJson = objectMapper.writeValueAsString(updatedAdmin);
-
-        // Perform the update operation by calling the controller endpoint with the updated JSON payload
-        mockMvc.perform(put("/admins/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(updatedAdminJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Jane Smith")) // Validate the updated name
-                .andExpect(jsonPath("$.email").value("jane.smith@example.com")) // Validate the updated email
-                .andExpect(jsonPath("$.department").value("ADMINISTRATION")); // Validate the updated department
+    void getAllAdmins_Success() throws Exception {
+        //Perform GET request to fetch all admins
+        mockMvc.perform(MockMvcRequestBuilders.get("/admins/get"))
+                .andExpect(status().isOk()) // Expect HTTP status 200
+                .andExpect(jsonPath("$").isArray()); // Expect response to be an array
     }
 
-    @Test
-    void deleteAdmin_ExistingId_ReturnsNoContent() throws Exception {
-        mockMvc.perform(delete("/admins/delete/1"))
-                .andExpect(status().isNoContent());
-    }
-
-    @Test
-    void getAdminsByDepartment_ValidDepartment_ReturnsAdmins() throws Exception {
-        mockMvc.perform(get("/admins/get/byDepartment")
-                        .param("department", Department.IT.toString()))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("John Doe")));
+    //Helper method to convert object to JSON string
+    private String asJsonString(Object object) {
+        try {
+            return new ObjectMapper().writeValueAsString(object);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
-

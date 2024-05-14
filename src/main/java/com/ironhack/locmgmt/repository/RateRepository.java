@@ -19,5 +19,5 @@ public interface RateRepository extends JpaRepository<Rate, Long> {
 
     List<Rate> findBySourceLanguageAndTargetLanguageAndProjectType(Languages sourceLanguage, Languages targetLanguage, ProjectType projectType);
 
-    /*Add cheap/expensive rates filter*/
+    List<Rate> findByLinguistId(Long linguistId);
 }

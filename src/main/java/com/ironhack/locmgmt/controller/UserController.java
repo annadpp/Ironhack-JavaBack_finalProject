@@ -32,19 +32,9 @@ public class UserController {
         return user;
     }
 
-    //PENSAR SI ELIMINARLO
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
-
-    //User only
-    /*@PutMapping("/update/password/{username}")
-    public ResponseEntity<String> updatePassword(@PathVariable String username,
-                                                 @RequestParam String oldPassword,
-                                                 @RequestParam String newPassword) {
-        userService.updatePassword(username, oldPassword, newPassword);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }*/
 }

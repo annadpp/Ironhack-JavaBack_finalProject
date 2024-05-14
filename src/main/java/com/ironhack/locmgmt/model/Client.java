@@ -1,8 +1,6 @@
 package com.ironhack.locmgmt.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ironhack.locmgmt.model.projects.Project;
 
 import lombok.*;
@@ -43,5 +41,9 @@ public class Client {
         this.email = email;
         this.VATNumber = VATNumber;
         this.address = address;
+    }
+
+    //Constructor for testing controller
+    public Client(String alice, String mail) {
     }
 }

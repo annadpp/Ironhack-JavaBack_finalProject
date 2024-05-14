@@ -1,11 +1,11 @@
 package com.ironhack.locmgmt.repository;
 
-import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.users.Linguist;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -33,9 +33,5 @@ public interface LinguistRepository extends JpaRepository<Linguist, Long> {
 
     List<Linguist> findByLinguisticTechnologiesAndProjectTypes(LinguisticTechnology linguisticTechnology, ProjectType projectTypes);
 
-    List<Linguist> findByDtpTechnologiesAndProjectTypes(DTPTechnology dtpTechnology, ProjectType projectTypes);
-
     List<Linguist> findByUsername(String username);
-
-    /*Add cheap/expensive rates filters*/
 }

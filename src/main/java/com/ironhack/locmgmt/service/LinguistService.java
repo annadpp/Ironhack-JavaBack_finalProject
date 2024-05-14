@@ -2,15 +2,20 @@ package com.ironhack.locmgmt.service;
 
 import com.ironhack.locmgmt.dto.LinguistDTO;
 import com.ironhack.locmgmt.exception.EmptyListException;
+import com.ironhack.locmgmt.model.Rate;
+import com.ironhack.locmgmt.model.Task;
 import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.users.Linguist;
 import com.ironhack.locmgmt.repository.LinguistRepository;
+import com.ironhack.locmgmt.repository.RateRepository;
+import com.ironhack.locmgmt.repository.TaskRepository;
 import com.ironhack.locmgmt.util.SecurityUtil;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.*;
@@ -23,6 +28,9 @@ import java.util.List;
 public class LinguistService {
     @Autowired
     private LinguistRepository linguistRepository;
+
+    @Autowired
+    private RateRepository rateRepository;
 
     @Autowired
     private SecurityUtil securityUtil;
@@ -77,50 +85,29 @@ public class LinguistService {
 
     }
 
-    /*public Linguist createLinguist(Linguist linguist) {
-        try {
-            // Set rates, tasks and projects to empty lists
-*//*
-            linguist.setProjects(Collections.emptyList());
-*//*
-            linguist.setTasks(Collections.emptyList());
-            linguist.setRates(Collections.emptyList());
-
-            *//*Add "Linguists cannot be assigned to rates, tasks or projects directly" if we have time*//*
-
-            return linguistRepository.save(linguist);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Error while creating the linguist", e);
-        }
-    }*/
-
     public Linguist updateLinguist(Long id, Linguist linguistDetails) {
         Linguist existingLinguist = linguistRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Linguist not found with id: " + id));
 
-        // Update the inherent Admin fields passed
+        //Update the inherent Admin fields passed
         if (linguistDetails.getSourceLanguages() != null) {
             existingLinguist.setSourceLanguages(linguistDetails.getSourceLanguages());
         }
-
         if (linguistDetails.getTargetLanguages() != null) {
             existingLinguist.setTargetLanguages(linguistDetails.getTargetLanguages());
         }
-
         if (linguistDetails.getProjectTypes() != null) {
             existingLinguist.setProjectTypes(linguistDetails.getProjectTypes());
         }
-
         if (linguistDetails.getDtpTechnologies() != null) {
             existingLinguist.setDtpTechnologies(linguistDetails.getDtpTechnologies());
         }
-
         if (linguistDetails.getLinguisticTechnologies() != null) {
             existingLinguist.setLinguisticTechnologies(linguistDetails.getLinguisticTechnologies());
         }
 
         // Update the fields inherited from the User class -> not password (User only)
-        /*if (linguistDetails.getUsername() != null) {
+        if (linguistDetails.getUsername() != null) {
             existingLinguist.setUsername(linguistDetails.getUsername());
         }
         if (linguistDetails.getName() != null) {
@@ -128,22 +115,28 @@ public class LinguistService {
         }
         if (linguistDetails.getEmail() != null) {
             existingLinguist.setEmail(linguistDetails.getEmail());
-        }*/
-/*
-        existingLinguist.setRates(linguistDetails.getRates());
-*/
+        }
 
         return linguistRepository.save(existingLinguist);
     }
 
-    /*Fix error*/
+    @Transactional
     public void deleteLinguist(Long id) {
         try {
+            //Get all rates assigned to the linguist we are going to delete
+            List<Rate> rates = rateRepository.findByLinguistId(id);
+
+            //Delete all rates assigned to the linguist
+            for (Rate rate : rates) {
+                rateRepository.delete(rate);
+            }
+
+            //Delete the linguist
             linguistRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException("Linguist not found with id: " + id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Linguist deleting rate with id: " + id);
+            throw new DataIntegrityViolationException("Error deleting linguist with id: " + id);
         }
     }
 
@@ -267,15 +260,4 @@ public class LinguistService {
         }
     }
 
-    public List<Linguist> findByDtpTechnologiesAndProjectTypes(DTPTechnology dtpTechnology, ProjectType projectType) {
-        try {
-            List<Linguist> linguists = linguistRepository.findByDtpTechnologiesAndProjectTypes(dtpTechnology, projectType);
-            if (linguists.isEmpty()) {
-                throw new EmptyListException("No linguists were found");
-            }
-            return linguists;
-        } catch (Exception e) {
-            throw new ServiceException("Error occurred while fetching linguists by DTP technology and project type", e);
-        }
-    }
 }

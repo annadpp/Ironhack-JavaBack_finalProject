@@ -46,7 +46,8 @@ public class Rate {
 
     @ManyToOne
     @JoinColumn(name = "linguist_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_rate_linguist", foreignKeyDefinition = "FOREIGN KEY (linguist_id) REFERENCES users (id) ON DELETE SET NULL"))
-    @JsonIgnoreProperties({"rates", "password", "userType", "tasks", "projects", "sourceLanguages", "targetLanguages", "projectTypes", "dtpTechnologies", "linguisticTechnologies"})
+    @JsonIgnoreProperties({"rates", "password", "userType", "tasks", "projects", "sourceLanguages", "targetLanguages", "projectTypes", "dtpTechnologies", "linguisticTechnologies", "role", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
+    @NotNull(message = "Linguist cannot be empty")
     private Linguist linguist;
 
     //Constructor for testing

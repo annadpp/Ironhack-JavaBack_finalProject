@@ -19,7 +19,7 @@ public class DTPProjectTest {
     @BeforeEach
     void setUp() {
         Client client = new Client();
-        dtpProject = new DTPProject("Project Name", "Project Description", new Date(), new Date(), BigDecimal.TEN, Status.STARTED, DTPTechnology.AFTER_EFFECTS, 120);
+        dtpProject = new DTPProject("Project Name", "Project Description", new Date(), new Date(), BigDecimal.TEN, Status.STARTED, DTPTechnology.AFTER_EFFECTS);
     }
 
     @Test

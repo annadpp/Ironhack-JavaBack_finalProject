@@ -6,15 +6,15 @@ import com.ironhack.locmgmt.model.enums.DTPTechnology;
 import com.ironhack.locmgmt.model.enums.Languages;
 import com.ironhack.locmgmt.model.enums.LinguisticTechnology;
 import com.ironhack.locmgmt.model.enums.ProjectType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+//Used for linguists/get/linguist route
 public class LinguistDTO {
     private Long id;
     private String name;
@@ -27,6 +27,4 @@ public class LinguistDTO {
     private List<LinguisticTechnology> linguisticTechnologies;
     private List<Rate> rates;
     private List<Task> tasks;
-
-    // Constructores, getters y setters
 }

@@ -2,6 +2,8 @@ package com.ironhack.locmgmt.util;
 
 import com.ironhack.locmgmt.model.Rate;
 import com.ironhack.locmgmt.model.Task;
+import com.ironhack.locmgmt.model.enums.Languages;
+import com.ironhack.locmgmt.model.enums.ProjectType;
 import com.ironhack.locmgmt.model.enums.Status;
 import com.ironhack.locmgmt.model.projects.LinguisticProject;
 import com.ironhack.locmgmt.model.projects.Project;
@@ -11,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 public class TaskUtil {
     public static void updateTaskDates(Task task) {
@@ -47,4 +50,51 @@ public class TaskUtil {
         }
     }
 
-}
+    public static void calculateTotalWords(Task task) {
+        Integer newWords = task.getNewWords() != null ? task.getNewWords() : 0;
+        Integer fuzzyWords = task.getFuzzyWords() != null ? task.getFuzzyWords() : 0;
+        task.setTotalWords(newWords + fuzzyWords);
+    }
+
+    public static void calculateTaskCost(Task task) {
+        if (task.getLinguist() == null) {
+            task.setTaskCost(null);
+            return;
+        }
+
+        if (!task.getProjectType().equals(ProjectType.DTP) && task.getTotalWords() != null) {
+            Linguist linguist = task.getLinguist();
+            BigDecimal wordPrice = null;
+            for (Rate rate : linguist.getRates()) {
+                if (rate.getSourceLanguage().equals(task.getSourceLanguage()) && rate.getTargetLanguage().equals(task.getTargetLanguage()) && rate.getProjectType() != ProjectType.DTP) {
+                    wordPrice = rate.getWordPrice();
+                    break;
+                }
+            }
+
+            if (wordPrice != null) {
+                BigDecimal totalCost = wordPrice.multiply(BigDecimal.valueOf(task.getTotalWords()));
+                task.setTaskCost(totalCost);
+            } else {
+                System.out.println("No se encontró una tarifa para el par de idiomas correspondiente");
+            }
+        } else {
+            if (task.getProjectType().equals(ProjectType.DTP) && task.getPages() != null) {
+                Linguist linguist = task.getLinguist();
+                BigDecimal pagePrice = null;
+                for (Rate rate : linguist.getRates()) {
+                    if (rate.getSourceLanguage().equals(task.getSourceLanguage()) && rate.getTargetLanguage().equals(task.getTargetLanguage()) && rate.getProjectType() == ProjectType.DTP) {
+                        pagePrice = rate.getPagePrice();
+                        break;
+                    }
+                }
+
+                if (pagePrice != null) {
+                    BigDecimal totalCost = pagePrice.multiply(BigDecimal.valueOf(task.getPages()));
+                    task.setTaskCost(totalCost);
+                } else {
+                    System.out.println("No se encontró una tarifa para el par de idiomas correspondiente");
+                }
+        }
+    }
+}}
